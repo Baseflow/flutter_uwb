@@ -6,6 +6,5 @@ public class SwiftUwbIosPlugin: NSObject, FlutterPlugin {
       MCalculatorHostApi.setUp(binaryMessenger: registrar.messenger())
       MCSessionHostApi.setUp(binaryMessenger: registrar.messenger())
       NISessionHostApi.setUp(binaryMessenger: registrar.messenger())
-      // TODO: Add NI & MPC
   }
 }

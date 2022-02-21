@@ -1,5 +1,5 @@
 //
-//  MCSessionHostAPI.swift
+//  MCSessionHostApi.swift
 //  uwb_ios
 //
 //  Created by Leroy on 21/02/2022.
@@ -8,6 +8,8 @@
 import Foundation
 
 public class MCSessionHostApi{
+    
+    //MARK: - Set up
     
     public static func setUp (binaryMessenger: FlutterBinaryMessenger) {
         let session = MCSessionHostApi()
@@ -23,6 +25,8 @@ public class MCSessionHostApi{
             }
          }
     }
+    
+    //MARK: - Functions
     
     func start() -> String {
         return "session started"
