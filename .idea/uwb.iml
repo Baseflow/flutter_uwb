@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/uwb_ios/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_ios/build" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_ios/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_ios/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_ios/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_ios/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/build" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_platform_interface/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_platform_interface/build" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_platform_interface/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_ios/example/ios/.symlinks/plugins/uwb_ios/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_ios/example/ios/.symlinks/plugins/uwb_ios/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb_ios/example/ios/.symlinks/plugins/uwb_ios/build" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/ios/.symlinks/plugins/uwb_ios/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/ios/.symlinks/plugins/uwb_ios/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/ios/.symlinks/plugins/uwb_ios/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/ios/.symlinks/plugins/uwb_ios/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/ios/.symlinks/plugins/uwb_ios/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/ios/.symlinks/plugins/uwb_ios/build" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/ios/.symlinks/plugins/uwb_ios/example/ios/.symlinks/plugins/uwb_ios/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/ios/.symlinks/plugins/uwb_ios/example/ios/.symlinks/plugins/uwb_ios/build" />
+      <excludeFolder url="file://$MODULE_DIR$/uwb/example/ios/.symlinks/plugins/uwb_ios/example/ios/.symlinks/plugins/uwb_ios/.dart_tool" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
+  </component>
+</module>
