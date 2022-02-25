@@ -22,6 +22,7 @@ class _MyAppState extends State<MyApp> {
   int _counter = 0;
   String _mcSession = "";
   String _niSession = "";
+  String _location = "";
 
   @override
   void initState() {
@@ -33,6 +34,13 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _counter = counter;
       print("main - onAdd called. Counter updated to " + _counter.toString());
+    });
+  }
+
+  void onLocation(String location) {
+    setState(() {
+      _location = location;
+      print("");
     });
   }
 
@@ -78,6 +86,26 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future<void> startHosting() async {
+    print("main - startHosting()");
+    try {
+      await _plugin.startHost();
+      _plugin.getLocation(onLocation: onLocation);
+    } on PlatformException {
+      //TODO: throw exception
+    }
+  }
+
+  Future<void> joinHost() async {
+    print("main - joinHost()");
+    try {
+      await _plugin.joinHost();
+      _plugin.getLocation(onLocation: onLocation);
+    } on PlatformException {
+      //TODO: throw exception
+    }
+  }
+
   Future<void> initPlatformState() async {
     String platformVersion;
 
@@ -114,12 +142,15 @@ class _MyAppState extends State<MyApp> {
             child: Column (
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                Text('MCSession status: $_location'),
                 Text('MCSession status: $_mcSession'),
                 FloatingActionButton(onPressed: startMCSession),
                 Text('NISession status: $_niSession'),
                 FloatingActionButton(onPressed: startNISession),
                 Text('Button pushed: $_counter\n'),
-                FloatingActionButton(onPressed: addOne)
+                FloatingActionButton(onPressed: addOne),
+                TextButton(onPressed: startHosting, child: Text('startHosting')),
+                TextButton(onPressed: joinHost, child: Text('joinHost')),
               ],
             )
         ),

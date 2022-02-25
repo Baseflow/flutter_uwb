@@ -23,11 +23,26 @@ class UwbIos extends UwbPlatform{
 
   Future <String> startMCSession() {
     print("UwbIos - startMCSession() called");
+
     return mCSession.startMCSession();
   }
 
   Future <String> startNISession() {
     print("UwbIos - startNISession() called");
     return nISession.startNISession();
+  }
+
+  Future <bool?> startHost() {
+    print("UwbIos - startHost() called");
+    return mCSession.startHost();
+  }
+
+  Future <bool?> joinHost() {
+    print("UwbIos - join() called");
+    return mCSession.joinHost();
+  }
+
+  Future <bool?> getLocation({required Function(String) onLocation }) {
+    return nISession.getLocation(onLocation: onLocation);
   }
 }

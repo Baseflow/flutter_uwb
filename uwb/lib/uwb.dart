@@ -19,4 +19,19 @@ class Uwb {
     print("Uwb - startNISession() called");
     return UwbPlatform.instance.startNISession();
   }
+
+  Future <bool?> startHost(){
+    print("Uwb - startHost() called");
+    return UwbPlatform.instance.startHost();
+  }
+
+  Future <bool?> joinHost(){
+    print("Uwb - joinHost() called");
+    return UwbPlatform.instance.joinHost();
+  }
+
+  Future <bool?> getLocation({required Function(String) onLocation }){
+    print("Uwb - joinHost() called");
+    return UwbPlatform.instance.getLocation(onLocation: onLocation);
+  }
 }
