@@ -57,7 +57,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> joinHost() async {
-    print("main - joinHost()");
     try {
       await _plugin.joinHost();
       _plugin.getLocation(onLocation: onLocation);
