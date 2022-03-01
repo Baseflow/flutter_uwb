@@ -15,30 +15,15 @@ class UwbIos extends UwbPlatform{
   var mCSession = MCSessionWrapper();
   var nISession = NISessionWrapper();
 
-  @override
-  Future <int> addOne(int value) {
-    print("UwbIOs - addOne called");
-    return mCalculator.increment(value);
-  }
-
-  Future <String> startMCSession() {
-    print("UwbIos - startMCSession() called");
-
-    return mCSession.startMCSession();
-  }
-
   Future <String> setUp() {
-    print("UwbIos - startNISession() called");
     return nISession.setUp();
   }
 
   Future <bool?> startHost() {
-    print("UwbIos - startHost() called");
     return mCSession.startHost();
   }
 
   Future <bool?> joinHost() {
-    print("UwbIos - join() called");
     return mCSession.joinHost();
   }
 
