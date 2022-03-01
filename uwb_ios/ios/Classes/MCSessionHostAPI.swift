@@ -13,7 +13,6 @@ import NearbyInteraction
 public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate {
     
     static var tokenChannel: FlutterMethodChannel?
-//    var token: String?
     var peerID: MCPeerID
     var mcSession: MCSession
     var niSession: NISessionHostApi?
@@ -34,12 +33,8 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
         let session = MCSessionHostApi()
         let channel = FlutterMethodChannel(name: "com.baseflow.uwb/mc_session", binaryMessenger: binaryMessenger)
         
-        tokenChannel = FlutterMethodChannel(name: "com.baseflow.uwb/mc_session_token", binaryMessenger: binaryMessenger)
-        
         channel.setMethodCallHandler {(call: FlutterMethodCall, result: FlutterResult) -> Void in
             switch call.method {
-            case "MCSession.start":
-                result(session.start())
             case "MCSession.startHost":
                 session.startAdvertising()
                 result(true)
@@ -49,14 +44,10 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
             default:
                 result(FlutterMethodNotImplemented)
             }
-         }
+        }
     }
     
     //MARK: - Functions
-    
-    func start() -> String {
-        return "MCSession started"
-    }
     
     func startAdvertising() {
         print("Started advertising")
@@ -132,8 +123,7 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
             print("\(peerID) state: connecting")
         case.connected:
             print("\(peerID) state: connected")
-            
-            //TODO: //stopadvertising/stopbrowsing (ff checken waar dit moet)
+
             if niSession?.session == nil {
                 niSession?.setVariables()
                 sendDiscoveryToken()
@@ -148,12 +138,6 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
     
     public func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         niSession?.startSession(data: data)
-    //TODO: send dataString back to dart
-//        let token = data.map(String.init)
-//        print(token)
-//        MCSessionHostApi.tokenChannel?.invokeMethod("token", arguments: "testToken")
-//        MCSessionHostApi.tokenChannel?.invokeMethod("token", arguments: token)
-        
     }
     
     public func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

@@ -44,7 +44,6 @@ public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
     // MARK: - Nearby Interaction Functions
       
     func startSession(data: Data){
-        print("Trying to setup ni-connection")
         guard let token = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: data) else {
             fatalError("Unexpectedly failed to encode discovery token.")
         }
