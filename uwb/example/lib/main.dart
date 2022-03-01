@@ -30,9 +30,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void onLocation(Map location) {
-    print("distance = " + location["distance"]);
-    print("direction = " + location["direction"]);
-
     setState(() {
       _distance = location["distance"];
       _direction = location["direction"];
