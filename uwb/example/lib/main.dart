@@ -19,8 +19,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final Uwb _plugin = Uwb();
   bool? _setup = false;
-  var _distance = "";
-  var _angle = 0.0;
+  var _distance;
+  var _angle;
 
   @override
   void initState() {
@@ -35,9 +35,15 @@ class _MyAppState extends State<MyApp> {
     var _y = double.parse(_directionArray[1]);
     var _z = double.parse(_directionArray[2]);
 
+
+
     setState(() {
       _distance = location["distance"];
-      _angle = math.atan2(_x, _y);
+      if (_x == 0.0 && _y == 0.0) {
+        _angle = null;
+      } else {
+        _angle = math.atan2(_x, _y);
+      }
     });
   }
 
@@ -94,11 +100,17 @@ class _MyAppState extends State<MyApp> {
                   TextButton(onPressed: startHosting, child: Text('Host')),
                   TextButton(onPressed: joinHost, child: Text('Join')),
                 ],),
-                Transform.rotate(
+                if (_angle != null)... [
+                  Transform.rotate(
                     angle: _angle,
                     child: const Icon(Icons.arrow_upward_rounded, color: Colors.white, size: 100),
-                ),
-                Text(_distance, style: const TextStyle(fontSize: 40, color: Colors.white),),
+                  ),
+                ] else... [
+                  const Text("", style: TextStyle(fontSize: 82))
+                ],
+                if (_distance != null)... [Text("${_distance}m", style: const TextStyle(fontSize: 40, color: Colors.white),),
+                  ] else... [const Text("", style: TextStyle(fontSize: 40)),
+                ]
                 // Text(_direction, style: const TextStyle(fontSize: 20, color: Colors.white),),
               ],
             )
