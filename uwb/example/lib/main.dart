@@ -18,8 +18,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Uwb _plugin = Uwb();
-  String _mcSession = "";
-  String _niSession = "";
+  String _setup = "";
   String _location = "";
 
   @override
@@ -34,20 +33,11 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void onNISession(String status) {
+  void onSetup(String status) {
     print("Main - onNISession() called");
     setState(() {
-      _niSession = status;
+      _setup = status;
     });
-  }
-
-  Future<void> startNISession() async{
-    print("Main - startNISession() called");
-    try {
-      onNISession(await _plugin.startNISession());
-    } on PlatformException {
-      print("main - could not add one");
-    }
   }
 
   Future<void> startHosting() async {
@@ -74,7 +64,7 @@ class _MyAppState extends State<MyApp> {
 
     //needed for initial set-up
     try {
-      onNISession(await _plugin.startNISession());
+      onSetup(await _plugin.setUp());
     } on PlatformException {
       print("Could not properly setup app");
     }

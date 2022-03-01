@@ -27,9 +27,8 @@ public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
         
         channel.setMethodCallHandler {(call: FlutterMethodCall, result: FlutterResult) -> Void in
             switch call.method {
-              case "NISession.start":
-                NISessionHostApi.locationChannel?.invokeMethod("updateLocation", arguments: "test")
-                result(shared?.start())
+              case "NISession.setUp":
+                result("setUp complete")
             default:
                 result(FlutterMethodNotImplemented)
             }
@@ -40,11 +39,6 @@ public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
         session = NISession()
         session?.delegate = self
         discoveryToken = session?.discoveryToken
-    }
-    
-    //testFunction
-    func start() -> String {
-        return "session started"
     }
     
     // MARK: - Nearby Interaction Functions

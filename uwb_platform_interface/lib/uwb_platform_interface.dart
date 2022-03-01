@@ -28,7 +28,7 @@ abstract class UwbPlatform extends PlatformInterface{
 
   Future <String> startMCSession() => throw UnimplementedError('startMCSession() has not been implemented.');
 
-  Future <String> startNISession() => throw UnimplementedError("startNISession() has not been implemented.");
+  Future <String> setUp() => throw UnimplementedError("startNISession() has not been implemented.");
 
   Future <bool?> startHost() => throw UnimplementedError('startMCSession() has not been implemented.');
 

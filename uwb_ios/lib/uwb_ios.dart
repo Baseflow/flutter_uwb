@@ -27,9 +27,9 @@ class UwbIos extends UwbPlatform{
     return mCSession.startMCSession();
   }
 
-  Future <String> startNISession() {
+  Future <String> setUp() {
     print("UwbIos - startNISession() called");
-    return nISession.startNISession();
+    return nISession.setUp();
   }
 
   Future <bool?> startHost() {
