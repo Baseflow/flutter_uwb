@@ -12,6 +12,7 @@ import NearbyInteraction
 public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
     
     static var locationChannel: FlutterMethodChannel?
+    static var shared: NISessionHostApi?
     
     var nearbyObjects: NINearbyObject?
     var session: NISession?
@@ -19,7 +20,7 @@ public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
     var distance: String?
     
     public static func setUp(binaryMessenger: FlutterBinaryMessenger) {
-        let session = NISessionHostApi()
+        shared = NISessionHostApi()
         
         let channel = FlutterMethodChannel(name: "com.baseflow.uwb/ni_session", binaryMessenger: binaryMessenger)
         locationChannel = FlutterMethodChannel(name: "com.baseflow.uwb/ni_session_location", binaryMessenger: binaryMessenger)
@@ -27,7 +28,8 @@ public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
         channel.setMethodCallHandler {(call: FlutterMethodCall, result: FlutterResult) -> Void in
             switch call.method {
               case "NISession.start":
-                result(session.start())
+                NISessionHostApi.locationChannel?.invokeMethod("updateLocation", arguments: "test")
+                result(shared?.start())
             default:
                 result(FlutterMethodNotImplemented)
             }

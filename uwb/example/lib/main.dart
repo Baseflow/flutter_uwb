@@ -109,12 +109,11 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     String platformVersion;
 
-    // try {
-    //   // platformVersion =
-    //   //     await _plugin.platformVersion ?? 'Unknown platform version';
-    // } on PlatformException {
-    //   platformVersion = 'Failed to get platform version.';
-    // }
+    try {
+      onNISession(await _plugin.startNISession());
+    } on PlatformException {
+      print("Could not properly setup app");
+    }
 
     //get location stream
     //listen aanroepen op locationstream

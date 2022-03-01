@@ -38,8 +38,9 @@ class MCSessionWrapper {
   Future<void> _handleMethodCall(MethodCall call) async {
     switch(call.method) {
       case "token":
-        final String location = call.arguments;
-        print("token: "+ call.arguments);
+        final String token = call.arguments;
+        print ("received data");
+        print("token: "+ token);
         // _onLocation(location);
         break;
       default:

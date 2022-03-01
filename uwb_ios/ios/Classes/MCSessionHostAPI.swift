@@ -13,31 +13,28 @@ import NearbyInteraction
 public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate {
     
     static var tokenChannel: FlutterMethodChannel?
-    
-    var token: String?
+//    var token: String?
     var peerID: MCPeerID
     var mcSession: MCSession
-    var niManager: NISessionHostApi
+    var niSession: NISessionHostApi?
     var mcAdvertiserAssistant: MCNearbyServiceAdvertiser?
     
     override init(){
         print("mpcManager started")
         peerID = MCPeerID(displayName: UIDevice.current.name)
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
-        niManager = NISessionHostApi()
-        
         super.init()
         mcSession.delegate = self
+        niSession = NISessionHostApi.shared
     }
     
     //MARK: - Set up
 
     public static func setUp (binaryMessenger: FlutterBinaryMessenger) {
         let session = MCSessionHostApi()
-        
         let channel = FlutterMethodChannel(name: "com.baseflow.uwb/mc_session", binaryMessenger: binaryMessenger)
         
-        tokenChannel = FlutterMethodChannel(name: "com.baseflow.uwb/ni_session_location", binaryMessenger: binaryMessenger)
+        tokenChannel = FlutterMethodChannel(name: "com.baseflow.uwb/mc_session_token", binaryMessenger: binaryMessenger)
         
         channel.setMethodCallHandler {(call: FlutterMethodCall, result: FlutterResult) -> Void in
             switch call.method {
@@ -102,7 +99,7 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
         print("Trying to send discoverytoken")
         if mcSession.connectedPeers.count > 0 {
             
-            guard let dataToken = niManager.discoveryToken,
+            guard let dataToken = niSession?.discoveryToken,
                   let data = try? NSKeyedArchiver.archivedData(withRootObject: dataToken, requiringSecureCoding: true) else {
                       fatalError("can't convert token to data")
                   }
@@ -137,8 +134,8 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
             print("\(peerID) state: connected")
             
             //TODO: //stopadvertising/stopbrowsing (ff checken waar dit moet)
-            if niManager.session == nil {
-                niManager.setVariables()
+            if niSession?.session == nil {
+                niSession?.setVariables()
                 sendDiscoveryToken()
             }
             
@@ -150,10 +147,13 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
     }
     
     public func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-//        niManager.startSession(data: data)
+        niSession?.startSession(data: data)
     //TODO: send dataString back to dart
-        let token = data.map(String.init)
-        MCSessionHostApi.tokenChannel?.invokeMethod("token", arguments: token)
+//        let token = data.map(String.init)
+//        print(token)
+//        MCSessionHostApi.tokenChannel?.invokeMethod("token", arguments: "testToken")
+//        MCSessionHostApi.tokenChannel?.invokeMethod("token", arguments: token)
+        
     }
     
     public func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
