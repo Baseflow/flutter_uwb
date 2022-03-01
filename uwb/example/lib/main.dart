@@ -34,14 +34,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   void onSetup(bool? status) {
-    print("Main - onNISession() called");
     setState(() {
       _setup = status;
     });
   }
 
   Future<void> startHosting() async {
-    print("main - startHosting()");
     try {
       await _plugin.startHost();
       _plugin.getLocation(onLocation: onLocation);
@@ -62,7 +60,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initPlatformState() async {
 
-    //needed for initial set-up
+    ///Needed for initial set-up
     try {
       onSetup(await _plugin.setUp());
     } on PlatformException {
