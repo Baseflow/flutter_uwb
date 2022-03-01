@@ -27,11 +27,9 @@ class NISessionWrapper {
   }
 
   Future<void> _handleMethodCall(MethodCall call) async {
-    print("nearby_interaction - method called");
     switch(call.method) {
       case "updateLocation":
         final String location = call.arguments;
-        print("Location: "+ call.arguments);
         _onLocation(location);
         break;
       default:
