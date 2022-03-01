@@ -54,7 +54,7 @@ public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
     // MARK: - NISessionDelegate functions
     
     public func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
-        print(nearbyObjects)
+//        print(nearbyObjects)
         
         let direction = nearbyObjects.first?.direction ?? simd_float3(0.0,0.0,0.0)
 

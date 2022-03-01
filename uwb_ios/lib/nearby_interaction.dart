@@ -29,7 +29,7 @@ class NISessionWrapper {
   Future<void> _handleMethodCall(MethodCall call) async {
     switch(call.method) {
       case "updateLocation":
-        print(call.arguments);
+        // print(call.arguments);
         final Map location = call.arguments;
         _onLocation(location);
         break;
