@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:uwb/uwb.dart';
 import 'package:uwb_platform_interface/uwb_platform_interface.dart';
@@ -19,7 +19,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final Uwb _plugin = Uwb();
   bool? _setup = false;
-  Map _location = {};
   String _distance = "";
   String _direction = "";
 
@@ -81,17 +80,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('UWB example app'),
-        ),
+        backgroundColor: Colors.black,
         body: Center(
             child: Column (
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text('Distance: $_distance'),
-                Text('Direction: $_direction'),
-                TextButton(onPressed: startHosting, child: Text('startHosting')),
-                TextButton(onPressed: joinHost, child: Text('joinHost')),
+                Column(children: [
+                  TextButton(onPressed: startHosting, child: Text('Host')),
+                  TextButton(onPressed: joinHost, child: Text('Join')),
+                ],),
+
+                Transform.rotate(
+                    angle: 180* math.pi / 180,
+                    child: const Icon(Icons.arrow_upward_rounded, color: Colors.white, size: 100),
+                ),
+                Text(_distance, style: const TextStyle(fontSize: 40, color: Colors.white),),
+                Text(_direction, style: const TextStyle(fontSize: 20, color: Colors.white),),
               ],
             )
         ),
