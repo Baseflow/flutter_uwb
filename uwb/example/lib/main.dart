@@ -18,8 +18,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Uwb _plugin = Uwb();
-  // String _platformVersion = "Unkown";
-  int _counter = 0;
   String _mcSession = "";
   String _niSession = "";
   String _location = "";
@@ -30,25 +28,9 @@ class _MyAppState extends State<MyApp> {
     initPlatformState();
   }
 
-  void onAdd(int counter) {
-    setState(() {
-      _counter = counter;
-      print("main - onAdd called. Counter updated to " + _counter.toString());
-    });
-  }
-
   void onLocation(String location) {
     setState(() {
       _location = location;
-      print("");
-    });
-  }
-
-  void onMCSession(String status) {
-    print("Main - inMCSession() called: $status");
-    setState(() {
-      _mcSession = status;
-      // print("main - onAdd called. Counter updated to " + _counter.toString());
     });
   }
 
@@ -59,28 +41,10 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<void> startMCSession() async {
-    print("Main - startMCSession() called");
-    try {
-      onMCSession(await _plugin.startMCSession());
-    } on PlatformException {
-      print("main - could not add one");
-    }
-  }
-
   Future<void> startNISession() async{
     print("Main - startNISession() called");
     try {
       onNISession(await _plugin.startNISession());
-    } on PlatformException {
-      print("main - could not add one");
-    }
-  }
-
-  Future<void> addOne() async {
-    print("main - addOne called");
-    try {
-      onAdd(await _plugin.addOne(_counter));
     } on PlatformException {
       print("main - could not add one");
     }
@@ -107,26 +71,18 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    String platformVersion;
 
+    //needed for initial set-up
     try {
       onNISession(await _plugin.startNISession());
     } on PlatformException {
       print("Could not properly setup app");
     }
 
-    //get location stream
-    //listen aanroepen op locationstream
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
-      // _platformVersion = platformVersion;
-      // _testMessage = testMessage;
-      // _secondTestMessage = secondTestMessage;
+      //not used
     });
   }
 
@@ -141,13 +97,7 @@ class _MyAppState extends State<MyApp> {
             child: Column (
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text('MCSession status: $_location'),
-                Text('MCSession status: $_mcSession'),
-                FloatingActionButton(onPressed: startMCSession),
-                Text('NISession status: $_niSession'),
-                FloatingActionButton(onPressed: startNISession),
-                Text('Button pushed: $_counter\n'),
-                FloatingActionButton(onPressed: addOne),
+                Text('Distance: $_location'),
                 TextButton(onPressed: startHosting, child: Text('startHosting')),
                 TextButton(onPressed: joinHost, child: Text('joinHost')),
               ],
