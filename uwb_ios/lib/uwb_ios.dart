@@ -28,7 +28,7 @@ class UwbIos extends UwbPlatform{
   }
 
   @override
-  Future <bool?> getLocation({required Function(String) onLocation }) {
+  Future <bool?> getLocation({required Function(Map) onLocation }) {
     return nISession.getLocation(onLocation: onLocation);
   }
 }

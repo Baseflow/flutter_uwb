@@ -19,7 +19,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final Uwb _plugin = Uwb();
   bool? _setup = false;
-  String _location = "";
+  Map _location = {};
+  String _distance = "";
+  String _direction = "";
 
   @override
   void initState() {
@@ -27,9 +29,13 @@ class _MyAppState extends State<MyApp> {
     initPlatformState();
   }
 
-  void onLocation(String location) {
+  void onLocation(Map location) {
+    print("distance = " + location["distance"]);
+    print("direction = " + location["direction"]);
+
     setState(() {
-      _location = location;
+      _distance = location["distance"];
+      _direction = location["direction"];
     });
   }
 
@@ -85,7 +91,8 @@ class _MyAppState extends State<MyApp> {
             child: Column (
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text('Distance: $_location'),
+                Text('Distance: $_distance'),
+                Text('Direction: $_direction'),
                 TextButton(onPressed: startHosting, child: Text('startHosting')),
                 TextButton(onPressed: joinHost, child: Text('joinHost')),
               ],

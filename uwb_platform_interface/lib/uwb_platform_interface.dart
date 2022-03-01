@@ -31,6 +31,6 @@ abstract class UwbPlatform extends PlatformInterface{
   Future <bool?> joinHost() => throw UnimplementedError("joinHost() has not been implemented.");
 
   ///Callback method to get the location updates
-  Future <bool?> getLocation({required Function(String) onLocation}) => throw UnimplementedError("getLocation() has not been implemented.");
+  Future <bool?> getLocation({required Function(Map) onLocation}) => throw UnimplementedError("getLocation() has not been implemented.");
 }
 

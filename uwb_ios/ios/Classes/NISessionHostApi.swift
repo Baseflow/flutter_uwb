@@ -55,28 +55,26 @@ public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
     
     public func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
         print(nearbyObjects)
+        
+        let direction = nearbyObjects.first?.direction ?? simd_float3(0.0,0.0,0.0)
 
         let objectmap = [
             "distance": String(nearbyObjects.first?.distance ?? 0),
-            "location": String(describing: nearbyObjects.first?.direction ?? simd_float3(0.0,0.0,0.0))
+            "direction": String("\(direction.x),\(direction.y),\(direction.z)")
         ]
         NISessionHostApi.locationChannel?.invokeMethod("updateLocation", arguments: objectmap)
     }
     
     public func session(_ session: NISession, didRemove nearbyObjects: [NINearbyObject], reason: NINearbyObject.RemovalReason) {
-        
     }
     
     public func sessionWasSuspended(_ session: NISession) {
-        
     }
     
     public func sessionSuspensionEnded(_ session: NISession) {
-        
     }
     
     public func session(_ session: NISession, didInvalidateWith error: Error) {
         
     }
-
 }
