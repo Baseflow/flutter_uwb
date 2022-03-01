@@ -28,7 +28,7 @@ public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
         channel.setMethodCallHandler {(call: FlutterMethodCall, result: FlutterResult) -> Void in
             switch call.method {
               case "NISession.setUp":
-                result("setUp complete")
+                result(true)
             default:
                 result(FlutterMethodNotImplemented)
             }

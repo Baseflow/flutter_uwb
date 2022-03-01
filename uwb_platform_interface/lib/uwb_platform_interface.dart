@@ -22,7 +22,7 @@ abstract class UwbPlatform extends PlatformInterface{
   static late UwbPlatform _instance;
 
   /// Must be called once for initial setUp
-  Future <String> setUp() => throw UnimplementedError("setUp() has not been implemented.");
+  Future <bool?> setUp() => throw UnimplementedError("setUp() has not been implemented.");
 
   ///Starts the advertiser
   Future <bool?> startHost() => throw UnimplementedError('startHost() has not been implemented.');

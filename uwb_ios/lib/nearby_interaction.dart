@@ -13,13 +13,12 @@ class NISessionWrapper {
     _locationChannel.setMethodCallHandler(_handleMethodCall);
   }
 
-  Future <String> setUp() async{
-    if (!methodCallHandler){
+  Future <bool?> setUp() async{
+    final bool? status = await _channel.invokeMethod("NISession.setUp");
+    if (methodCallHandler != status){
       setMethodcallHanderl();
     }
-    print("NISessionWrapper - startNISession() called");
-    final String? status = await _channel.invokeMethod("NISession.setUp");
-    return status ?? "";
+    return status ?? false;
   }
 
   Future<bool?> getLocation({required Function(String) onLocation }) async {

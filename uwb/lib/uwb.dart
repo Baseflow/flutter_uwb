@@ -5,7 +5,7 @@ import 'package:uwb_platform_interface/uwb_platform_interface.dart';
 /// A Calculator.
 class Uwb {
   /// Must be called once for initial setUp
-  Future <String> setUp() {
+  Future <bool?> setUp() {
     return UwbPlatform.instance.setUp();
   }
 

@@ -18,7 +18,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Uwb _plugin = Uwb();
-  String _setup = "";
+  bool? _setup = false;
   String _location = "";
 
   @override
@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void onSetup(String status) {
+  void onSetup(bool? status) {
     print("Main - onNISession() called");
     setState(() {
       _setup = status;
