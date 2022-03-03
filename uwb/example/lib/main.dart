@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math' as math;
-import 'package:flutter/services.dart';
 import 'package:uwb/uwb.dart';
-import 'package:uwb_platform_interface/uwb_platform_interface.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +16,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Uwb _plugin = Uwb();
-  bool? _setup = false;
   var _distance;
   var _angle;
 
@@ -46,39 +43,27 @@ class _MyAppState extends State<MyApp> {
   }
 
   void onSetup(bool? status) {
-    setState(() {
-      _setup = status;
-    });
+    if (status != null) {
+      if (!status){
+        print("Device is incompatible with this app. \n Please check device OS version and UWB compatibility. \n For Apple users iOS version should be 14.0 or higher.");
+      }
+    }
   }
 
   Future<void> startHosting() async {
-    try {
-      await _plugin.startHost();
-      _plugin.getLocation(onLocation: onLocation);
-    } on PlatformException {
-      //TODO: throw exception
-    }
+    await _plugin.startHost();
+    _plugin.getLocation(onLocation: onLocation);
   }
 
   Future<void> joinHost() async {
-    try {
-      await _plugin.joinHost();
-      _plugin.getLocation(onLocation: onLocation);
-    } on PlatformException {
-      //TODO: throw exception
-    }
+    await _plugin.joinHost();
+    _plugin.getLocation(onLocation: onLocation);
   }
 
   Future<void> initPlatformState() async {
 
-
-
-    ///Needed for initial set-up
-    try {
-      onSetup(await _plugin.setUp());
-    } on PlatformException {
-      print("Could not properly setup app");
-    }
+    ///Needed for initial set-up and checks device compatibility
+    onSetup(await _plugin.setUp());
 
     if (!mounted) return;
 
@@ -97,8 +82,8 @@ class _MyAppState extends State<MyApp> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(children: [
-                  TextButton(onPressed: startHosting, child: Text('Host')),
-                  TextButton(onPressed: joinHost, child: Text('Join')),
+                  TextButton(onPressed: startHosting, child: const Text('Host')),
+                  TextButton(onPressed: joinHost, child: const Text('Join')),
                 ],),
                 if (_angle != null)... [
                   Transform.rotate(
@@ -109,9 +94,8 @@ class _MyAppState extends State<MyApp> {
                   const Text("", style: TextStyle(fontSize: 82))
                 ],
                 if (_distance != null)... [Text("${_distance}m", style: const TextStyle(fontSize: 40, color: Colors.white),),
-                  ] else... [const Text("", style: TextStyle(fontSize: 40)),
+                ] else... [const Text("", style: TextStyle(fontSize: 40)),
                 ]
-                // Text(_direction, style: const TextStyle(fontSize: 20, color: Colors.white),),
               ],
             )
         ),

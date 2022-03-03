@@ -7,6 +7,7 @@
 
 import Foundation
 import NearbyInteraction
+import UIKit
 
 @available(iOS 14.0, *)
 public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
@@ -39,6 +40,14 @@ public class NISessionHostApi: NSObject, NISessionDelegate, ObservableObject {
         session = NISession()
         session?.delegate = self
         discoveryToken = session?.discoveryToken
+    }
+    
+    func checkDeviceCompatibility() -> Bool{
+        if NISession.isSupported {
+            return true
+        } else {
+            return false
+        }
     }
     
     // MARK: - Nearby Interaction Functions

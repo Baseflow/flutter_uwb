@@ -16,7 +16,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final UwbIos _plugin = UwbIos();
-  bool? _setup = false;
   var _distance;
   var _angle;
 
@@ -44,9 +43,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   void onSetup(bool? status) {
-    setState(() {
-      _setup = status;
-    });
+      if (status != null) {
+        if (!status){
+          print("Device is incompatible with this app. \n Please check device OS version and UWB compatibility. \n For Apple users iOS version should be 14.0 or higher.");
+        }
+      }
   }
 
   Future<void> startHosting() async {
@@ -61,7 +62,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initPlatformState() async {
 
-    ///Needed for initial set-up
+    ///Needed for initial set-up and checks device compatibility
     onSetup(await _plugin.setUp());
 
     if (!mounted) return;

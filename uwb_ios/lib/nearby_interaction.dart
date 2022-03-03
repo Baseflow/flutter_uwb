@@ -6,19 +6,8 @@ class NISessionWrapper {
   static const MethodChannel _channel = MethodChannel('com.baseflow.uwb/ni_session');
   static const MethodChannel _locationChannel = MethodChannel('com.baseflow.uwb/ni_session_location');
 
-  var methodCallHandler = false;
-
-  setMethodcallHanderl() {
-    methodCallHandler = true;
+  setUp() {
     _locationChannel.setMethodCallHandler(_handleMethodCall);
-  }
-
-  Future <bool?> setUp() async{
-    final bool? status = await _channel.invokeMethod("NISession.setUp");
-    if (methodCallHandler != status){
-      setMethodcallHanderl();
-    }
-    return status ?? false;
   }
 
   Future<bool?> getLocation({required Function(Map) onLocation }) async {
@@ -29,7 +18,6 @@ class NISessionWrapper {
   Future<void> _handleMethodCall(MethodCall call) async {
     switch(call.method) {
       case "updateLocation":
-        // print(call.arguments);
         final Map location = call.arguments;
         _onLocation(location);
         break;
