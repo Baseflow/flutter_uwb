@@ -35,8 +35,6 @@ class _MyAppState extends State<MyApp> {
     var _y = double.parse(_directionArray[1]);
     var _z = double.parse(_directionArray[2]);
 
-
-
     setState(() {
       _distance = location["distance"];
       if (_x == 0.0 && _y == 0.0) {
@@ -72,6 +70,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
+
+
 
     ///Needed for initial set-up
     try {

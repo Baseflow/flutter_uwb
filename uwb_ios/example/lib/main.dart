@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'package:flutter/services.dart';
+import 'dart:math' as math;
 import 'package:uwb_ios/uwb_ios.dart';
 
 void main() {
@@ -16,7 +15,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  final UwbIos _plugin = UwbIos();
+  bool? _setup = false;
+  var _distance;
+  var _angle;
 
   @override
   void initState() {
@@ -24,25 +26,48 @@ class _MyAppState extends State<MyApp> {
     initPlatformState();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      // platformVersion =
-          // await UwbIos.platformVersion ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
+  void onLocation(Map location) {
+    var _direction = location["direction"];
+    var _directionArray = _direction.split(",");
+    var _x = double.parse(_directionArray[0]);
+    var _y = double.parse(_directionArray[1]);
+    var _z = double.parse(_directionArray[2]);
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
+    setState(() {
+      _distance = location["distance"];
+      if (_x == 0.0 && _y == 0.0) {
+        _angle = null;
+      } else {
+        _angle = math.atan2(_x, _y);
+      }
+    });
+  }
+
+  void onSetup(bool? status) {
+    setState(() {
+      _setup = status;
+    });
+  }
+
+  Future<void> startHosting() async {
+    await _plugin.startHost();
+    _plugin.getLocation(onLocation: onLocation);
+  }
+
+  Future<void> joinHost() async {
+    await _plugin.joinHost();
+    _plugin.getLocation(onLocation: onLocation);
+  }
+
+  Future<void> initPlatformState() async {
+
+    ///Needed for initial set-up
+    onSetup(await _plugin.setUp());
+
     if (!mounted) return;
 
     setState(() {
-      // _platformVersion = platformVersion;
+      //not used
     });
   }
 
@@ -50,11 +75,28 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
+        backgroundColor: Colors.black,
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+            child: Column (
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(children: [
+                  TextButton(onPressed: startHosting, child: const Text('Host')),
+                  TextButton(onPressed: joinHost, child: const Text('Join')),
+                ],),
+                if (_angle != null)... [
+                  Transform.rotate(
+                    angle: _angle,
+                    child: const Icon(Icons.arrow_upward_rounded, color: Colors.white, size: 100),
+                  ),
+                ] else... [
+                  const Text("", style: TextStyle(fontSize: 82))
+                ],
+                if (_distance != null)... [Text("${_distance}m", style: const TextStyle(fontSize: 40, color: Colors.white),),
+                ] else... [const Text("", style: TextStyle(fontSize: 40)),
+                ]
+              ],
+            )
         ),
       ),
     );
