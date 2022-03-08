@@ -45,7 +45,9 @@ class _MyAppState extends State<MyApp> {
   void onSetup(bool? status) {
     if (status != null) {
       if (!status){
-        print("Device is incompatible with this app. \n Please check device OS version and UWB compatibility. \n For Apple users iOS version should be 14.0 or higher.");
+        print("Device is incompatible with this app. "
+            "\n Please check device OS version and UWB compatibility."
+            "\n For Apple users iOS version should be 14.0 or higher.");
       }
     }
   }
