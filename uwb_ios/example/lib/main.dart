@@ -16,8 +16,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final UwbIos _plugin = UwbIos();
-  var _distance;
-  var _angle;
+  double? _distance;
+  double? _angle;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
     var _y = double.parse(_directionArray[1]);
 
     setState(() {
-      _distance = location["distance"];
+      _distance = double.parse(location["distance"]);
       if (_x == 0.0 && _y == 0.0) {
         _angle = null;
       } else {
