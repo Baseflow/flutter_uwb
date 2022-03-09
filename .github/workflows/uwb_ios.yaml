@@ -23,7 +23,8 @@ jobs:
     runs-on: macos-latest
 
     env:
-      source-directory: ./uwb_apple 
+      source-directory: ./uwb_ios 
+      example-directory: ./uwb_ios/example
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
