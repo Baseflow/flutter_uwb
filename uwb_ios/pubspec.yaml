@@ -1,7 +1,11 @@
 name: uwb_ios
 description: A new flutter plugin project.
 version: 0.0.1
-homepage:
+homepage: https://pub.dev/packages/uwb_ios
+repository: https://github.com/baseflow/flutter_uwb
+
+#TODO: remove when paths are removed
+publish_to: none
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
