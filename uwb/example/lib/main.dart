@@ -16,8 +16,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Uwb _plugin = Uwb();
-  var _distance;
-  var _angle;
+  double? _distance;
+  double? _angle;
 
   @override
   void initState() {
@@ -30,7 +30,6 @@ class _MyAppState extends State<MyApp> {
     var _directionArray = _direction.split(",");
     var _x = double.parse(_directionArray[0]);
     var _y = double.parse(_directionArray[1]);
-    var _z = double.parse(_directionArray[2]);
 
     setState(() {
       _distance = location["distance"];
@@ -45,9 +44,7 @@ class _MyAppState extends State<MyApp> {
   void onSetup(bool? status) {
     if (status != null) {
       if (!status){
-        print("Device is incompatible with this app. "
-            "\n Please check device OS version and UWB compatibility."
-            "\n For Apple users iOS version should be 14.0 or higher.");
+        debugPrint("Device is incompatible with this app. \n Please check device OS version and UWB compatibility. \n For Apple users iOS version should be 14.0 or higher.");
       }
     }
   }
@@ -63,15 +60,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-
     ///Needed for initial set-up and checks device compatibility
     onSetup(await _plugin.setUp());
 
     if (!mounted) return;
-
-    setState(() {
-      //not used
-    });
   }
 
   @override
@@ -88,9 +80,12 @@ class _MyAppState extends State<MyApp> {
                   TextButton(onPressed: joinHost, child: const Text('Join')),
                 ],),
                 if (_angle != null)... [
-                  Transform.rotate(
-                    angle: _angle,
-                    child: const Icon(Icons.arrow_upward_rounded, color: Colors.white, size: 100),
+                  Transform(transform: Matrix4.identity()
+                    ..rotateX(1.8*math.pi*2),
+                    child: Transform.rotate(
+                      angle: _angle!,
+                      child: const Icon(Icons.arrow_upward_rounded, color: Colors.white, size: 100),
+                    ),
                   ),
                 ] else... [
                   const Text("", style: TextStyle(fontSize: 82))

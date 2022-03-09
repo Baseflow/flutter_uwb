@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class NISessionWrapper {
   late final Function(Map) _onLocation;
-  static const MethodChannel _channel = MethodChannel('com.baseflow.uwb/ni_session');
   static const MethodChannel _locationChannel = MethodChannel('com.baseflow.uwb/ni_session_location');
 
   setUp() {

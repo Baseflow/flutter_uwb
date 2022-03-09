@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:uwb_ios/uwb_ios.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('uwb_ios');
@@ -15,9 +14,5 @@ void main() {
 
   tearDown(() {
     channel.setMockMethodCallHandler(null);
-  });
-
-  test('getPlatformVersion', () async {
-    // expect(await UwbIos.platformVersion, '42');
   });
 }
