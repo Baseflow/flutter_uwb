@@ -43,8 +43,9 @@ class _MyAppState extends State<MyApp> {
 
   void onSetup(bool? status) {
     if (status != null) {
-      if (!status){
-        debugPrint("Device is incompatible with this app. \n Please check device OS version and UWB compatibility. \n For Apple users iOS version should be 14.0 or higher.");
+      if (!status) {
+        debugPrint(
+            "Device is incompatible with this app. \n Please check device OS version and UWB compatibility. \n For Apple users iOS version should be 14.0 or higher.");
       }
     }
   }
@@ -72,30 +73,37 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         backgroundColor: Colors.black,
         body: Center(
-            child: Column (
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
               children: [
-                Column(children: [
-                  TextButton(onPressed: startHosting, child: const Text('Host')),
-                  TextButton(onPressed: joinHost, child: const Text('Join')),
-                ],),
-                if (_angle != null)... [
-                  Transform(transform: Matrix4.identity()
-                    ..rotateX(1.8*math.pi*2),
-                    child: Transform.rotate(
-                      angle: _angle!,
-                      child: const Icon(Icons.arrow_upward_rounded, color: Colors.white, size: 100),
-                    ),
-                  ),
-                ] else... [
-                  const Text("", style: TextStyle(fontSize: 82))
-                ],
-                if (_distance != null)... [Text("${_distance}m", style: const TextStyle(fontSize: 40, color: Colors.white),),
-                ] else... [const Text("", style: TextStyle(fontSize: 40)),
-                ]
+                TextButton(onPressed: startHosting, child: const Text('Host')),
+                TextButton(onPressed: joinHost, child: const Text('Join')),
               ],
-            )
-        ),
+            ),
+            if (_angle != null) ...[
+              Transform(
+                transform: Matrix4.identity()..rotateX(1.8 * math.pi * 2),
+                child: Transform.rotate(
+                  angle: _angle!,
+                  child: const Icon(Icons.arrow_upward_rounded,
+                      color: Colors.white, size: 100),
+                ),
+              ),
+            ] else ...[
+              const Text("", style: TextStyle(fontSize: 82))
+            ],
+            if (_distance != null) ...[
+              Text(
+                "${_distance}m",
+                style: const TextStyle(fontSize: 40, color: Colors.white),
+              ),
+            ] else ...[
+              const Text("", style: TextStyle(fontSize: 40)),
+            ]
+          ],
+        )),
       ),
     );
   }
