@@ -23,7 +23,7 @@ abstract class UwbPlatform extends PlatformInterface {
 
   /// Must be called once for initial setUp
   Future<bool?> setUp() =>
-      throw UnimplementedError("setUp() has not been implemented.");
+      throw UnimplementedError('setUp() has not been implemented.');
 
   ///Starts the advertiser
   Future<bool?> startHost() =>
@@ -31,9 +31,9 @@ abstract class UwbPlatform extends PlatformInterface {
 
   ///Sends an invite to peer
   Future<bool?> joinHost() =>
-      throw UnimplementedError("joinHost() has not been implemented.");
+      throw UnimplementedError('joinHost() has not been implemented.');
 
   ///Callback method to get the location updates
   Future<bool?> getLocation({required Function(Map) onLocation}) =>
-      throw UnimplementedError("getLocation() has not been implemented.");
+      throw UnimplementedError('getLocation() has not been implemented.');
 }

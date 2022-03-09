@@ -9,9 +9,9 @@ class UwbIos extends UwbPlatform {
     UwbPlatform.instance = UwbIos();
   }
 
-  var mCSession = MCSessionWrapper();
-  var nISession = NISessionWrapper();
-  var setupHelperClass = SetupHelperClass();
+  MCSessionWrapper mCSession = MCSessionWrapper();
+  NISessionWrapper nISession = NISessionWrapper();
+  SetupHelperClass setupHelperClass = SetupHelperClass();
 
   @override
   Future<bool?> setUp() {
