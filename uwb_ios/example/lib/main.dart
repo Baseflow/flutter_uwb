@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
   final UwbIos _plugin = UwbIos();
   double? _distance;
   double? _angle;
+  String? _error;
 
   @override
   void initState() {
@@ -42,11 +43,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   void onSetup(bool? status) {
-    if (status != null) {
-      if (!status) {
-        debugPrint(
-            "Device is incompatible with this app. \n Please check device OS version and UWB compatibility. \n For Apple users iOS version should be 14.0 or higher.");
-      }
+    if (status != null && !status) {
+      setState(() {
+        _error = """Device is incompatible with this app.
+        Please check device OS version and UWB compatibility. 
+        For Apple users iOS version should be 14.0 or higher.""";
+      });
     }
   }
 
@@ -82,6 +84,7 @@ class _MyAppState extends State<MyApp> {
                 TextButton(onPressed: joinHost, child: const Text('Join')),
               ],
             ),
+            if (_error != null) ...[Text(_error!)],
             if (_angle != null) ...[
               Transform(
                 transform: Matrix4.identity()..rotateX(1.8 * math.pi * 2),
