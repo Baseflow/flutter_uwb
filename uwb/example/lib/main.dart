@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
     var _y = double.parse(_directionArray[1]);
 
     setState(() {
-      _distance = location["distance"];
+      _distance = double.parse(location["distance"]);
       if (_x == 0.0 && _y == 0.0) {
         _angle = null;
       } else {
