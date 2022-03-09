@@ -24,6 +24,7 @@ jobs:
 
     env:
       source-directory: ./uwb 
+      example-directory: ./uwb/example
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
