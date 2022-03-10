@@ -1,5 +1,6 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
+///Contains all the calls that needs to be implemented in the platform specific plugins
 abstract class UwbPlatform extends PlatformInterface {
   /// Constructs a UwbPlatform.
   UwbPlatform() : super(token: _token);
@@ -25,15 +26,15 @@ abstract class UwbPlatform extends PlatformInterface {
   Future<bool?> setUp() =>
       throw UnimplementedError('setUp() has not been implemented.');
 
-  ///Starts the advertiser
+  /// Starts the advertiser
   Future<bool?> startHost() =>
       throw UnimplementedError('startHost() has not been implemented.');
 
-  ///Sends an invite to peer
+  /// Sends an invite to peer
   Future<bool?> joinHost() =>
       throw UnimplementedError('joinHost() has not been implemented.');
 
-  ///Callback method to get the location updates
+  /// Callback method to get the location updates
   Future<bool?> getLocation({required Function(Map) onLocation}) =>
       throw UnimplementedError('getLocation() has not been implemented.');
 }
