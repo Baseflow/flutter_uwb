@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 
 /// Contains all the Nearby Interaction Framework calls
 class NISessionWrapper {
-  late final Function(Map) _onLocation;
+  late final Function(Map<dynamic, dynamic>) _onLocation;
   static const MethodChannel _locationChannel =
       MethodChannel('com.baseflow.uwb/ni_session_location');
 
@@ -13,7 +13,8 @@ class NISessionWrapper {
   }
 
   /// Callback method to get the location updates
-  Future<bool?> getLocation({required Function(Map) onLocation}) async {
+  Future<bool?> getLocation(
+      {required Function(Map<dynamic, dynamic>) onLocation}) async {
     _onLocation = onLocation;
     return true;
   }
@@ -21,7 +22,9 @@ class NISessionWrapper {
   Future<void> _handleMethodCall(MethodCall call) async {
     switch (call.method) {
       case 'updateLocation':
-        final Map location = call.arguments;
+        final Map<dynamic, dynamic> location =
+            call.arguments as Map<dynamic, dynamic>;
+        print(location);
         _onLocation(location);
         break;
       default:

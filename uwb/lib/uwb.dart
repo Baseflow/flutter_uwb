@@ -20,7 +20,8 @@ class Uwb {
   }
 
   ///Callback method to get the location updates
-  Future<bool?> getLocation({required Function(Map) onLocation}) {
+  Future<bool?> getLocation(
+      {required Function(Map<dynamic, dynamic>) onLocation}) {
     return UwbPlatform.instance.getLocation(onLocation: onLocation);
   }
 }
