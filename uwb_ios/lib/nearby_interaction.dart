@@ -28,7 +28,7 @@ class NISessionWrapper {
         _onLocation(location);
         break;
       default:
-      //TODO: throw exception
+        throw MissingPluginException();
     }
   }
 }

@@ -7,7 +7,7 @@ abstract class UwbPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  /// The instance of [InAppPurchasePlatform] to use.
+  /// The instance of [UwbPlatform] to use.
   /// Must be set before accessing.
   static UwbPlatform get instance => _instance;
 
