@@ -24,7 +24,6 @@ class NISessionWrapper {
       case 'updateLocation':
         final Map<dynamic, dynamic> location =
             call.arguments as Map<dynamic, dynamic>;
-        print(location);
         _onLocation(location);
         break;
       default:

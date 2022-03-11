@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
 import 'package:uwb_ios/uwb_ios.dart';
 
 void main() {
@@ -84,7 +85,12 @@ class _MyAppState extends State<MyApp> {
                 TextButton(onPressed: joinHost, child: const Text('Join')),
               ],
             ),
-            if (_error != null) ...[Text(_error!)],
+            if (_error != null) ...[
+              Text(
+                _error!,
+                style: const TextStyle(color: Colors.red),
+              )
+            ],
             if (_angle != null) ...[
               Transform(
                 transform: Matrix4.identity()..rotateX(1.8 * math.pi * 2),
