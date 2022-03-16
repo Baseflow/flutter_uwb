@@ -1,3 +1,3 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Adds an iOS implementation of the uwb_platform_interface.
