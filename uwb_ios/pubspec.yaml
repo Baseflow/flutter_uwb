@@ -1,0 +1,35 @@
+name: uwb_ios
+description: A new flutter plugin project.
+version: 0.0.1
+homepage: https://pub.dev/packages/uwb_ios
+repository: https://github.com/baseflow/flutter_uwb
+
+# TODO(just-leroy): Remove when uwb_platform_interface is plublished to pub.deb
+#                   and dependency is updated to a pub dependency.
+publish_to: none
+
+environment:
+  sdk: ">=2.15.1 <3.0.0"
+  flutter: ">=2.8.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # TODO(just-leroy): Update to pub dependency as soon as the 
+  #                   uwb_platform_interface package has been
+  #                   published to pub.dev.
+  uwb_platform_interface:
+    path: ../uwb_platform_interface
+
+dev_dependencies:
+  flutter_lints: ^1.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    implements: uwb
+    platforms:
+      ios:
+        pluginClass: UwbIosPlugin
+        dartPluginClass: UwbIos

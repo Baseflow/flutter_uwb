@@ -1,0 +1,18 @@
+name: uwb_platform_interface
+description: A new Flutter package project.
+version: 0.0.1
+homepage: https://pub.dev/packages/uwb_platform_interface
+repository: https://github.com/baseflow/flutter_uwb
+
+environment:
+  sdk: ">=2.15.1 <3.0.0"
+  flutter: ">=2.8.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
