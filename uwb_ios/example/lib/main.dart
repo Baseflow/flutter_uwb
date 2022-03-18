@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> startHosting() async {
-    await _plugin.startHost('UWB Example', 'mpc-connect');
+    await _plugin.startHost('UWB Example', 'mc-connect');
   }
 
   Future<void> initPlatformState() async {

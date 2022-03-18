@@ -29,6 +29,12 @@ class UwbIOSPlatform extends UwbPlatform {
 
     return advertiser.startAdvertisingPeer();
   }
+
+  @override
+  Future<bool?> joinHost() {
+    // TODO: implement joinHost
+    return super.joinHost();
+  }
 }
 
 class _NearbyServiceAdvertiserDelegate

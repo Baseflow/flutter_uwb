@@ -32,7 +32,7 @@ flutter pub run pigeon --input pigeons/multipeer_connectivity_wrapper.dart
 Due to [flutter/flutter#97744](https://github.com/flutter/flutter/issues/97744), the generated test
 pigeon file needs one of its imports updated to properly work with `mockito`.
 
-In `test/android_webview.pigeon.dart`, change
+In `test/multipeer_connectivity_wrapper_api.pigeon.dart`, change
 
 ```dart
 import '../lib/src/multipeer_connectivity/multipeer_connectivity.pigeon.dart';

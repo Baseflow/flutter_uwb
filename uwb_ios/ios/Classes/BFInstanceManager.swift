@@ -44,7 +44,7 @@ internal class BFInstanceManager : NSObject {
   /// Retrieve the object associated with the supplied instance identifier.
   ///
   /// Returns nil if no associated object was found.
-  func getInstance(instanceId: NSNumber) -> NSObject? {
-    return instanceIdsToInstances[instanceId]
+  func getInstance(instanceId: NSNumber) -> NSObject {
+    return instanceIdsToInstances[instanceId]!
   }
 }
