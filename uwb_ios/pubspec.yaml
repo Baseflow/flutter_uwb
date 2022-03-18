@@ -25,6 +25,7 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
+  pigeon: ^2.0.2
 
 flutter:
   plugin:
@@ -32,4 +33,4 @@ flutter:
     platforms:
       ios:
         pluginClass: UwbIosPlugin
-        dartPluginClass: UwbIos
+        dartPluginClass: UwbIOSPlatform

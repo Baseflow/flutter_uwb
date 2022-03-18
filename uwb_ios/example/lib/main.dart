@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:math' as math;
 
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:uwb_ios/uwb_ios.dart';
 
 void main() {
@@ -16,7 +16,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  final UwbIOSPlatform _plugin = UwbIOSPlatform();
+  String? _error;
 
   @override
   void initState() {
@@ -24,38 +25,47 @@ class _MyAppState extends State<MyApp> {
     initPlatformState();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await UwbIos.platformVersion ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+  void onSetup(bool? status) {
+    if (status != null && !status) {
+      setState(() {
+        _error = '''
+        Device is incompatible with this app.
+        Please check device OS version and UWB compatibility. 
+        For Apple users iOS version should be 14.0 or higher.''';
+      });
     }
+  }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
+  Future<void> startHosting() async {
+    await _plugin.startHost('UWB Example', 'mpc-connect');
+  }
+
+  Future<void> initPlatformState() async {
     if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
+        backgroundColor: Colors.black,
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              children: [
+                TextButton(onPressed: startHosting, child: const Text('Host')),
+              ],
+            ),
+            if (_error != null) ...[
+              Text(
+                _error!,
+                style: const TextStyle(color: Colors.red),
+              )
+            ],
+          ],
+        )),
       ),
     );
   }
