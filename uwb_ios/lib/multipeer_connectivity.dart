@@ -6,16 +6,24 @@ class MCSessionWrapper {
       MethodChannel('com.baseflow.uwb/mc_session');
 
   /// Starts the advertiser
-  Future<bool?> startHost() async {
+  Future<bool?> startHost(String peerID, String serviceType) async {
+    final Map<String, String> parameters = {
+      'peerID': peerID,
+      'serviceType': serviceType
+    };
     final bool? hostingProcess =
-        await _channel.invokeMethod('MCSession.startHost');
+        await _channel.invokeMethod('MCSession.startHost', parameters);
     return hostingProcess;
   }
 
   /// Sends an invite to peer
-  Future<bool?> joinHost() async {
+  Future<bool?> joinHost(String peerID, String serviceType) async {
+    final Map<String, String> parameters = {
+      'peerID': peerID,
+      'serviceType': serviceType
+    };
     final bool? joiningProcess =
-        await _channel.invokeMethod('MCSession.joinHost');
+        await _channel.invokeMethod('MCSession.joinHost', parameters);
     return joiningProcess;
   }
 }

@@ -10,13 +10,13 @@ class Uwb {
   }
 
   ///Starts the advertiser
-  Future<bool?> startHost() {
-    return UwbPlatform.instance.startHost();
+  Future<bool?> startHost(String peerID, String serviceType) {
+    return UwbPlatform.instance.startHost(peerID, serviceType);
   }
 
   ///Sends an invite to peer
-  Future<bool?> joinHost() {
-    return UwbPlatform.instance.joinHost();
+  Future<bool?> joinHost(String peerID, String serviceType) {
+    return UwbPlatform.instance.joinHost(peerID, serviceType);
   }
 
   ///Callback method to get the location updates

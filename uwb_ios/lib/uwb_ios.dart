@@ -33,13 +33,13 @@ class UwbIos extends UwbPlatform {
   }
 
   @override
-  Future<bool?> startHost() {
-    return mCSession.startHost();
+  Future<bool?> startHost(String peerID, String serviceType) {
+    return mCSession.startHost(peerID, serviceType);
   }
 
   @override
-  Future<bool?> joinHost() {
-    return mCSession.joinHost();
+  Future<bool?> joinHost(String peerID, String serviceType) {
+    return mCSession.joinHost(peerID, serviceType);
   }
 
   @override

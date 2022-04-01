@@ -13,17 +13,15 @@ import NearbyInteraction
 public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate {
     
     static var tokenChannel: FlutterMethodChannel?
-    var peerID: MCPeerID
-    var mcSession: MCSession
+    var peerID: MCPeerID?
+    var mcHostSession: MCSession?
+    var mcJoinSession: MCSession?
     var niSession: NISessionHostApi?
     var mcAdvertiserAssistant: MCNearbyServiceAdvertiser?
     
     override init(){
         print("mpcManager started")
-        peerID = MCPeerID(displayName: UIDevice.current.name)
-        mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         super.init()
-        mcSession.delegate = self
         niSession = NISessionHostApi.shared
     }
     
@@ -36,10 +34,16 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
         channel.setMethodCallHandler {(call: FlutterMethodCall, result: FlutterResult) -> Void in
             switch call.method {
             case "MCSession.startHost":
-                session.startAdvertising()
+                guard let args = call.arguments as? [String : Any] else {return}
+                let displayName = args["peerID"] as? String
+                let serviceType = args["serviceType"] as? String
+                session.startAdvertising(displayName: displayName!, serviceType: serviceType!)
                 result(true)
             case "MCSession.joinHost":
-                session.sendInvite()
+                guard let args = call.arguments as? [String : Any] else {return}
+                let displayName = args["peerID"] as? String
+                let serviceType = args["serviceType"] as? String
+                session.sendInvite(displayName: displayName!, serviceType: serviceType!)
                 result(true)
             default:
                 result(FlutterMethodNotImplemented)
@@ -49,18 +53,25 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
     
     //MARK: - Functions
     
-    func startAdvertising() {
+    func startAdvertising(displayName: String, serviceType: String) {
         print("Started advertising")
-        mcAdvertiserAssistant = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: "mpc-connect")
+        peerID = MCPeerID(displayName: displayName)
+        mcHostSession = MCSession(peer: peerID!, securityIdentity: nil, encryptionPreference: .required)
+        mcHostSession!.delegate = self
+
+        mcAdvertiserAssistant = MCNearbyServiceAdvertiser(peer: peerID!, discoveryInfo: nil, serviceType: serviceType)
         mcAdvertiserAssistant?.delegate = self
         mcAdvertiserAssistant?.startAdvertisingPeer()
     }
     
-    func sendInvite() {
-        print("invite send")
-        let browser = MCBrowserViewController(serviceType: "mpc-connect", session: mcSession)
-        browser.delegate = self
+    func sendInvite(displayName: String, serviceType: String) {
+        print("Sending joinrequest")
+        peerID = MCPeerID(displayName: displayName)
+        mcJoinSession = MCSession(peer: peerID!, securityIdentity: nil, encryptionPreference: .required)
+        mcJoinSession!.delegate = self
         
+        let browser = MCBrowserViewController(serviceType: serviceType, session: mcJoinSession!)
+        browser.delegate = self
         //present the browser to the viewcontroller
         let scenes = UIApplication.shared.connectedScenes
         let windowScene = scenes.first as? UIWindowScene
@@ -69,39 +80,32 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
         window?.rootViewController?.present(browser, animated: true, completion: nil)
     }
     
-    func sendToken(token: String){
-        print("Trying to send test token")
-        if mcSession.connectedPeers.count > 0 {
-            let dataToken = Data(token.utf8)
-            do {
-                try mcSession.send(dataToken, toPeers: mcSession.connectedPeers, with: .reliable)
-                print("Test token send")
-            } catch {
-                fatalError("Could not send test token")
-            }
-        } else {
-            print("You are not connected to other devices")
+    //MARK: - Nearby Interaction Functions
+    
+    func sendDiscoveryToken(session: MCSession) {
+        guard let dataToken = niSession?.discoveryToken,
+              let data = try? NSKeyedArchiver.archivedData(withRootObject: dataToken, requiringSecureCoding: true) else {
+                  fatalError("can't convert token to data")
+              }
+        do {
+            try session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            print("Token send")
+        } catch {
+            fatalError("Could not send discovery token")
         }
     }
     
-    //MARK: - Nearby Interaction Functions
-    
-    func sendDiscoveryToken(){
-        print("Trying to send discoverytoken")
-        if mcSession.connectedPeers.count > 0 {
-            
-            guard let dataToken = niSession?.discoveryToken,
-                  let data = try? NSKeyedArchiver.archivedData(withRootObject: dataToken, requiringSecureCoding: true) else {
-                      fatalError("can't convert token to data")
-                  }
-            do {
-                try mcSession.send(data, toPeers: mcSession.connectedPeers, with: .reliable)
-                print("Token send")
-            } catch {
-                fatalError("Could not send discovery token")
+    func checkSession(){
+        if (mcHostSession != nil) {
+            if mcHostSession!.connectedPeers.count > 0 {
+                sendDiscoveryToken(session: mcHostSession!)
+            }
+        } else if (mcJoinSession != nil) {
+            if mcJoinSession!.connectedPeers.count > 0{
+                sendDiscoveryToken(session: mcJoinSession!)
             }
         } else {
-            print("You are not connected to other devices")
+            print("Not connected to any peers.")
         }
     }
     
@@ -114,7 +118,7 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
     }
     
     public func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        invitationHandler(true, mcSession)
+        invitationHandler(true, mcHostSession)
     }
     
     public func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
@@ -126,7 +130,7 @@ public class MCSessionHostApi: NSObject, MCNearbyServiceBrowserDelegate, MCNearb
 
             if niSession?.session == nil {
                 niSession?.setVariables()
-                sendDiscoveryToken()
+                checkSession()
             }
             
         case.notConnected:

@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSNearbyInteractionUsageDescription</key>
+    <string>UWB-localisation-permission</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_uwb-test._tcp</string>
+        <string>_uwb-test._udp</string>
+    </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

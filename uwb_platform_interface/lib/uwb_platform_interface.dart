@@ -27,11 +27,11 @@ abstract class UwbPlatform extends PlatformInterface {
       throw UnimplementedError('setUp() has not been implemented.');
 
   /// Starts the advertiser
-  Future<bool?> startHost() =>
+  Future<bool?> startHost(String peerID, String serviceType) =>
       throw UnimplementedError('startHost() has not been implemented.');
 
   /// Sends an invite to peer
-  Future<bool?> joinHost() =>
+  Future<bool?> joinHost(String peerID, String serviceType) =>
       throw UnimplementedError('joinHost() has not been implemented.');
 
   /// Callback method to get the location updates

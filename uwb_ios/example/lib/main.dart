@@ -54,12 +54,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> startHosting() async {
-    await _plugin.startHost();
+    await _plugin.startHost("Leroy", "uwb-test");
     _plugin.getLocation(onLocation: onLocation);
   }
 
   Future<void> joinHost() async {
-    await _plugin.joinHost();
+    await _plugin.joinHost("Kathy", "uwb-test");
     _plugin.getLocation(onLocation: onLocation);
   }
 

@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
 import 'package:uwb/uwb.dart';
 
 void main() {
@@ -18,6 +19,7 @@ class _MyAppState extends State<MyApp> {
   final Uwb _plugin = Uwb();
   double? _distance;
   double? _angle;
+  String? _error;
 
   @override
   void initState() {
@@ -42,21 +44,22 @@ class _MyAppState extends State<MyApp> {
   }
 
   void onSetup(bool? status) {
-    if (status != null) {
-      if (!status) {
-        debugPrint(
-            "Device is incompatible with this app. \n Please check device OS version and UWB compatibility. \n For Apple users iOS version should be 14.0 or higher.");
-      }
+    if (status != null && !status) {
+      setState(() {
+        _error = """Device is incompatible with this app.
+        Please check device OS version and UWB compatibility. 
+        For Apple users iOS version should be 14.0 or higher.""";
+      });
     }
   }
 
   Future<void> startHosting() async {
-    await _plugin.startHost();
+    await _plugin.startHost("Leroy", "uwb-test");
     _plugin.getLocation(onLocation: onLocation);
   }
 
   Future<void> joinHost() async {
-    await _plugin.joinHost();
+    await _plugin.joinHost("Kathy", "uwb-test");
     _plugin.getLocation(onLocation: onLocation);
   }
 
@@ -82,6 +85,12 @@ class _MyAppState extends State<MyApp> {
                 TextButton(onPressed: joinHost, child: const Text('Join')),
               ],
             ),
+            if (_error != null) ...[
+              Text(
+                _error!,
+                style: const TextStyle(color: Colors.red),
+              )
+            ],
             if (_angle != null) ...[
               Transform(
                 transform: Matrix4.identity()..rotateX(1.8 * math.pi * 2),
