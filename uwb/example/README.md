@@ -1,6 +1,6 @@
-# example
+# uwb_example
 
-A new Flutter project.
+Demonstrates how to use the uwb plugin.
 
 ## Getting Started
 

@@ -4,7 +4,9 @@ version: 0.0.1
 homepage: https://pub.dev/packages/uwb
 repository: https://github.com/baseflow/flutter_uwb
 
-#TODO: remove when paths are removed
+# TODO(just-leroy): Remove when uwb_platform_interface and uwb_ios are 
+#                   plublished to pub.deb and dependencies are updated 
+#                   to pub dependencies.
 publish_to: none
 
 environment:
@@ -14,8 +16,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # TODO(just-leroy): Update to pub dependency as soon as the uwb_ios package
+  #                   has been published to pub.dev.
   uwb_ios:
     path: ../uwb_ios
+  # TODO(just-leroy): Update to pub dependency as soon as the 
+  #                   uwb_platform_interface package has been
+  #                   published to pub.dev.
   uwb_platform_interface:
     path: ../uwb_platform_interface
 
