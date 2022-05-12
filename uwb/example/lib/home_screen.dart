@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'breakout_game.dart';
+import 'package:uwb_example/breakout_game.dart';
 
 class Homescreen extends StatelessWidget {
   const Homescreen({Key? key}) : super(key: key);
