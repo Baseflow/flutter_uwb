@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uwb_example/breakout_game.dart';
+import 'package:uwb_example/host_screen.dart';
 
 class Homescreen extends StatelessWidget {
   const Homescreen({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class Homescreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const BreakoutGame()));
+                        builder: (context) => const HostScreen()));
               },
               child: const Text(
                 'H O S T',

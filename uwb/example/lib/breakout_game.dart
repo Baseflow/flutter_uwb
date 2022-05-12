@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:uwb/uwb.dart';
 
 import 'ball.dart';
 import 'brick.dart';
@@ -18,6 +19,7 @@ class BreakoutGame extends StatefulWidget {
 enum direction { UP, DOWN, LEFT, RIGHT }
 
 class _BreakoutGameState extends State<BreakoutGame> {
+  final Uwb _plugin = Uwb();
   bool gameHasStarted = false;
   double ballX = 0;
   double ballY = 0;
