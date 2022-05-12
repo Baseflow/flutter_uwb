@@ -4,11 +4,11 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:uwb/uwb.dart';
 
-import 'ball.dart';
-import 'brick.dart';
-import 'brick_field.dart';
-import 'paddle.dart';
-import 'screen_overlay.dart';
+import '../game_widgets/ball.dart';
+import '../game_widgets/brick.dart';
+import '../game_widgets/brick_field.dart';
+import '../game_widgets/paddle.dart';
+import '../game_widgets/screen_overlay.dart';
 
 class BreakoutGame extends StatefulWidget {
   const BreakoutGame({Key? key}) : super(key: key);
