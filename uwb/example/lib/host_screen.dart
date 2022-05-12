@@ -16,6 +16,7 @@ class _HostScreenState extends State<HostScreen> {
   double? _distance;
   double? _angle;
   String? _error;
+  bool _waitingForPeer = true;
 
   @override
   void initState() {
@@ -27,12 +28,12 @@ class _HostScreenState extends State<HostScreen> {
   Future<void> startHosting() async {
     await _plugin.startHost("Leroy", "uwb-test");
     _plugin.getLocation(onLocation: onLocation);
+    _waitingForPeer = false;
   }
 
   Future<void> initPlatformState() async {
     ///Needed for initial set-up and checks device compatibility
     onSetup(await _plugin.setUp());
-
     if (!mounted) return;
   }
 
@@ -67,36 +68,47 @@ class _HostScreenState extends State<HostScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[900],
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Stack(
           children: [
-            // TextButton(onPressed: startHosting, child: const Text('Host')),
-            if (_error != null) ...[
-              Text(
-                _error!,
-                style: const TextStyle(color: Colors.red),
+            if (_waitingForPeer) ...[
+              Container(
+                alignment: const Alignment(0, 0),
+                child: const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
               )
             ],
-            if (_angle != null) ...[
-              Transform(
-                transform: Matrix4.identity()..rotateX(1.8 * math.pi * 2),
-                child: Transform.rotate(
-                  angle: _angle!,
-                  child: const Icon(Icons.arrow_upward_rounded,
-                      color: Colors.white, size: 100),
+            if (_error != null) ...[
+              Container(
+                alignment: Alignment(0, -0.5),
+                child: Text(
+                  _error!,
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
-            ] else ...[
-              const Text("", style: TextStyle(fontSize: 82))
+            ],
+            if (_angle != null) ...[
+              Container(
+                alignment: const Alignment(0, 0),
+                child: Transform(
+                  transform: Matrix4.identity()..rotateX(1.8 * math.pi * 2),
+                  child: Transform.rotate(
+                    angle: _angle!,
+                    child: const Icon(Icons.arrow_upward_rounded,
+                        color: Colors.white, size: 100),
+                  ),
+                ),
+              ),
             ],
             if (_distance != null) ...[
-              Text(
-                "${_distance}m",
-                style: const TextStyle(fontSize: 40, color: Colors.white),
+              Container(
+                alignment: const Alignment(0, 0.5),
+                child: Text(
+                  "${_distance}m",
+                  style: const TextStyle(fontSize: 40, color: Colors.white),
+                ),
               ),
-            ] else ...[
-              const Text("", style: TextStyle(fontSize: 40)),
-            ]
+            ],
           ],
         ),
       ),

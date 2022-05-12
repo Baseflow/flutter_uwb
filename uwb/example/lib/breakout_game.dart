@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:uwb/uwb.dart';
@@ -33,10 +34,57 @@ class _BreakoutGameState extends State<BreakoutGame> {
   final brickKey = GlobalKey();
   Color brickColor = Colors.blueAccent;
 
+  double? _xPosition;
+  double? _distance;
+  double? _angle;
+  String? _error;
+
   @override
   void initState() {
+    initPlatformState();
+    joinHost();
     brickFieldList = generateBrickFieldList();
     super.initState();
+  }
+
+  void onSetup(bool? status) {
+    if (status != null && !status) {
+      setState(() {
+        _error = """Device is incompatible with this app.
+        Please check device OS version and UWB compatibility. 
+        For Apple users iOS version should be 14.0 or higher.""";
+      });
+    }
+  }
+
+  Future<void> initPlatformState() async {
+    ///Needed for initial set-up and checks device compatibility
+    onSetup(await _plugin.setUp());
+
+    if (!mounted) return;
+  }
+
+  Future<void> joinHost() async {
+    await _plugin.joinHost("Kathy", "uwb-test");
+    _plugin.getLocation(onLocation: onLocation);
+  }
+
+  void onLocation(Map location) {
+    var _direction = location["direction"];
+    var _directionArray = _direction.split(",");
+    var _x = double.parse(_directionArray[0]);
+    var _y = double.parse(_directionArray[1]);
+
+    setState(() {
+      _distance = double.parse(location["distance"]);
+      if (_x == 0.0 && _y == 0.0) {
+        _angle = null;
+      } else {
+        _angle = math.atan2(_x, _y);
+        _xPosition = _x;
+        paddleX = 2 * -_x;
+      }
+    });
   }
 
   void startGame() {
@@ -244,7 +292,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
                   gameHasStarted ? '$score' : '',
                   style: const TextStyle(fontSize: 80, color: Colors.white),
                 ),
-              )
+              ),
             ],
           ),
         ),
