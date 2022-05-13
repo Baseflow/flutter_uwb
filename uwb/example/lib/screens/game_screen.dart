@@ -8,6 +8,7 @@ import '../game_widgets/ball.dart';
 import '../game_widgets/brick.dart';
 import '../game_widgets/brick_field.dart';
 import '../game_widgets/paddle.dart';
+import '../game_widgets/score.dart';
 import '../game_widgets/screen_overlay.dart';
 
 class BreakoutGame extends StatefulWidget {
@@ -94,6 +95,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
         checkWallCollision();
         checkBrickCollision();
         moveBall();
+        // movePlatform();
 
         if (isPLayerDead()) {
           timer.cancel();
@@ -138,7 +140,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
   }
 
   void toggleVerticalMovement() {
-    // print('checking movement');
     setState(() {
       if (ballYDirection == direction.DOWN) {
         ballYDirection = direction.UP;
@@ -176,6 +177,14 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  // void movePlatform() {
+  //   if (_xPosition != null) {
+  //     setState(() {
+  //       paddleX = 2 * -_xPosition!;
+  //     });
+  //   }
+  // }
+
   List<Brick> generateBrickFieldList() {
     List<Brick> brickFieldList = [];
 
@@ -212,14 +221,13 @@ class _BreakoutGameState extends State<BreakoutGame> {
       double? brickSizeWidth = brickSize?.width;
 
       if (ballPosition != null && brickPosition != null) {
-        collide = (ballPosition.dx < brickPosition.dx + brickSize!.width &&
+        collide = ballPosition.dx < brickPosition.dx + brickSize!.width &&
             ballPosition.dx + ballSize!.width > brickPosition.dx &&
             ballPosition.dy < brickPosition.dy + brickSize.height &&
-            ballPosition.dy + ballSize.height > brickPosition.dy);
+            ballPosition.dy + ballSize.height > brickPosition.dy;
 
         if (collide) {
           setState(() {
-            // brick.color = Colors.green;
             brickFieldList.remove(brick);
             score++;
             bool didToggle = false;
@@ -245,21 +253,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
             if (!didToggle) {
               print('NO TOGGLE');
             }
-
-            print(ballPositionY - (brickPositionY + brickSizeHeight));
-            print(ballPositionY + ballSizeHeight! - brickPositionY);
-            print(ballPositionX - (brickPositionX + brickSizeWidth));
-            print(ballPositionX + ballSizeWidth! - brickPositionX);
-
-            // print('---------------------------------------------------');
-            // //righthit
-            // print('$ballPositionX < $brickPositionX + $brickSizeWidth');
-            // //lefthit
-            // print('$ballPositionX + $ballSizeWidth > $brickPositionX');
-            // //bothit
-            // print('$ballPositionY < $brickPositionY + $brickSizeHeight');
-            // //tophit
-            // print('$ballPositionY + $ballSizeHeight > $brickPositionY');
           });
         } else {
           setState(() {
@@ -286,13 +279,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
               ScreenOverlay(gameHasStarted: gameHasStarted),
               Ball(x: ballX, y: ballY, ballKey: ballKey),
               Paddle(x: paddleX, y: paddleY),
-              Container(
-                alignment: const Alignment(0, 0),
-                child: Text(
-                  gameHasStarted ? '$score' : '',
-                  style: const TextStyle(fontSize: 80, color: Colors.white),
-                ),
-              ),
+              Score(score: score, gameHasStarted: gameHasStarted),
             ],
           ),
         ),
