@@ -26,7 +26,7 @@ class _HostScreenState extends State<HostScreen> {
   }
 
   Future<void> startHosting() async {
-    await _plugin.startHost("Leroy", "uwb-test");
+    await _plugin.startHost("test-device", "uwb-test");
     _plugin.getLocation(onLocation: onLocation);
     _waitingForPeer = false;
   }
@@ -104,7 +104,7 @@ class _HostScreenState extends State<HostScreen> {
               Container(
                 alignment: const Alignment(0, 0.5),
                 child: Text(
-                  "${_distance}m",
+                  '${_distance}m',
                   style: const TextStyle(fontSize: 40, color: Colors.white),
                 ),
               ),

@@ -23,16 +23,17 @@ enum direction { UP, DOWN, LEFT, RIGHT }
 class _BreakoutGameState extends State<BreakoutGame> {
   final Uwb _plugin = Uwb();
   bool gameHasStarted = false;
+  bool playerIsDead = false;
   double ballX = 0;
   double ballY = 0;
   double paddleX = 0;
   double paddleY = 0.9;
   int score = 0;
-  var ballYDirection = direction.DOWN;
-  var ballXDirection = direction.LEFT;
+  direction ballYDirection = direction.DOWN;
+  direction ballXDirection = direction.LEFT;
   late List<Brick> brickFieldList;
-  final ballKey = GlobalKey();
-  final brickKey = GlobalKey();
+  final GlobalKey<State<StatefulWidget>> ballKey = GlobalKey();
+  final GlobalKey<State<StatefulWidget>> brickKey = GlobalKey();
   Color brickColor = Colors.blueAccent;
 
   double? _xPosition;
@@ -58,63 +59,40 @@ class _BreakoutGameState extends State<BreakoutGame> {
     }
   }
 
-  Future<void> initPlatformState() async {
-    ///Needed for initial set-up and checks device compatibility
-    onSetup(await _plugin.setUp());
-
-    if (!mounted) return;
-  }
-
-  Future<void> joinHost() async {
-    await _plugin.joinHost("Kathy", "uwb-test");
-    _plugin.getLocation(onLocation: onLocation);
-  }
-
-  void onLocation(Map location) {
-    var _direction = location["direction"];
-    var _directionArray = _direction.split(",");
-    var _x = double.parse(_directionArray[0]);
-    var _y = double.parse(_directionArray[1]);
-
-    setState(() {
-      _distance = double.parse(location["distance"]);
-      if (_x == 0.0 && _y == 0.0) {
-        _angle = null;
-      } else {
-        _angle = math.atan2(_x, _y);
-        _xPosition = _x;
-        paddleX = 2 * -_x;
-      }
-    });
-  }
-
   void startGame() {
     if (gameHasStarted == false) {
       gameHasStarted = true;
-      Timer.periodic(const Duration(milliseconds: 1), (timer) {
+      Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
         checkWallCollision();
-        checkBrickCollision();
+        if (ballY < -0.4) {
+          checkBrickCollision();
+        }
+        if (ballY > -0.8) {
+          // checkPlatformCollision();
+        }
         moveBall();
-        // movePlatform();
-
+        movePlatform();
         if (isPLayerDead()) {
+          playerIsDead = true;
           timer.cancel();
-          resetGame();
+          _showDialog('G A M E  O V E R', Colors.redAccent);
+        }
+        if (score == 20) {
+          timer.cancel();
+          _showDialog('Y O U  W I N', Colors.green);
         }
       });
     }
   }
 
-  bool isPLayerDead() {
-    if (ballY >= 1) {
-      return true;
-    }
-    return false;
-  }
-
   void resetGame() {
+    Navigator.pop(context);
+    brickFieldList.clear();
+    brickFieldList = generateBrickFieldList();
     setState(() {
       gameHasStarted = false;
+      playerIsDead = false;
+      paddleX = 0;
       ballX = 0;
       ballY = 0;
       score = 0;
@@ -137,6 +115,74 @@ class _BreakoutGameState extends State<BreakoutGame> {
         ballXDirection = direction.RIGHT;
       }
     });
+  }
+
+  void checkBrickCollision() {
+    RenderBox? ballBox =
+        ballKey.currentContext?.findRenderObject() as RenderBox?;
+    final Size? ballSize = ballBox?.size;
+    final Offset? ballPosition = ballBox?.localToGlobal(Offset.zero);
+    bool collide = false;
+
+    double? ballPositionY = ballPosition?.dy;
+    double? ballPositionX = ballPosition?.dx;
+    double? ballSizeHeight = ballSize?.height;
+    double? ballSizeWidth = ballSize?.width;
+
+    for (Brick brick in brickFieldList) {
+      RenderBox? brickBox =
+          brick.brickKey.currentContext?.findRenderObject() as RenderBox?;
+      final Size? brickSize = brickBox?.size;
+      final Offset? brickPosition = brickBox?.localToGlobal(Offset.zero);
+
+      double? brickPositionY = brickPosition?.dy;
+      double? brickPositionX = brickPosition?.dx;
+      double? brickSizeHeight = brickSize?.height;
+      double? brickSizeWidth = brickSize?.width;
+
+      if (ballPosition != null && brickPosition != null) {
+        collide = ballPosition.dx < brickPosition.dx + brickSize!.width &&
+            ballPosition.dx + ballSize!.width > brickPosition.dx &&
+            ballPosition.dy < brickPosition.dy + brickSize.height &&
+            ballPosition.dy + ballSize.height > brickPosition.dy;
+
+        if (collide) {
+          setState(() {
+            brickFieldList.remove(brick);
+            score++;
+            bool didToggle = false;
+
+            if (ballPositionY! - (brickPositionY! + brickSizeHeight!) < 1 &&
+                    ballPositionY - (brickPositionY + brickSizeHeight) > -8 ||
+                ballPositionY + ballSizeHeight! - brickPositionY < 8 &&
+                    ballPositionY + ballSizeHeight - brickPositionY > -1) {
+              print('VERTICAL TOGGLE AT SCORE: $score');
+              didToggle = true;
+              toggleVerticalMovement();
+            }
+
+            if (ballPositionX! - (brickPositionX! + brickSizeWidth!) < 1 &&
+                    ballPositionX - (brickPositionX + brickSizeWidth) > -15 ||
+                ballPositionX + ballSizeWidth! - brickPositionX < 15 &&
+                    ballPositionX + ballSizeWidth - brickPositionX > -1) {
+              toggleHorizontalMovement();
+              didToggle = true;
+              print('HORIZONTAL TOGGLE AT SCORE: $score');
+            }
+            if (!didToggle) {
+              print('NO TOGGLE');
+            }
+          });
+        } else {
+          setState(() {
+            brick.color = Colors.blueAccent;
+          });
+        }
+      }
+      if (collide) {
+        break;
+      }
+    }
   }
 
   void toggleVerticalMovement() {
@@ -177,13 +223,86 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
-  // void movePlatform() {
-  //   if (_xPosition != null) {
-  //     setState(() {
-  //       paddleX = 2 * -_xPosition!;
-  //     });
-  //   }
-  // }
+  void movePlatform() {
+    if (_xPosition != null) {
+      setState(() {
+        paddleX = 2 * -_xPosition!;
+      });
+    }
+  }
+
+  void _showDialog(String title, Color color) {
+    showDialog<Dialog>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: color,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ), // To display the title it is optional
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '\nYour score: $score',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                resetGame();
+              },
+              child: const Text('REPLAY'),
+              style: TextButton.styleFrom(primary: Colors.white),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void onLocation(Map location) {
+    var _direction = location["direction"];
+    var _directionArray = _direction.split(",");
+    double _x = double.parse(_directionArray[0]);
+    double _y = double.parse(_directionArray[1]);
+
+    setState(() {
+      _distance = double.parse(location["distance"]);
+      if (_x == 0.0 && _y == 0.0) {
+        _angle = null;
+      } else {
+        _angle = math.atan2(_x, _y);
+        _xPosition = _x;
+        // paddleX = 2 * -_x;
+      }
+    });
+  }
+
+  Future<void> initPlatformState() async {
+    ///Needed for initial set-up and checks device compatibility
+    onSetup(await _plugin.setUp());
+
+    if (!mounted) return;
+  }
+
+  Future<void> joinHost() async {
+    await _plugin.joinHost("test-device", "uwb-test");
+    _plugin.getLocation(onLocation: onLocation);
+  }
 
   List<Brick> generateBrickFieldList() {
     List<Brick> brickFieldList = [];
@@ -197,73 +316,11 @@ class _BreakoutGameState extends State<BreakoutGame> {
     return brickFieldList;
   }
 
-  void checkBrickCollision() {
-    RenderBox? ballBox =
-        ballKey.currentContext?.findRenderObject() as RenderBox?;
-    final ballSize = ballBox?.size;
-    final ballPosition = ballBox?.localToGlobal(Offset.zero);
-    bool collide = false;
-
-    double? ballPositionY = ballPosition?.dy;
-    double? ballPositionX = ballPosition?.dx;
-    double? ballSizeHeight = ballSize?.height;
-    double? ballSizeWidth = ballSize?.width;
-
-    for (var brick in brickFieldList) {
-      RenderBox? brickBox =
-          brick.brickKey.currentContext?.findRenderObject() as RenderBox?;
-      final brickSize = brickBox?.size;
-      final brickPosition = brickBox?.localToGlobal(Offset.zero);
-
-      double? brickPositionY = brickPosition?.dy;
-      double? brickPositionX = brickPosition?.dx;
-      double? brickSizeHeight = brickSize?.height;
-      double? brickSizeWidth = brickSize?.width;
-
-      if (ballPosition != null && brickPosition != null) {
-        collide = ballPosition.dx < brickPosition.dx + brickSize!.width &&
-            ballPosition.dx + ballSize!.width > brickPosition.dx &&
-            ballPosition.dy < brickPosition.dy + brickSize.height &&
-            ballPosition.dy + ballSize.height > brickPosition.dy;
-
-        if (collide) {
-          setState(() {
-            brickFieldList.remove(brick);
-            score++;
-            bool didToggle = false;
-
-            if (ballPositionY! - (brickPositionY! + brickSizeHeight!) < 1 &&
-                    ballPositionY - (brickPositionY + brickSizeHeight) > -8 ||
-                ballPositionY + ballSizeHeight! - brickPositionY < 8 &&
-                    ballPositionY + ballSizeHeight - brickPositionY > -1) {
-              print('VERTICAL TOGGLE AT SCORE: $score');
-              didToggle = true;
-              toggleVerticalMovement();
-            }
-
-            if (ballPositionX! - (brickPositionX! + brickSizeWidth!) < 1 &&
-                    ballPositionX - (brickPositionX + brickSizeWidth) > -15 ||
-                ballPositionX + ballSizeWidth! - brickPositionX < 15 &&
-                    ballPositionX + ballSizeWidth - brickPositionX > -1) {
-              toggleHorizontalMovement();
-              didToggle = true;
-              print('HORIZONTAL TOGGLE AT SCORE: $score');
-            }
-
-            if (!didToggle) {
-              print('NO TOGGLE');
-            }
-          });
-        } else {
-          setState(() {
-            brick.color = Colors.blueAccent;
-          });
-        }
-      }
-      if (collide) {
-        break;
-      }
+  bool isPLayerDead() {
+    if (ballY >= 1) {
+      return true;
     }
+    return false;
   }
 
   @override
