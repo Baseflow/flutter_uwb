@@ -1,10 +1,10 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:uwb/uwb.dart';
-import 'package:uwb_example/other_widgets/arrow.dart';
-import 'package:uwb_example/other_widgets/distance.dart';
-import 'package:uwb_example/other_widgets/error_message.dart';
-import '../other_widgets/loading_indicator.dart';
+import 'package:uwb_example/host_widgets/arrow.dart';
+import 'package:uwb_example/host_widgets/distance.dart';
+import 'package:uwb_example/host_widgets/error_message.dart';
+import '../host_widgets/loading_indicator.dart';
 
 class HostScreen extends StatefulWidget {
   const HostScreen({Key? key}) : super(key: key);
