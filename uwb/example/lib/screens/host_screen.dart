@@ -1,7 +1,10 @@
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:uwb/uwb.dart';
+import 'package:uwb_example/other_widgets/arrow.dart';
+import 'package:uwb_example/other_widgets/distance.dart';
+import 'package:uwb_example/other_widgets/error_message.dart';
+import '../other_widgets/loading_indicator.dart';
 
 class HostScreen extends StatefulWidget {
   const HostScreen({Key? key}) : super(key: key);
@@ -17,6 +20,8 @@ class _HostScreenState extends State<HostScreen> {
   double? _angle;
   String? _error;
   bool _waitingForPeer = true;
+  String deviceName = 'test-device';
+  String serviceType = 'uwb-test';
 
   @override
   void initState() {
@@ -26,7 +31,7 @@ class _HostScreenState extends State<HostScreen> {
   }
 
   Future<void> startHosting() async {
-    await _plugin.startHost("test-device", "uwb-test");
+    await _plugin.startHost(deviceName, serviceType);
     _plugin.getLocation(onLocation: onLocation);
     _waitingForPeer = false;
   }
@@ -48,13 +53,13 @@ class _HostScreenState extends State<HostScreen> {
   }
 
   void onLocation(Map location) {
-    var _direction = location["direction"];
+    var _direction = location['direction'];
     var _directionArray = _direction.split(",");
     var _x = double.parse(_directionArray[0]);
     var _y = double.parse(_directionArray[1]);
 
     setState(() {
-      _distance = double.parse(location["distance"]);
+      _distance = double.parse(location['distance']);
       if (_x == 0.0 && _y == 0.0) {
         _angle = null;
       } else {
@@ -69,46 +74,11 @@ class _HostScreenState extends State<HostScreen> {
       backgroundColor: Colors.grey[900],
       body: Center(
         child: Stack(
-          children: [
-            if (_waitingForPeer) ...[
-              Container(
-                alignment: const Alignment(0, 0),
-                child: const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
-            ],
-            if (_error != null) ...[
-              Container(
-                alignment: Alignment(0, -0.5),
-                child: Text(
-                  _error!,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ),
-            ],
-            if (_angle != null) ...[
-              Container(
-                alignment: const Alignment(0, 0),
-                child: Transform(
-                  transform: Matrix4.identity()..rotateX(1.8 * math.pi * 2),
-                  child: Transform.rotate(
-                    angle: _angle!,
-                    child: const Icon(Icons.arrow_upward_rounded,
-                        color: Colors.white, size: 100),
-                  ),
-                ),
-              ),
-            ],
-            if (_distance != null) ...[
-              Container(
-                alignment: const Alignment(0, 0.5),
-                child: Text(
-                  '${_distance}m',
-                  style: const TextStyle(fontSize: 40, color: Colors.white),
-                ),
-              ),
-            ],
+          children: <Widget> [
+            LoadingIndicator(x: 0, y: 0, waitingForPeer: _waitingForPeer),
+            ErrorMessage(x: 0, y: -0.5, error: _error),
+            Arrow(x: 0, y: 0, angle: _angle),
+            Distance(x: 0, y: 0.5, distance: _distance),
           ],
         ),
       ),

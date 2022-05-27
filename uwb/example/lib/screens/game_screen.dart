@@ -287,7 +287,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
       } else {
         _angle = math.atan2(_x, _y);
         _xPosition = _x;
-        // paddleX = 2 * -_x;
       }
     });
   }
