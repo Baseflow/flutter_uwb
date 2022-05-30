@@ -28,7 +28,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
   double ballY = 0;
   double paddleX = 0;
   double paddleY = 0.9;
-  double paddleHitBox = 0;
+  double paddleWidth = 0.4;
   int score = 0;
   direction ballYDirection = direction.DOWN;
   direction ballXDirection = direction.LEFT;
@@ -103,7 +103,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
   void checkWallCollision() {
     setState(() {
       ///Vertical
-      if (ballY >= 0.9 && paddleX + 0.4 >= ballX && paddleX <= ballX) {
+      if (ballY >= 0.9 && paddleX + paddleWidth >= ballX && paddleX <= ballX) {
         ballYDirection = direction.UP;
       } else if (ballY <= -0.9) {
         ballYDirection = direction.DOWN;
