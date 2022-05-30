@@ -28,6 +28,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
   double ballY = 0;
   double paddleX = 0;
   double paddleY = 0.9;
+  double paddleHitBox = 0;
   int score = 0;
   direction ballYDirection = direction.DOWN;
   direction ballXDirection = direction.LEFT;
@@ -102,7 +103,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
   void checkWallCollision() {
     setState(() {
       ///Vertical
-      if (ballY >= 0.9) {
+      if (ballY >= 0.9 && paddleX + 0.4 >= ballX && paddleX <= ballX) {
         ballYDirection = direction.UP;
       } else if (ballY <= -0.9) {
         ballYDirection = direction.DOWN;
@@ -265,6 +266,13 @@ class _BreakoutGameState extends State<BreakoutGame> {
               onPressed: () {
                 resetGame();
               },
+              child: const Text('EXIT'),
+              style: TextButton.styleFrom(primary: Colors.white),
+            ),
+            TextButton(
+              onPressed: () {
+                resetGame();
+              },
               child: const Text('REPLAY'),
               style: TextButton.styleFrom(primary: Colors.white),
             ),
@@ -335,7 +343,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
               ScreenOverlay(gameHasStarted: gameHasStarted),
               Ball(x: ballX, y: ballY, ballKey: ballKey),
               Paddle(x: paddleX, y: paddleY),
-              Score(score: score, gameHasStarted: gameHasStarted),
+              Score(score: score, gameHasStarted: gameHasStarted)
             ],
           ),
         ),
