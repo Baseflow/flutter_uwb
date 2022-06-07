@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
+///Score class. Generates the score
+//ignore: must_be_immutable
 class Score extends StatelessWidget {
-  int score;
-  bool gameHasStarted;
-
+  ///Score constructor
   Score({required this.score, required this.gameHasStarted});
+
+  ///Int variable to keep track of the current score
+  int score;
+
+  ///Boolean to know if the game is started so the score can be showed
+  bool gameHasStarted;
 
   @override
   Widget build(BuildContext context) {

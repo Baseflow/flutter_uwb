@@ -174,10 +174,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
               print('NO TOGGLE');
             }
           });
-        } else {
-          setState(() {
-            brick.color = Colors.blueAccent;
-          });
         }
       }
       if (collide) {
@@ -316,8 +312,8 @@ class _BreakoutGameState extends State<BreakoutGame> {
 
     for (double y = -0.5; y >= -0.8; y -= 0.1) {
       for (double x = -0.9; x <= 1; x += 0.45) {
-        brickFieldList
-            .add(Brick(x: x, y: y, color: brickColor, brickKey: GlobalKey()));
+        brickFieldList.add(
+            Brick(x: x, y: y, brickColor: brickColor, brickKey: GlobalKey()));
       }
     }
     return brickFieldList;
