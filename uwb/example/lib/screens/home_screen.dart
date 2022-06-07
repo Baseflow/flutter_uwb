@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:uwb_example/screens/game_screen.dart';
 import 'package:uwb_example/screens/host_screen.dart';
 
-class Homescreen extends StatelessWidget {
-  const Homescreen({Key? key}) : super(key: key);
+///Home screen class. Shows this screen on initial run. Contains a host and play button.
+class HomeScreen extends StatelessWidget {
+  ///Home screen constructor
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +14,14 @@ class Homescreen extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const BreakoutGame()));
+                    MaterialPageRoute<void>(
+                        builder: (BuildContext context) =>
+                            const BreakoutGame()));
               },
               child: const Text(
                 'P L A Y',
@@ -29,8 +32,8 @@ class Homescreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const HostScreen()));
+                    MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const HostScreen()));
               },
               child: const Text(
                 'H O S T',

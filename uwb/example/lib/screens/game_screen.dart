@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:uwb/uwb.dart';
@@ -11,14 +10,29 @@ import '../game_widgets/paddle.dart';
 import '../game_widgets/score.dart';
 import '../game_widgets/screen_overlay.dart';
 
+///Breakout game class. Contains the code for the breakout game.
 class BreakoutGame extends StatefulWidget {
+  ///Breakout game constructor
   const BreakoutGame({Key? key}) : super(key: key);
 
   @override
   _BreakoutGameState createState() => _BreakoutGameState();
 }
 
-enum direction { UP, DOWN, LEFT, RIGHT }
+///Contains the direction enums of the ball
+enum direction {
+  ///Ball goes up
+  UP,
+
+  ///Ball goes down
+  DOWN,
+
+  ///Ball goes left
+  LEFT,
+
+  ///Ball goes right
+  RIGHT
+}
 
 class _BreakoutGameState extends State<BreakoutGame> {
   final Uwb _plugin = Uwb();
@@ -38,9 +52,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
   Color brickColor = Colors.blueAccent;
 
   double? _xPosition;
-  double? _distance;
-  double? _angle;
-  String? _error;
 
   @override
   void initState() {
@@ -50,16 +61,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
     super.initState();
   }
 
-  void onSetup(bool? status) {
-    if (status != null && !status) {
-      setState(() {
-        _error = """Device is incompatible with this app.
-        Please check device OS version and UWB compatibility. 
-        For Apple users iOS version should be 14.0 or higher.""";
-      });
-    }
-  }
-
   void startGame() {
     if (gameHasStarted == false) {
       gameHasStarted = true;
@@ -67,9 +68,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
         checkWallCollision();
         if (ballY < -0.4) {
           checkBrickCollision();
-        }
-        if (ballY > -0.8) {
-          // checkPlatformCollision();
         }
         moveBall();
         movePlatform();
@@ -102,14 +100,12 @@ class _BreakoutGameState extends State<BreakoutGame> {
 
   void checkWallCollision() {
     setState(() {
-      ///Vertical
       if (ballY >= 0.9 && paddleX + paddleWidth >= ballX && paddleX <= ballX) {
         ballYDirection = direction.UP;
       } else if (ballY <= -0.9) {
         ballYDirection = direction.DOWN;
       }
 
-      ///horizontal
       if (ballX >= 1) {
         ballXDirection = direction.LEFT;
       } else if (ballX <= -1) {
@@ -119,27 +115,27 @@ class _BreakoutGameState extends State<BreakoutGame> {
   }
 
   void checkBrickCollision() {
-    RenderBox? ballBox =
+    final RenderBox? ballBox =
         ballKey.currentContext?.findRenderObject() as RenderBox?;
     final Size? ballSize = ballBox?.size;
     final Offset? ballPosition = ballBox?.localToGlobal(Offset.zero);
     bool collide = false;
 
-    double? ballPositionY = ballPosition?.dy;
-    double? ballPositionX = ballPosition?.dx;
-    double? ballSizeHeight = ballSize?.height;
-    double? ballSizeWidth = ballSize?.width;
+    final double? ballPositionY = ballPosition?.dy;
+    final double? ballPositionX = ballPosition?.dx;
+    final double? ballSizeHeight = ballSize?.height;
+    final double? ballSizeWidth = ballSize?.width;
 
-    for (Brick brick in brickFieldList) {
-      RenderBox? brickBox =
+    for (final Brick brick in brickFieldList) {
+      final RenderBox? brickBox =
           brick.brickKey.currentContext?.findRenderObject() as RenderBox?;
       final Size? brickSize = brickBox?.size;
       final Offset? brickPosition = brickBox?.localToGlobal(Offset.zero);
 
-      double? brickPositionY = brickPosition?.dy;
-      double? brickPositionX = brickPosition?.dx;
-      double? brickSizeHeight = brickSize?.height;
-      double? brickSizeWidth = brickSize?.width;
+      final double? brickPositionY = brickPosition?.dy;
+      final double? brickPositionX = brickPosition?.dx;
+      final double? brickSizeHeight = brickSize?.height;
+      final double? brickSizeWidth = brickSize?.width;
 
       if (ballPosition != null && brickPosition != null) {
         collide = ballPosition.dx < brickPosition.dx + brickSize!.width &&
@@ -204,14 +200,12 @@ class _BreakoutGameState extends State<BreakoutGame> {
 
   void moveBall() {
     setState(() {
-      ///vertical movement
       if (ballYDirection == direction.DOWN) {
         ballY += 0.001;
       } else if (ballYDirection == direction.UP) {
         ballY -= 0.001;
       }
 
-      ///horizontal movement
       if (ballXDirection == direction.RIGHT) {
         ballX += 0.002;
       } else if (ballXDirection == direction.LEFT) {
@@ -240,16 +234,16 @@ class _BreakoutGameState extends State<BreakoutGame> {
           ),
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               Text(
                 title,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ],
           ), // To display the title it is optional
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Text(
                 '\nYour score: $score',
                 textAlign: TextAlign.center,
@@ -257,7 +251,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
               ),
             ],
           ),
-          actions: [
+          actions: <Widget>[
             TextButton(
               onPressed: () {
                 resetGame();
@@ -278,18 +272,14 @@ class _BreakoutGameState extends State<BreakoutGame> {
     );
   }
 
-  void onLocation(Map location) {
-    var _direction = location["direction"];
-    var _directionArray = _direction.split(",");
-    double _x = double.parse(_directionArray[0]);
-    double _y = double.parse(_directionArray[1]);
+  void onLocation(Map<dynamic, dynamic> location) {
+    final String _direction = location['direction'] as String;
+    final List<String> _directionArray = _direction.split(',');
+    final double _x = double.parse(_directionArray[0]);
+    final double _y = double.parse(_directionArray[1]);
 
     setState(() {
-      _distance = double.parse(location["distance"]);
-      if (_x == 0.0 && _y == 0.0) {
-        _angle = null;
-      } else {
-        _angle = math.atan2(_x, _y);
+      if (_x != 0.0 && _y != 0.0) {
         _xPosition = _x;
       }
     });
@@ -297,18 +287,20 @@ class _BreakoutGameState extends State<BreakoutGame> {
 
   Future<void> initPlatformState() async {
     ///Needed for initial set-up and checks device compatibility
-    onSetup(await _plugin.setUp());
+    await _plugin.setUp();
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
   }
 
   Future<void> joinHost() async {
-    await _plugin.joinHost("test-device", "uwb-test");
+    await _plugin.joinHost('test-device', 'uwb-test');
     _plugin.getLocation(onLocation: onLocation);
   }
 
   List<Brick> generateBrickFieldList() {
-    List<Brick> brickFieldList = [];
+    final List<Brick> brickFieldList = <Brick>[];
 
     for (double y = -0.5; y >= -0.8; y -= 0.1) {
       for (double x = -0.9; x <= 1; x += 0.45) {
@@ -334,7 +326,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
         backgroundColor: Colors.grey[900],
         body: Center(
           child: Stack(
-            children: [
+            children: <Widget>[
               BrickField(brickFieldList: brickFieldList),
               ScreenOverlay(gameHasStarted: gameHasStarted),
               Ball(x: ballX, y: ballY, ballKey: ballKey),

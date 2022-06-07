@@ -5,7 +5,7 @@ class ScreenOverlay extends StatelessWidget {
   ///Screen overlay constructor
   const ScreenOverlay({required this.gameHasStarted});
 
-  ///Boolean to know if the game has been started
+  ///Boolean to know if the game hasn't been started so the text can be shown
   final bool gameHasStarted;
 
   @override
