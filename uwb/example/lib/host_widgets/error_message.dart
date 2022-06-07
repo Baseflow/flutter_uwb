@@ -9,13 +9,14 @@ class ErrorMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      error == null ? Container() : Container(
-      alignment: Alignment(x, y),
-      child: Text(
-        error!,
-        style: const TextStyle(color: Colors.red),
-      ),
-    );
+    return error == null
+        ? Container()
+        : Container(
+            alignment: Alignment(x, y),
+            child: Text(
+              error!,
+              style: const TextStyle(color: Colors.red),
+            ),
+          );
   }
 }

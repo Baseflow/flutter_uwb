@@ -74,7 +74,7 @@ class _HostScreenState extends State<HostScreen> {
       backgroundColor: Colors.grey[900],
       body: Center(
         child: Stack(
-          children: <Widget> [
+          children: <Widget>[
             LoadingIndicator(x: 0, y: 0, waitingForPeer: _waitingForPeer),
             ErrorMessage(x: 0, y: -0.5, error: _error),
             Arrow(x: 0, y: 0, angle: _angle),

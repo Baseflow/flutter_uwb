@@ -9,13 +9,14 @@ class Distance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      distance == null ? Container() : Container(
-      alignment: Alignment(x, y),
-      child: Text(
-        '${distance}m',
-        style: const TextStyle(fontSize: 40, color: Colors.white),
-      ),
-    );
+    return distance == null
+        ? Container()
+        : Container(
+            alignment: Alignment(x, y),
+            child: Text(
+              '${distance}m',
+              style: const TextStyle(fontSize: 40, color: Colors.white),
+            ),
+          );
   }
 }
