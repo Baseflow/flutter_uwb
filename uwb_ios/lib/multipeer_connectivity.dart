@@ -7,7 +7,7 @@ class MCSessionWrapper {
 
   /// Starts the advertiser
   Future<bool?> startHost(String peerID, String serviceType) async {
-    final Map<String, String> parameters = {
+    final Map<String, String> parameters = <String, String>{
       'peerID': peerID,
       'serviceType': serviceType
     };
@@ -18,7 +18,7 @@ class MCSessionWrapper {
 
   /// Sends an invite to peer
   Future<bool?> joinHost(String peerID, String serviceType) async {
-    final Map<String, String> parameters = {
+    final Map<String, String> parameters = <String, String>{
       'peerID': peerID,
       'serviceType': serviceType
     };
