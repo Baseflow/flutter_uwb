@@ -20,6 +20,7 @@ class BreakoutGame extends StatefulWidget {
 }
 
 ///Contains the direction enums of the ball
+// ignore: camel_case_types
 enum direction {
   ///Ball goes up
   UP,
