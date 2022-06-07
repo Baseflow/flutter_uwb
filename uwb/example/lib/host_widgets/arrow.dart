@@ -2,12 +2,19 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+///Arrow class. Generates arrow to point at location of the connected device
 class Arrow extends StatelessWidget {
-  final double x;
-  final double y;
-  final double? angle;
+  ///Arrow constructor
+  const Arrow({required this.x, required this.y, required this.angle});
 
-  Arrow({required this.x, required this.y, required this.angle});
+  ///Variable for x-axis of the arrow
+  final double x;
+
+  ///Variable for y-axis of the arrow
+  final double y;
+
+  ///Variable for arrow direction
+  final double? angle;
 
   @override
   Widget build(BuildContext context) {

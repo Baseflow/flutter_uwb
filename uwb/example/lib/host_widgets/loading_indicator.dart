@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 
+///Loading indicator class. Shows a loading icon when waiting for peer to connect
 class LoadingIndicator extends StatelessWidget {
-  final double x;
-  final double y;
-  final bool waitingForPeer;
-
-  LoadingIndicator(
+  ///Loading indicator constructor
+  const LoadingIndicator(
       {required this.x, required this.y, required this.waitingForPeer});
+
+  ///Variable for x-axis of the loading indicator
+  final double x;
+
+  ///Variable for x-axis of the loading indicator
+  final double y;
+
+  ///Boolean to know when to show/not show loading indicator
+  final bool waitingForPeer;
 
   @override
   Widget build(BuildContext context) {
