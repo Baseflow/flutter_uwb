@@ -338,14 +338,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
               Ball(x: ballX, y: ballY, ballKey: ballKey),
               Paddle(x: paddleX, y: paddleY),
               Score(score: score, gameHasStarted: gameHasStarted),
-              // Container(
-              //
-              //   alignment: const Alignment(0, 0.86),
-              //   child: Container(
-              //     height: 3,
-              //     color: Colors.red,
-              //   ),
-              // ),
             ],
           ),
         ),
