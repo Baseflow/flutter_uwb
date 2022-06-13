@@ -35,6 +35,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
+          architecture: arm64
 
       # Download all Flutter packages
       - name: Download dependencies
