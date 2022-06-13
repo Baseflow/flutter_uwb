@@ -65,12 +65,12 @@ class _BreakoutGameState extends State<BreakoutGame> {
   void startGame() {
     if (gameHasStarted == false) {
       gameHasStarted = true;
-      Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
-        checkWallCollision();
+      Timer.periodic(const Duration(milliseconds: 8), (Timer timer) {
         if (ballY < -0.4) {
           checkBrickCollision();
         }
         moveBall();
+        checkWallCollision();
         movePlatform();
         if (isPLayerDead()) {
           playerIsDead = true;
@@ -101,8 +101,12 @@ class _BreakoutGameState extends State<BreakoutGame> {
 
   void checkWallCollision() {
     setState(() {
-      if (ballY >= 0.9 && paddleX + paddleWidth >= ballX && paddleX <= ballX) {
-        ballYDirection = direction.UP;
+      if (ballY >= 0.87) {
+        if (ballY <= 0.9 &&
+            paddleX + paddleWidth >= ballX &&
+            paddleX <= ballX) {
+          ballYDirection = direction.UP;
+        }
       } else if (ballY <= -0.9) {
         ballYDirection = direction.DOWN;
       }
@@ -202,15 +206,15 @@ class _BreakoutGameState extends State<BreakoutGame> {
   void moveBall() {
     setState(() {
       if (ballYDirection == direction.DOWN) {
-        ballY += 0.001;
+        ballY += 0.005;
       } else if (ballYDirection == direction.UP) {
-        ballY -= 0.001;
+        ballY -= 0.005;
       }
 
       if (ballXDirection == direction.RIGHT) {
-        ballX += 0.002;
+        ballX += 0.010;
       } else if (ballXDirection == direction.LEFT) {
-        ballX -= 0.002;
+        ballX -= 0.010;
       }
     });
   }
@@ -241,7 +245,8 @@ class _BreakoutGameState extends State<BreakoutGame> {
                 style: const TextStyle(color: Colors.white),
               ),
             ],
-          ), // To display the title it is optional
+          ),
+          // To display the title it is optional
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -332,7 +337,15 @@ class _BreakoutGameState extends State<BreakoutGame> {
               ScreenOverlay(gameHasStarted: gameHasStarted),
               Ball(x: ballX, y: ballY, ballKey: ballKey),
               Paddle(x: paddleX, y: paddleY),
-              Score(score: score, gameHasStarted: gameHasStarted)
+              Score(score: score, gameHasStarted: gameHasStarted),
+              // Container(
+              //
+              //   alignment: const Alignment(0, 0.86),
+              //   child: Container(
+              //     height: 3,
+              //     color: Colors.red,
+              //   ),
+              // ),
             ],
           ),
         ),

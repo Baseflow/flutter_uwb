@@ -22,7 +22,7 @@ class Paddle extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Container(
           color: Colors.white,
-          height: 20,
+          height: MediaQuery.of(context).size.width / 20,
           width: MediaQuery.of(context).size.width / 5,
         ),
       ),
