@@ -21,15 +21,15 @@ class BreakoutGame extends StatefulWidget {
 
 ///Contains the direction enums of the ball
 // ignore: camel_case_types
-enum direction {
+enum Direction {
   ///Ball goes up
-  UP,
+  up,
 
   ///Ball goes down
-  DOWN,
+  down,
 
   ///Ball goes left
-  LEFT,
+  left,
 
   ///Ball goes right
   RIGHT
@@ -45,8 +45,8 @@ class _BreakoutGameState extends State<BreakoutGame> {
   double paddleY = 0.9;
   double paddleWidth = 0.4;
   int score = 0;
-  direction ballYDirection = direction.DOWN;
-  direction ballXDirection = direction.LEFT;
+  Direction ballYDirection = Direction.down;
+  Direction ballXDirection = Direction.left;
   late List<Brick> brickFieldList;
   final GlobalKey<State<StatefulWidget>> ballKey = GlobalKey();
   final GlobalKey<State<StatefulWidget>> brickKey = GlobalKey();
@@ -105,16 +105,16 @@ class _BreakoutGameState extends State<BreakoutGame> {
         if (ballY <= 0.9 &&
             paddleX + paddleWidth >= ballX &&
             paddleX <= ballX) {
-          ballYDirection = direction.UP;
+          ballYDirection = Direction.up;
         }
       } else if (ballY <= -0.9) {
-        ballYDirection = direction.DOWN;
+        ballYDirection = Direction.down;
       }
 
       if (ballX >= 1) {
-        ballXDirection = direction.LEFT;
+        ballXDirection = Direction.left;
       } else if (ballX <= -1) {
-        ballXDirection = direction.RIGHT;
+        ballXDirection = Direction.RIGHT;
       }
     });
   }
@@ -185,35 +185,35 @@ class _BreakoutGameState extends State<BreakoutGame> {
 
   void toggleVerticalMovement() {
     setState(() {
-      if (ballYDirection == direction.DOWN) {
-        ballYDirection = direction.UP;
+      if (ballYDirection == Direction.down) {
+        ballYDirection = Direction.up;
       } else {
-        ballYDirection = direction.DOWN;
+        ballYDirection = Direction.down;
       }
     });
   }
 
   void toggleHorizontalMovement() {
     setState(() {
-      if (ballXDirection == direction.RIGHT) {
-        ballXDirection = direction.LEFT;
+      if (ballXDirection == Direction.RIGHT) {
+        ballXDirection = Direction.left;
       } else {
-        ballXDirection = direction.RIGHT;
+        ballXDirection = Direction.RIGHT;
       }
     });
   }
 
   void moveBall() {
     setState(() {
-      if (ballYDirection == direction.DOWN) {
+      if (ballYDirection == Direction.down) {
         ballY += 0.005;
-      } else if (ballYDirection == direction.UP) {
+      } else if (ballYDirection == Direction.up) {
         ballY -= 0.005;
       }
 
-      if (ballXDirection == direction.RIGHT) {
+      if (ballXDirection == Direction.RIGHT) {
         ballX += 0.010;
-      } else if (ballXDirection == direction.LEFT) {
+      } else if (ballXDirection == Direction.left) {
         ballX -= 0.010;
       }
     });
