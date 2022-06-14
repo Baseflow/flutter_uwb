@@ -8,6 +8,7 @@ abstract class UwbPlatform extends PlatformInterface {
   static final Object _token = Object();
 
   /// The instance of [UwbPlatform] to use.
+  ///
   /// Must be set before accessing.
   static UwbPlatform get instance => _instance;
 
@@ -26,7 +27,10 @@ abstract class UwbPlatform extends PlatformInterface {
   Future<bool?> setUp() =>
       throw UnimplementedError('setUp() has not been implemented.');
 
-  /// Starts the advertiser
+  /// Start advertising as a utlra wide band host allowing clients to connect.
+  ///
+  /// The [peerID] identifies a peer (the host in this case) in a  multi peer session.
+  /// The [serviceType] describes the service to advertise. This should be a short text string that describes the app's networking protocol.
   Future<bool?> startHost(String peerID, String serviceType) =>
       throw UnimplementedError('startHost() has not been implemented.');
 
