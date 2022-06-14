@@ -1,5 +1,5 @@
 name: uwb_platform_interface
-description: A new Flutter package project.
+description: A common platform interface for the uwb plugin.
 version: 0.0.1
 homepage: https://pub.dev/packages/uwb_platform_interface
 repository: https://github.com/baseflow/flutter_uwb
