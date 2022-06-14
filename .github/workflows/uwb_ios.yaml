@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: uwb_apple
+name: uwb_ios
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the develop branch
@@ -8,11 +8,11 @@ on:
   push:
     branches: [ main ]
     paths:
-    - 'uwb_ios/**'
+      - 'uwb_ios/**'
   pull_request:
     branches: [ main ]
     paths:
-    - 'uwb_ios/**'
+      - 'uwb_ios/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -23,15 +23,16 @@ jobs:
     runs-on: macos-latest
 
     env:
-      source-directory: ./uwb_apple 
+      source-directory: ./uwb_ios
+      example-directory: ./uwb_ios/example
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      
+      - uses: actions/checkout@v3
+
       # Make sure the stable version of Flutter is available
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
