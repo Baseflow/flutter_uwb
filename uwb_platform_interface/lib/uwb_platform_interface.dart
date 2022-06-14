@@ -23,10 +23,9 @@ abstract class UwbPlatform extends PlatformInterface {
   /// Should only be accessed after setter is called.
   static late UwbPlatform _instance;
 
-  /// Checks platform compatibility.
+  /// Checks if the current platform supports Ultra Wide Band.
   ///
-  /// Returns [True] of compatible.
-  /// Returns [False] if it is not compatible.
+  /// Returns `true` if UWB is supported or `false` if UWB is not supported.
   Future<bool> checkPlatformCompatibility() =>
       throw UnimplementedError('setUp() has not been implemented.');
 
