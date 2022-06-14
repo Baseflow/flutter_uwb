@@ -2,7 +2,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 /// Contains all the calls that needs to be implemented in the platform specific plugins.
 abstract class UwbPlatform extends PlatformInterface {
-  /// Constructs a UwbPlatform.
+  /// Constructs a [UwbPlatform].
   UwbPlatform() : super(token: _token);
 
   static final Object _token = Object();
