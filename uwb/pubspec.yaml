@@ -20,11 +20,7 @@ dependencies:
   #                   has been published to pub.dev.
   uwb_ios:
     path: ../uwb_ios
-  # TODO(just-leroy): Update to pub dependency as soon as the 
-  #                   uwb_platform_interface package has been
-  #                   published to pub.dev.
-  uwb_platform_interface:
-    path: ../uwb_platform_interface
+  uwb_platform_interface: ^0.0.1
 
 dev_dependencies:
   flutter_lints: ^1.0.0

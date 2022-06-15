@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:uwb_example/screens/game_screen.dart';
-import 'package:uwb_example/screens/host_screen.dart';
 
-///Home screen class. Shows this screen on initial run. Contains a host and play button.
+import 'game_screen.dart';
+import 'host_screen.dart';
+
+/// The [HomeScreen] class.
+///
+/// Shows this screen on initial run.
+/// Contains a host and play button.
 class HomeScreen extends StatelessWidget {
-  ///Home screen constructor
+  /// The [HomeScreen]constructor.
   const HomeScreen({Key? key}) : super(key: key);
 
   @override

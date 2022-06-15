@@ -2,15 +2,17 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:uwb/uwb.dart';
-import 'package:uwb_example/host_widgets/arrow.dart';
-import 'package:uwb_example/host_widgets/distance.dart';
-import 'package:uwb_example/host_widgets/error_message.dart';
 
+import '../host_widgets/arrow.dart';
+import '../host_widgets/distance.dart';
+import '../host_widgets/error_message.dart';
 import '../host_widgets/loading_indicator.dart';
 
-///Host screen class. Shows the direction and distance to connected phone
+/// The [HostScreen] class.
+///
+/// Shows the direction and distance to connected phone.
 class HostScreen extends StatefulWidget {
-  ///Host screen constructor
+  /// The [HostScreen] constructor.
   const HostScreen({Key? key}) : super(key: key);
 
   @override
@@ -34,20 +36,21 @@ class _HostScreenState extends State<HostScreen> {
     super.initState();
   }
 
+  /// Starts the host function from the uwb plugin to start the advertise function to let peers know they can connect to this phone.
   Future<void> startHosting() async {
     await _plugin.startHost(deviceName, serviceType);
+
+    /// When there is a connection with a peer we can use the getLocation method form the plugin to get the location data.
     _plugin.getLocation(onLocation: onLocation);
     _waitingForPeer = false;
   }
 
+  /// SetUp call from the uwb plugin to check device compatibility.
   Future<void> initPlatformState() async {
-    ///Needed for initial set-up and checks device compatibility
     onSetup(await _plugin.setUp());
-    if (!mounted) {
-      return;
-    }
   }
 
+  /// Sets the error message when the device isn't compatible.
   void onSetup(bool? status) {
     if (status != null && !status) {
       setState(() {
@@ -58,6 +61,7 @@ class _HostScreenState extends State<HostScreen> {
     }
   }
 
+  /// Funcvtions that gets the angle and distance from the location data.
   void onLocation(Map<dynamic, dynamic> location) {
     final String _direction = location['direction'] as String;
     final List<String> _directionArray = _direction.split(',');
