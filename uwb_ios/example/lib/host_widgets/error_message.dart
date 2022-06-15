@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 ///Error message class. Shows an error message when the decice isn't compatible with UWB
 class ErrorMessage extends StatelessWidget {
   ///Error message constructor
-  const ErrorMessage({Key? key, required this.x, required this.y, required this.error}): super(key: key);
+  const ErrorMessage(
+      {Key? key, required this.x, required this.y, required this.error})
+      : super(key: key);
 
   ///Variable for x-axis of the error message
   final double x;

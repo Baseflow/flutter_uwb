@@ -8,7 +8,8 @@ class Brick extends StatelessWidget {
       required this.x,
       required this.y,
       required this.brickColor,
-      required this.brickKey}): super(key: key);
+      required this.brickKey})
+      : super(key: key);
 
   ///Variable for x-axis of the brick
   final double x;

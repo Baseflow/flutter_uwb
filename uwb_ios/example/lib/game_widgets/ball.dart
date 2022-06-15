@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 ///Ball class. Generates ball on the field
 class Ball extends StatelessWidget {
   ///Ball constructor
-  const Ball({Key? key, required this.x, required this.y, required this.ballKey}) : super(key: key);
+  const Ball(
+      {Key? key, required this.x, required this.y, required this.ballKey})
+      : super(key: key);
 
   ///Variable for x-axis of the ball
   final double x;

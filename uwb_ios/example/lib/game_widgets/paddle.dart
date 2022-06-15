@@ -7,7 +7,7 @@ class Paddle extends StatelessWidget {
     Key? key,
     required this.x,
     required this.y,
-  }): super(key: key);
+  }) : super(key: key);
 
   ///Variable for x-axis of the paddle
   final double x;
