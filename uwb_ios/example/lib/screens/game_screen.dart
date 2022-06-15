@@ -10,28 +10,27 @@ import '../game_widgets/paddle.dart';
 import '../game_widgets/score.dart';
 import '../game_widgets/screen_overlay.dart';
 
-///Breakout game class. Contains the code for the breakout game.
+/// Class [BreakoutGame]. Contains the code for the breakout game.
 class BreakoutGame extends StatefulWidget {
-  ///Breakout game constructor
+  /// Breakout game constructor.
   const BreakoutGame({Key? key}) : super(key: key);
 
   @override
   _BreakoutGameState createState() => _BreakoutGameState();
 }
 
-///Contains the direction enums of the ball
-// ignore: camel_case_types
+/// Contains the direction enums of the ball.
 enum Direction {
-  ///Ball goes up
+  /// Ball goes up.
   up,
 
-  ///Ball goes down
+  /// Ball goes down.
   down,
 
-  ///Ball goes left
+  /// Ball goes left.
   left,
 
-  ///Ball goes right
+  /// Ball goes right.
   right
 }
 
@@ -44,6 +43,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
   double paddleX = 0;
   double paddleY = 0.9;
   double paddleWidth = 0.4;
+  double paddeHeight = 0.03;
   int score = 0;
   Direction ballYDirection = Direction.down;
   Direction ballXDirection = Direction.left;
@@ -62,6 +62,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     super.initState();
   }
 
+  /// Starts the breakout game.
   void startGame() {
     if (gameHasStarted == false) {
       gameHasStarted = true;
@@ -85,6 +86,8 @@ class _BreakoutGameState extends State<BreakoutGame> {
     }
   }
 
+
+  /// Functions that resets game modifiers. 
   void resetGame() {
     Navigator.pop(context);
     brickFieldList.clear();
@@ -99,9 +102,10 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  /// Function that checks wall collision.
   void checkWallCollision() {
     setState(() {
-      if (ballY >= 0.87) {
+      if (ballY >= (paddleY - paddeHeight)) {
         if (ballY <= 0.9 &&
             paddleX + paddleWidth >= ballX &&
             paddleX <= ballX) {
@@ -119,6 +123,9 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  /// Fucntions that checks brick collision.
+  /// 
+  /// Uses [finderRenderObject] to determine the position of the bricks and paddle, and checks if the containers overlap.
   void checkBrickCollision() {
     final RenderBox? ballBox =
         ballKey.currentContext?.findRenderObject() as RenderBox?;
@@ -174,6 +181,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     }
   }
 
+  /// Toggles vertical ball movement.
   void toggleVerticalMovement() {
     setState(() {
       if (ballYDirection == Direction.down) {
@@ -184,6 +192,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  /// Toggles horizontal ball movement.
   void toggleHorizontalMovement() {
     setState(() {
       if (ballXDirection == Direction.right) {
@@ -194,6 +203,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  /// Function that moves the ball by changeing the x and y-axis.
   void moveBall() {
     setState(() {
       if (ballYDirection == Direction.down) {
@@ -210,6 +220,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  /// Function that moves the ball by changing the x-axis of the paddle corresponding to the x position of the phone.
   void movePlatform() {
     if (_xPosition != null) {
       setState(() {
@@ -218,6 +229,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     }
   }
 
+  /// Function that shows a Popup dialog after winning or loosing.
   void _showDialog(String title, Color color) {
     showDialog<Dialog>(
       context: context,
@@ -237,7 +249,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
               ),
             ],
           ),
-          // To display the title it is optional
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -269,6 +280,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     );
   }
 
+  /// Function that gets the x position of the phone from the location data.
   void onLocation(Map<dynamic, dynamic> location) {
     final String _direction = location['direction'] as String;
     final List<String> _directionArray = _direction.split(',');
@@ -282,20 +294,20 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  /// Setup call form the uwb plugin.
   Future<void> initPlatformState() async {
-    ///Needed for initial set-up and checks device compatibility
     await _plugin.setUp();
-
-    if (!mounted) {
-      return;
-    }
   }
 
+  /// Join host call from the uwb plugin to join a host phone and setup a connection.
   Future<void> joinHost() async {
     await _plugin.joinHost('test-device', 'uwb-test');
+    /// When there is a connection with the host phone we can use the getLocation method form the plugin to get the location data.
     _plugin.getLocation(onLocation: onLocation);
   }
 
+
+  /// Generates a list of bricks.
   List<Brick> generateBrickFieldList() {
     final List<Brick> brickFieldList = <Brick>[];
 
@@ -308,6 +320,9 @@ class _BreakoutGameState extends State<BreakoutGame> {
     return brickFieldList;
   }
 
+  /// Function that checks the loose condition.
+  /// 
+  /// When the ball hits the bottum of the screen it returns a true, otherwise it returns a false.
   bool isPLayerDead() {
     if (ballY >= 1) {
       return true;
