@@ -3,12 +3,12 @@ import UIKit
 
 public class SwiftUwbIosPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "uwb_ios", binaryMessenger: registrar.messenger())
-    let instance = SwiftUwbIosPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
-  }
-
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
+      
+      SetupHelperClass.setUp(binaryMessenger: registrar.messenger())
+      
+      if #available(iOS 14.0, *) {
+          NISessionHostApi.setUp(binaryMessenger: registrar.messenger())
+          MCSessionHostApi.setUp(binaryMessenger: registrar.messenger())
+      }
   }
 }
