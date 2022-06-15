@@ -1,13 +1,27 @@
+library uwb;
 
-import 'dart:async';
+import 'package:uwb_platform_interface/uwb_platform_interface.dart';
 
-import 'package:flutter/services.dart';
-
+/// A Calculator.
 class Uwb {
-  static const MethodChannel _channel = MethodChannel('uwb');
+  /// Must be called once for initial setUp
+  Future<bool?> setUp() {
+    return UwbPlatform.instance.setUp();
+  }
 
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  ///Starts the advertiser
+  Future<bool?> startHost(String peerID, String serviceType) {
+    return UwbPlatform.instance.startHost(peerID, serviceType);
+  }
+
+  ///Sends an invite to peer
+  Future<bool?> joinHost(String peerID, String serviceType) {
+    return UwbPlatform.instance.joinHost(peerID, serviceType);
+  }
+
+  ///Callback method to get the location updates
+  Future<bool?> getLocation(
+      {required Function(Map<dynamic, dynamic>) onLocation}) {
+    return UwbPlatform.instance.getLocation(onLocation: onLocation);
   }
 }
