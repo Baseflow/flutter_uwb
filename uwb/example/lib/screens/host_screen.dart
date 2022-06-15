@@ -16,17 +16,22 @@ class HostScreen extends StatefulWidget {
   const HostScreen({Key? key}) : super(key: key);
 
   @override
-  _HostScreenState createState() => _HostScreenState();
+  HostScreenState createState() => HostScreenState();
 }
 
-class _HostScreenState extends State<HostScreen> {
+/// The [HostScreenState] class.
+class HostScreenState extends State<HostScreen> {
   final Uwb _plugin = Uwb();
 
   double? _distance;
   double? _angle;
   String? _error;
   bool _waitingForPeer = true;
+
+  /// The [deviceName] that is shown to peers when advertising.
   String deviceName = 'test-device';
+
+  /// The [serviceType] describes the service to advertise. This should be a short text string that describes the app's networking protocol.
   String serviceType = 'uwb-test';
 
   @override
@@ -63,17 +68,17 @@ class _HostScreenState extends State<HostScreen> {
 
   /// Funcvtions that gets the angle and distance from the location data.
   void onLocation(Map<dynamic, dynamic> location) {
-    final String _direction = location['direction'] as String;
-    final List<String> _directionArray = _direction.split(',');
-    final double _x = double.parse(_directionArray[0]);
-    final double _y = double.parse(_directionArray[1]);
+    final String direction = location['direction'] as String;
+    final List<String> directionArray = direction.split(',');
+    final double x = double.parse(directionArray[0]);
+    final double y = double.parse(directionArray[1]);
 
     setState(() {
       _distance = double.parse(location['distance'] as String);
-      if (_x == 0.0 && _y == 0.0) {
+      if (x == 0.0 && y == 0.0) {
         _angle = null;
       } else {
-        _angle = math.atan2(_x, _y);
+        _angle = math.atan2(x, y);
       }
     });
   }

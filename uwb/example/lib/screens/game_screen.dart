@@ -18,7 +18,7 @@ class BreakoutGame extends StatefulWidget {
   const BreakoutGame({Key? key}) : super(key: key);
 
   @override
-  _BreakoutGameState createState() => _BreakoutGameState();
+  BreakoutGameState createState() => BreakoutGameState();
 }
 
 /// Contains the direction enums of the ball.
@@ -36,22 +36,50 @@ enum Direction {
   right
 }
 
-class _BreakoutGameState extends State<BreakoutGame> {
+/// The [BreakoutGameState] class.
+class BreakoutGameState extends State<BreakoutGame> {
   final Uwb _plugin = Uwb();
+
+  /// Boolean that checks if the game has started.
   bool gameHasStarted = false;
+
+  /// Boolean that checks if the player has lost the game.
   bool playerIsDead = false;
+
+  /// X position of the ball.
   double ballX = 0;
+
+  /// Y position of the ball.
   double ballY = 0;
+
+  /// X position of the paddle.
   double paddleX = 0;
+
+  /// Y position of the paddle.
   double paddleY = 0.9;
+
+  /// Width of the paddle.
   double paddleWidth = 0.4;
+
+  /// Height of the paddle.
   double paddeHeight = 0.03;
+
+  /// Int that keeps track of the score.
   int score = 0;
+
+  /// Direction that keeps track of the vertical direction of the ball.
   Direction ballYDirection = Direction.down;
+
+  /// Direction that keeps track of the horizontal direction of the ball.
   Direction ballXDirection = Direction.left;
+
+  /// List of bricks on the screen.
   late List<Brick> brickFieldList;
+
+  /// Globalkey of the ball.
   final GlobalKey<State<StatefulWidget>> ballKey = GlobalKey();
-  final GlobalKey<State<StatefulWidget>> brickKey = GlobalKey();
+
+  /// Color of the bricks in the game.
   Color brickColor = Colors.blueAccent;
 
   double? _xPosition;
@@ -265,15 +293,15 @@ class _BreakoutGameState extends State<BreakoutGame> {
               onPressed: () {
                 resetGame();
               },
-              child: const Text('EXIT'),
               style: TextButton.styleFrom(primary: Colors.white),
+              child: const Text('EXIT'),
             ),
             TextButton(
               onPressed: () {
                 resetGame();
               },
-              child: const Text('REPLAY'),
               style: TextButton.styleFrom(primary: Colors.white),
+              child: const Text('REPLAY'),
             ),
           ],
         );
@@ -283,14 +311,14 @@ class _BreakoutGameState extends State<BreakoutGame> {
 
   /// Function that gets the x position of the phone from the location data.
   void onLocation(Map<dynamic, dynamic> location) {
-    final String _direction = location['direction'] as String;
-    final List<String> _directionArray = _direction.split(',');
-    final double _x = double.parse(_directionArray[0]);
-    final double _y = double.parse(_directionArray[1]);
+    final String direction = location['direction'] as String;
+    final List<String> directionArray = direction.split(',');
+    final double x = double.parse(directionArray[0]);
+    final double y = double.parse(directionArray[1]);
 
     setState(() {
-      if (_x != 0.0 && _y != 0.0) {
-        _xPosition = _x;
+      if (x != 0.0 && y != 0.0) {
+        _xPosition = x;
       }
     });
   }
