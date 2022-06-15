@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ///Score class. Generates the score
 class Score extends StatelessWidget {
   ///Score constructor
-  const Score({required this.score, required this.gameHasStarted});
+  const Score({Key? key, required this.score, required this.gameHasStarted}): super(key: key);
 
   ///Int variable to keep track of the current score
   final int score;

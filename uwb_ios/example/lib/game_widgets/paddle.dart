@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 class Paddle extends StatelessWidget {
   ///Paddle constructor
   const Paddle({
+    Key? key,
     required this.x,
     required this.y,
-  });
+  }): super(key: key);
 
   ///Variable for x-axis of the paddle
   final double x;

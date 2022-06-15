@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ///Distance class. Shows the distance of the connected phone
 class Distance extends StatelessWidget {
   ///Distance constructor
-  const Distance({required this.x, required this.y, required this.distance});
+  const Distance({Key? key, required this.x, required this.y, required this.distance}): super(key: key);
 
   ///Variable for x-axis of the distance widget
   final double x;

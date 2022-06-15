@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class LoadingIndicator extends StatelessWidget {
   ///Loading indicator constructor
   const LoadingIndicator(
-      {required this.x, required this.y, required this.waitingForPeer});
+      {Key? key, required this.x, required this.y, required this.waitingForPeer}): super(key: key);
 
   ///Variable for x-axis of the loading indicator
   final double x;

@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 class Brick extends StatelessWidget {
   ///Brick constructor
   const Brick(
-      {required this.x,
+      {Key? key,
+      required this.x,
       required this.y,
       required this.brickColor,
-      required this.brickKey});
+      required this.brickKey}): super(key: key);
 
   ///Variable for x-axis of the brick
   final double x;

@@ -32,7 +32,7 @@ enum Direction {
   left,
 
   ///Ball goes right
-  RIGHT
+  right
 }
 
 class _BreakoutGameState extends State<BreakoutGame> {
@@ -114,7 +114,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
       if (ballX >= 1) {
         ballXDirection = Direction.left;
       } else if (ballX <= -1) {
-        ballXDirection = Direction.RIGHT;
+        ballXDirection = Direction.right;
       }
     });
   }
@@ -152,14 +152,10 @@ class _BreakoutGameState extends State<BreakoutGame> {
           setState(() {
             brickFieldList.remove(brick);
             score++;
-            bool didToggle = false;
-
             if (ballPositionY! - (brickPositionY! + brickSizeHeight!) < 1 &&
                     ballPositionY - (brickPositionY + brickSizeHeight) > -8 ||
                 ballPositionY + ballSizeHeight! - brickPositionY < 8 &&
                     ballPositionY + ballSizeHeight - brickPositionY > -1) {
-              print('VERTICAL TOGGLE AT SCORE: $score');
-              didToggle = true;
               toggleVerticalMovement();
             }
 
@@ -168,11 +164,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
                 ballPositionX + ballSizeWidth! - brickPositionX < 15 &&
                     ballPositionX + ballSizeWidth - brickPositionX > -1) {
               toggleHorizontalMovement();
-              didToggle = true;
-              print('HORIZONTAL TOGGLE AT SCORE: $score');
-            }
-            if (!didToggle) {
-              print('NO TOGGLE');
             }
           });
         }
@@ -195,10 +186,10 @@ class _BreakoutGameState extends State<BreakoutGame> {
 
   void toggleHorizontalMovement() {
     setState(() {
-      if (ballXDirection == Direction.RIGHT) {
+      if (ballXDirection == Direction.right) {
         ballXDirection = Direction.left;
       } else {
-        ballXDirection = Direction.RIGHT;
+        ballXDirection = Direction.right;
       }
     });
   }
@@ -211,7 +202,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
         ballY -= 0.005;
       }
 
-      if (ballXDirection == Direction.RIGHT) {
+      if (ballXDirection == Direction.right) {
         ballX += 0.010;
       } else if (ballXDirection == Direction.left) {
         ballX -= 0.010;

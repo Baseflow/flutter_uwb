@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 ///Arrow class. Generates arrow to point at location of the connected device
 class Arrow extends StatelessWidget {
   ///Arrow constructor
-  const Arrow({required this.x, required this.y, required this.angle});
+  const Arrow({Key? key, required this.x, required this.y, required this.angle}): super(key: key);
 
   ///Variable for x-axis of the arrow
   final double x;
