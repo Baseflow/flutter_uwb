@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-///Brick class. Generates a brick
+/// The [Brick] class that generates a brick.
 class Brick extends StatelessWidget {
-  ///Brick constructor
+  /// The [Brick] constructor.
   const Brick(
       {Key? key,
       required this.x,
@@ -11,16 +11,16 @@ class Brick extends StatelessWidget {
       required this.brickKey})
       : super(key: key);
 
-  ///Variable for x-axis of the brick
+  /// Variable for x-axis of the brick.
   final double x;
 
-  ///Variable for y-axis of the brick
+  /// Variable for y-axis of the brick.
   final double y;
 
-  ///Color variable of the brick
+  /// Color variable of the brick.
   final Color brickColor;
 
-  ///Global key used for collision checker
+  /// Global key used for collision checker.
   final GlobalKey brickKey;
 
   @override

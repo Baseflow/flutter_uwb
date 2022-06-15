@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-///Paddle class. Generates a paddle
+/// The [Paddle] class that generates a paddle.
 class Paddle extends StatelessWidget {
-  ///Paddle constructor
+  /// The [Paddle] constructor.
   const Paddle({
     Key? key,
     required this.x,
     required this.y,
   }) : super(key: key);
 
-  ///Variable for x-axis of the paddle
+  /// Variable for x-axis of the paddle.
   final double x;
 
-  ///Variable for y-axis of the paddle
+  /// Variable for y-axis of the paddle.
   final double y;
 
   @override
