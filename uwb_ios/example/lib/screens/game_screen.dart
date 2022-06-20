@@ -10,46 +10,76 @@ import '../game_widgets/paddle.dart';
 import '../game_widgets/score.dart';
 import '../game_widgets/screen_overlay.dart';
 
-///Breakout game class. Contains the code for the breakout game.
+/// The [BreakoutGame] class.
+///
+/// Contains the code for the breakout game.
 class BreakoutGame extends StatefulWidget {
-  ///Breakout game constructor
+  /// The [BreakoutGame] constructor.
   const BreakoutGame({Key? key}) : super(key: key);
 
   @override
-  _BreakoutGameState createState() => _BreakoutGameState();
+  BreakoutGameState createState() => BreakoutGameState();
 }
 
-///Contains the direction enums of the ball
-// ignore: camel_case_types
+/// Contains the direction enums of the ball.
 enum Direction {
-  ///Ball goes up
+  /// Ball goes up.
   up,
 
-  ///Ball goes down
+  /// Ball goes down.
   down,
 
-  ///Ball goes left
+  /// Ball goes left.
   left,
 
-  ///Ball goes right
-  RIGHT
+  /// Ball goes right.
+  right
 }
 
-class _BreakoutGameState extends State<BreakoutGame> {
+/// The [BreakoutGameState] class.
+class BreakoutGameState extends State<BreakoutGame> {
   final UwbIos _plugin = UwbIos();
+
+  /// Boolean that checks if the game has started.
   bool gameHasStarted = false;
+
+  /// Boolean that checks if the player has lost the game.
   bool playerIsDead = false;
+
+  /// X position of the ball.
   double ballX = 0;
+
+  /// Y position of the ball.
   double ballY = 0;
+
+  /// X position of the paddle.
   double paddleX = 0;
+
+  /// Y position of the paddle.
   double paddleY = 0.9;
+
+  /// Width of the paddle.
   double paddleWidth = 0.4;
+
+  /// Height of the paddle.
+  double paddeHeight = 0.03;
+
+  /// Int that keeps track of the score.
   int score = 0;
+
+  /// Direction that keeps track of the vertical direction of the ball.
   Direction ballYDirection = Direction.down;
+
+  /// Direction that keeps track of the horizontal direction of the ball.
   Direction ballXDirection = Direction.left;
+
+  /// List of bricks on the screen.
   late List<Brick> brickFieldList;
+
+  /// Globalkey of the ball.
   final GlobalKey<State<StatefulWidget>> ballKey = GlobalKey();
-  final GlobalKey<State<StatefulWidget>> brickKey = GlobalKey();
+
+  /// Color of the bricks in the game.
   Color brickColor = Colors.blueAccent;
 
   double? _xPosition;
@@ -62,6 +92,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     super.initState();
   }
 
+  /// Starts the breakout game.
   void startGame() {
     if (gameHasStarted == false) {
       gameHasStarted = true;
@@ -85,6 +116,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     }
   }
 
+  /// Functions that resets game modifiers.
   void resetGame() {
     Navigator.pop(context);
     brickFieldList.clear();
@@ -99,9 +131,10 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  /// Function that checks wall collision.
   void checkWallCollision() {
     setState(() {
-      if (ballY >= 0.87) {
+      if (ballY >= (paddleY - paddeHeight)) {
         if (ballY <= 0.9 &&
             paddleX + paddleWidth >= ballX &&
             paddleX <= ballX) {
@@ -114,11 +147,14 @@ class _BreakoutGameState extends State<BreakoutGame> {
       if (ballX >= 1) {
         ballXDirection = Direction.left;
       } else if (ballX <= -1) {
-        ballXDirection = Direction.RIGHT;
+        ballXDirection = Direction.right;
       }
     });
   }
 
+  /// Fucntions that checks brick collision.
+  ///
+  /// Uses [finderRenderObject] to determine the position of the bricks and paddle, and checks if the containers overlap.
   void checkBrickCollision() {
     final RenderBox? ballBox =
         ballKey.currentContext?.findRenderObject() as RenderBox?;
@@ -152,14 +188,10 @@ class _BreakoutGameState extends State<BreakoutGame> {
           setState(() {
             brickFieldList.remove(brick);
             score++;
-            bool didToggle = false;
-
             if (ballPositionY! - (brickPositionY! + brickSizeHeight!) < 1 &&
                     ballPositionY - (brickPositionY + brickSizeHeight) > -8 ||
                 ballPositionY + ballSizeHeight! - brickPositionY < 8 &&
                     ballPositionY + ballSizeHeight - brickPositionY > -1) {
-              print('VERTICAL TOGGLE AT SCORE: $score');
-              didToggle = true;
               toggleVerticalMovement();
             }
 
@@ -168,11 +200,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
                 ballPositionX + ballSizeWidth! - brickPositionX < 15 &&
                     ballPositionX + ballSizeWidth - brickPositionX > -1) {
               toggleHorizontalMovement();
-              didToggle = true;
-              print('HORIZONTAL TOGGLE AT SCORE: $score');
-            }
-            if (!didToggle) {
-              print('NO TOGGLE');
             }
           });
         }
@@ -183,6 +210,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     }
   }
 
+  /// Toggles vertical ball movement.
   void toggleVerticalMovement() {
     setState(() {
       if (ballYDirection == Direction.down) {
@@ -193,16 +221,18 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  /// Toggles horizontal ball movement.
   void toggleHorizontalMovement() {
     setState(() {
-      if (ballXDirection == Direction.RIGHT) {
+      if (ballXDirection == Direction.right) {
         ballXDirection = Direction.left;
       } else {
-        ballXDirection = Direction.RIGHT;
+        ballXDirection = Direction.right;
       }
     });
   }
 
+  /// Function that moves the ball by changeing the x and y-axis.
   void moveBall() {
     setState(() {
       if (ballYDirection == Direction.down) {
@@ -211,7 +241,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
         ballY -= 0.005;
       }
 
-      if (ballXDirection == Direction.RIGHT) {
+      if (ballXDirection == Direction.right) {
         ballX += 0.010;
       } else if (ballXDirection == Direction.left) {
         ballX -= 0.010;
@@ -219,6 +249,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     });
   }
 
+  /// Function that moves the ball by changing the x-axis of the paddle corresponding to the x position of the phone.
   void movePlatform() {
     if (_xPosition != null) {
       setState(() {
@@ -227,6 +258,7 @@ class _BreakoutGameState extends State<BreakoutGame> {
     }
   }
 
+  /// Function that shows a Popup dialog after winning or loosing.
   void _showDialog(String title, Color color) {
     showDialog<Dialog>(
       context: context,
@@ -246,7 +278,6 @@ class _BreakoutGameState extends State<BreakoutGame> {
               ),
             ],
           ),
-          // To display the title it is optional
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -262,15 +293,15 @@ class _BreakoutGameState extends State<BreakoutGame> {
               onPressed: () {
                 resetGame();
               },
-              child: const Text('EXIT'),
               style: TextButton.styleFrom(primary: Colors.white),
+              child: const Text('EXIT'),
             ),
             TextButton(
               onPressed: () {
                 resetGame();
               },
-              child: const Text('REPLAY'),
               style: TextButton.styleFrom(primary: Colors.white),
+              child: const Text('REPLAY'),
             ),
           ],
         );
@@ -278,33 +309,34 @@ class _BreakoutGameState extends State<BreakoutGame> {
     );
   }
 
+  /// Function that gets the x position of the phone from the location data.
   void onLocation(Map<dynamic, dynamic> location) {
-    final String _direction = location['direction'] as String;
-    final List<String> _directionArray = _direction.split(',');
-    final double _x = double.parse(_directionArray[0]);
-    final double _y = double.parse(_directionArray[1]);
+    final String direction = location['direction'] as String;
+    final List<String> directionArray = direction.split(',');
+    final double x = double.parse(directionArray[0]);
+    final double y = double.parse(directionArray[1]);
 
     setState(() {
-      if (_x != 0.0 && _y != 0.0) {
-        _xPosition = _x;
+      if (x != 0.0 && y != 0.0) {
+        _xPosition = x;
       }
     });
   }
 
+  /// Setup call form the uwb plugin.
   Future<void> initPlatformState() async {
-    ///Needed for initial set-up and checks device compatibility
     await _plugin.setUp();
-
-    if (!mounted) {
-      return;
-    }
   }
 
+  /// Join host call from the uwb plugin to join a host phone and setup a connection.
   Future<void> joinHost() async {
     await _plugin.joinHost('test-device', 'uwb-test');
+
+    /// When there is a connection with the host phone we can use the getLocation method form the plugin to get the location data.
     _plugin.getLocation(onLocation: onLocation);
   }
 
+  /// Generates a list of bricks.
   List<Brick> generateBrickFieldList() {
     final List<Brick> brickFieldList = <Brick>[];
 
@@ -317,6 +349,9 @@ class _BreakoutGameState extends State<BreakoutGame> {
     return brickFieldList;
   }
 
+  /// Function that checks the loose condition.
+  ///
+  /// When the ball hits the bottum of the screen it returns a true, otherwise it returns a false.
   bool isPLayerDead() {
     if (ballY >= 1) {
       return true;
