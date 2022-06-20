@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 
-/// The [Distance] class that shows the distance of the connected phone.
+///Distance class. Shows the distance of the connected phone
 class Distance extends StatelessWidget {
-  /// The [Distance] constructor.
-  const Distance(
-      {Key? key, required this.x, required this.y, required this.distance})
-      : super(key: key);
+  ///Distance constructor
+  const Distance({required this.x, required this.y, required this.distance});
 
-  /// Variable for x-axis of the distance widget.
+  ///Variable for x-axis of the distance widget
   final double x;
 
-  /// Variable for y-axis of the distance widget.
+  ///Variable for y-axis of the distance widget
   final double y;
 
-  /// Variable that contains the distance to the other device.
+  ///Variable that contains the distance to the other device
   final double? distance;
 
   @override

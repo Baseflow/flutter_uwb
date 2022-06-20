@@ -5,9 +5,9 @@ void main() {
   runApp(const MyApp());
 }
 
-/// Class [MyApp].
+///My app class.
 class MyApp extends StatelessWidget {
-  /// The [MyApp] constructor.
+  ///My app constructor
   const MyApp({Key? key}) : super(key: key);
 
   @override

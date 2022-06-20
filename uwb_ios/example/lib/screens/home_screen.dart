@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'game_screen.dart';
 import 'host_screen.dart';
 
-/// The [HomeScreen] class.
-///
-/// Shows this screen on initial run.
-/// Contains a host and play button.
+///Home screen class. Shows this screen on initial run. Contains a host and play button.
 class HomeScreen extends StatelessWidget {
-  /// The [HomeScreen]constructor.
+  ///Home screen constructor
   const HomeScreen({Key? key}) : super(key: key);
 
   @override

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'brick.dart';
 
-///The [BrickField] class. Generates a field of bricks
+///Brick field class. Generates a field of bricks
 class BrickField extends StatelessWidget {
-  ///The [BrickField] constructor
-  const BrickField({Key? key, required this.brickFieldList}) : super(key: key);
+  ///Brick field constructor
+  const BrickField({required this.brickFieldList});
 
   ///List of bricks needed for generating the field
   final List<Brick> brickFieldList;

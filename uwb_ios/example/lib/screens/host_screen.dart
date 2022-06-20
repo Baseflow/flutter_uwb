@@ -8,30 +8,23 @@ import '../host_widgets/distance.dart';
 import '../host_widgets/error_message.dart';
 import '../host_widgets/loading_indicator.dart';
 
-/// The [HostScreen] class.
-///
-/// Shows the direction and distance to connected phone.
+///Host screen class. Shows the direction and distance to connected phone
 class HostScreen extends StatefulWidget {
-  /// The [HostScreen] constructor.
+  ///Host screen constructor
   const HostScreen({Key? key}) : super(key: key);
 
   @override
-  HostScreenState createState() => HostScreenState();
+  _HostScreenState createState() => _HostScreenState();
 }
 
-/// The [HostScreenState] class.
-class HostScreenState extends State<HostScreen> {
+class _HostScreenState extends State<HostScreen> {
   final UwbIos _plugin = UwbIos();
 
   double? _distance;
   double? _angle;
   String? _error;
   bool _waitingForPeer = true;
-
-  /// The [deviceName] that is shown to peers when advertising.
   String deviceName = 'test-device';
-
-  /// The [serviceType] describes the service to advertise. This should be a short text string that describes the app's networking protocol.
   String serviceType = 'uwb-test';
 
   @override
@@ -41,21 +34,20 @@ class HostScreenState extends State<HostScreen> {
     super.initState();
   }
 
-  /// Starts the host function from the uwb plugin to start the advertise function to let peers know they can connect to this phone.
   Future<void> startHosting() async {
     await _plugin.startHost(deviceName, serviceType);
-
-    /// When there is a connection with a peer we can use the getLocation method form the plugin to get the location data.
     _plugin.getLocation(onLocation: onLocation);
     _waitingForPeer = false;
   }
 
-  /// SetUp call from the uwb plugin to check device compatibility.
   Future<void> initPlatformState() async {
+    ///Needed for initial set-up and checks device compatibility
     onSetup(await _plugin.setUp());
+    if (!mounted) {
+      return;
+    }
   }
 
-  /// Sets the error message when the device isn't compatible.
   void onSetup(bool? status) {
     if (status != null && !status) {
       setState(() {
@@ -66,19 +58,18 @@ class HostScreenState extends State<HostScreen> {
     }
   }
 
-  /// Funcvtions that gets the angle and distance from the location data.
   void onLocation(Map<dynamic, dynamic> location) {
-    final String direction = location['direction'] as String;
-    final List<String> directionArray = direction.split(',');
-    final double x = double.parse(directionArray[0]);
-    final double y = double.parse(directionArray[1]);
+    final String _direction = location['direction'] as String;
+    final List<String> _directionArray = _direction.split(',');
+    final double _x = double.parse(_directionArray[0]);
+    final double _y = double.parse(_directionArray[1]);
 
     setState(() {
       _distance = double.parse(location['distance'] as String);
-      if (x == 0.0 && y == 0.0) {
+      if (_x == 0.0 && _y == 0.0) {
         _angle = null;
       } else {
-        _angle = math.atan2(x, y);
+        _angle = math.atan2(_x, _y);
       }
     });
   }

@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 
-/// The [Ball] class that generates ball on the field.
+///Ball class. Generates ball on the field
 class Ball extends StatelessWidget {
-  /// The [Ball] constructor.
-  const Ball(
-      {Key? key, required this.x, required this.y, required this.ballKey})
-      : super(key: key);
+  ///Ball constructor
+  const Ball({required this.x, required this.y, required this.ballKey});
 
-  /// Variable for x-axis of the ball.
+  ///Variable for x-axis of the ball
   final double x;
 
-  /// Variable for y-axis of the ball.
+  ///Variable for y-axis of the ball
   final double y;
 
-  /// Global key used for collision checker.
+  ///Global key used for collision checker
   final GlobalKey ballKey;
 
   @override

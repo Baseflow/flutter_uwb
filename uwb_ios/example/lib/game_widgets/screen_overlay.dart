@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// The [ScreenOverlay] class.
-///
-/// Shows a TAP TO PLAY on the screen when the game hasn't been started.
+///Screen overlay class. Shows a TAP TO PLAY on the screen when the game hasn't been started
 class ScreenOverlay extends StatelessWidget {
-  /// The [ScreenOverlay] constructor.
-  const ScreenOverlay({Key? key, required this.gameHasStarted})
-      : super(key: key);
+  ///Screen overlay constructor
+  const ScreenOverlay({required this.gameHasStarted});
 
-  /// Boolean to know if the game hasn't been started so the text can be shown.
+  ///Boolean to know if the game hasn't been started so the text can be shown
   final bool gameHasStarted;
 
   @override
