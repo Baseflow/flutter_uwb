@@ -22,14 +22,14 @@ class UwbIos extends UwbPlatform {
   SetupHelperClass setupHelperClass = SetupHelperClass();
 
   @override
-  Future<bool?> setUp() {
+  Future<bool> checkPlatformCompatibility() {
     /// Sets the method callHandler for the Nearby Interaction Session
     /// This needs to be set after the corresponding FlutterMethodChannel has been set in the native swift file
     nISession.setUp();
 
     /// Checks device iOS-version & UWB compatibility
     /// returns (true) if compatible
-    return setupHelperClass.setUp();
+    return setupHelperClass.checkPlatformCompatibility();
   }
 
   @override

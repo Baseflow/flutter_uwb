@@ -5,6 +5,9 @@ import 'package:pigeon/pigeon.dart';
   dartTestOut: 'test/uwb_api.pigeon.dart',
   objcHeaderOut: 'ios/Classes/uwb_api.pigeon.h',
   objcSourceOut: 'ios/Classes/uwb_api.pigeon.m',
+  objcOptions: ObjcOptions(
+    prefix: 'BF',
+  ),
 ))
 @HostApi()
 abstract class MCNearbyServiceAdvertiserHostApi {

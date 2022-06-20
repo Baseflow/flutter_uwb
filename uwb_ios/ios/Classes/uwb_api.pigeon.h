@@ -9,14 +9,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
-/// The codec used by MCNearbyServiceAdvertiserHostApi.
-NSObject<FlutterMessageCodec> *MCNearbyServiceAdvertiserHostApiGetCodec(void);
+/// The codec used by BFMCNearbyServiceAdvertiserHostApi.
+NSObject<FlutterMessageCodec> *BFMCNearbyServiceAdvertiserHostApiGetCodec(void);
 
-@protocol MCNearbyServiceAdvertiserHostApi
+@protocol BFMCNearbyServiceAdvertiserHostApi
 /// @return `nil` only when `error != nil`.
 - (nullable NSNumber *)checkPlatformCompatibilityWithError:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
-extern void MCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<MCNearbyServiceAdvertiserHostApi> *_Nullable api);
+extern void BFMCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BFMCNearbyServiceAdvertiserHostApi> *_Nullable api);
 
 NS_ASSUME_NONNULL_END

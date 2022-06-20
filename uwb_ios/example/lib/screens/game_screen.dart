@@ -325,7 +325,7 @@ class BreakoutGameState extends State<BreakoutGame> {
 
   /// Setup call form the uwb plugin.
   Future<void> initPlatformState() async {
-    await _plugin.setUp();
+    await _plugin.checkPlatformCompatibility();
   }
 
   /// Join host call from the uwb plugin to join a host phone and setup a connection.

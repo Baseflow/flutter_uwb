@@ -52,11 +52,13 @@ class HostScreenState extends State<HostScreen> {
 
   /// SetUp call from the uwb plugin to check device compatibility.
   Future<void> initPlatformState() async {
-    onSetup(await _plugin.setUp());
+    onSetup(await _plugin.checkPlatformCompatibility());
   }
 
   /// Sets the error message when the device isn't compatible.
   void onSetup(bool? status) {
+    print("Bool for device compatibility: $status");
+
     if (status != null && !status) {
       setState(() {
         _error = 'Device is incompatible with this app.'

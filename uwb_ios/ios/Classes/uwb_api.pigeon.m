@@ -32,47 +32,47 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 
 
 
-@interface MCNearbyServiceAdvertiserHostApiCodecReader : FlutterStandardReader
+@interface BFMCNearbyServiceAdvertiserHostApiCodecReader : FlutterStandardReader
 @end
-@implementation MCNearbyServiceAdvertiserHostApiCodecReader
-@end
-
-@interface MCNearbyServiceAdvertiserHostApiCodecWriter : FlutterStandardWriter
-@end
-@implementation MCNearbyServiceAdvertiserHostApiCodecWriter
+@implementation BFMCNearbyServiceAdvertiserHostApiCodecReader
 @end
 
-@interface MCNearbyServiceAdvertiserHostApiCodecReaderWriter : FlutterStandardReaderWriter
+@interface BFMCNearbyServiceAdvertiserHostApiCodecWriter : FlutterStandardWriter
 @end
-@implementation MCNearbyServiceAdvertiserHostApiCodecReaderWriter
+@implementation BFMCNearbyServiceAdvertiserHostApiCodecWriter
+@end
+
+@interface BFMCNearbyServiceAdvertiserHostApiCodecReaderWriter : FlutterStandardReaderWriter
+@end
+@implementation BFMCNearbyServiceAdvertiserHostApiCodecReaderWriter
 - (FlutterStandardWriter *)writerWithData:(NSMutableData *)data {
-  return [[MCNearbyServiceAdvertiserHostApiCodecWriter alloc] initWithData:data];
+  return [[BFMCNearbyServiceAdvertiserHostApiCodecWriter alloc] initWithData:data];
 }
 - (FlutterStandardReader *)readerWithData:(NSData *)data {
-  return [[MCNearbyServiceAdvertiserHostApiCodecReader alloc] initWithData:data];
+  return [[BFMCNearbyServiceAdvertiserHostApiCodecReader alloc] initWithData:data];
 }
 @end
 
-NSObject<FlutterMessageCodec> *MCNearbyServiceAdvertiserHostApiGetCodec() {
+NSObject<FlutterMessageCodec> *BFMCNearbyServiceAdvertiserHostApiGetCodec() {
   static dispatch_once_t sPred = 0;
   static FlutterStandardMessageCodec *sSharedObject = nil;
   dispatch_once(&sPred, ^{
-    MCNearbyServiceAdvertiserHostApiCodecReaderWriter *readerWriter = [[MCNearbyServiceAdvertiserHostApiCodecReaderWriter alloc] init];
+    BFMCNearbyServiceAdvertiserHostApiCodecReaderWriter *readerWriter = [[BFMCNearbyServiceAdvertiserHostApiCodecReaderWriter alloc] init];
     sSharedObject = [FlutterStandardMessageCodec codecWithReaderWriter:readerWriter];
   });
   return sSharedObject;
 }
 
 
-void MCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<MCNearbyServiceAdvertiserHostApi> *api) {
+void BFMCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BFMCNearbyServiceAdvertiserHostApi> *api) {
   {
     FlutterBasicMessageChannel *channel =
       [[FlutterBasicMessageChannel alloc]
         initWithName:@"dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.checkPlatformCompatibility"
         binaryMessenger:binaryMessenger
-        codec:MCNearbyServiceAdvertiserHostApiGetCodec()        ];
+        codec:BFMCNearbyServiceAdvertiserHostApiGetCodec()        ];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(checkPlatformCompatibilityWithError:)], @"MCNearbyServiceAdvertiserHostApi api (%@) doesn't respond to @selector(checkPlatformCompatibilityWithError:)", api);
+      NSCAssert([api respondsToSelector:@selector(checkPlatformCompatibilityWithError:)], @"BFMCNearbyServiceAdvertiserHostApi api (%@) doesn't respond to @selector(checkPlatformCompatibilityWithError:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         FlutterError *error;
         NSNumber *output = [api checkPlatformCompatibilityWithError:&error];
