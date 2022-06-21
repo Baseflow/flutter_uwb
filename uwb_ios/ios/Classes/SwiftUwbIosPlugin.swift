@@ -1,22 +1,18 @@
+import Foundation
 import Flutter
 import UIKit
 
-public class SwiftUwbIosPlugin: NSObject, FlutterPlugin, BFMCNearbyServiceAdvertiserHostApi {
+public class SwiftUwbIosPlugin: NSObject, FlutterPlugin {
 
-    public static func register(with registrar: FlutterPluginRegistrar) {
-//        let messenger : FlutterBinaryMessenger = registrar.messenger()
-//        let api : MCNearbyServiceAdvertiserHostApi & NSObjectProtocol = SwiftUwbIosPlugin.init()
-//        MCNearbyServiceAdvertiserHostApiSetup(messenger, api);
-      
-      SetupHelperClass.setUp(binaryMessenger: registrar.messenger())
-      
-      if #available(iOS 14.0, *) {
-          NISessionHostApi.setUp(binaryMessenger: registrar.messenger())
-          MCSessionHostApi.setUp(binaryMessenger: registrar.messenger())
-      }
-    }
+  public static func register(with registrar: FlutterPluginRegistrar) {
+    let _: SwiftUwbIosPlugin = SwiftUwbIosPlugin()
+      .setUpAdvertiser(messenger: registrar.messenger())
+  }
+  
+  private func setUpAdvertiser(messenger: FlutterBinaryMessenger) -> SwiftUwbIosPlugin {
+    let advertiser: BFMCNearbyServiceAdvertiserHostApiImpl = BFMCNearbyServiceAdvertiserHostApiImpl(flutterMessenger: messenger)
+    BFMCNearbyServiceAdvertiserHostApiSetup(messenger, advertiser)
     
-    public func checkPlatformCompatibilityWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) -> NSNumber? {
-        return true;
-    }
+    return self
+  }
 }

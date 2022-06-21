@@ -13,3 +13,8 @@ import 'package:pigeon/pigeon.dart';
 abstract class MCNearbyServiceAdvertiserHostApi {
   bool checkPlatformCompatibility();
 }
+
+@HostApi()
+abstract class MCSessionHostApi {
+  
+}
