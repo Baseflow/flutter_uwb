@@ -68,7 +68,7 @@ class HostScreenState extends State<HostScreen> {
     }
   }
 
-  /// Funcvtions that gets the angle and distance from the location data.
+  /// Function that gets the angle and distance from the location data.
   void onLocation(Map<dynamic, dynamic> location) {
     final String direction = location['direction'] as String;
     final List<String> directionArray = direction.split(',');
