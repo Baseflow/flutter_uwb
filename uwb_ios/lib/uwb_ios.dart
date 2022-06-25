@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:uwb_ios/multipeer_connectivity.dart';
-import 'package:uwb_ios/nearby_interaction.dart';
 import 'package:uwb_ios/setup_helper_class.dart';
 import 'package:uwb_platform_interface/uwb_platform_interface.dart';
+
+import 'multipeer_connectivity_wrapper.dart';
 
 /// Extends UwbPlatform. Directs method calls to the corresponding wrapper and helper classes
 class UwbIos extends UwbPlatform {
@@ -12,39 +12,37 @@ class UwbIos extends UwbPlatform {
     UwbPlatform.instance = UwbIos();
   }
 
-  /// Initialises MCSessionWrapper
-  MCSessionWrapper mCSession = MCSessionWrapper();
-
-  /// Initialises NISessionWrapper
-  NISessionWrapper nISession = NISessionWrapper();
-
   /// Initialises the setupHelperClass
   SetupHelperClass setupHelperClass = SetupHelperClass();
 
   @override
   Future<bool> checkPlatformCompatibility() {
-    /// Sets the method callHandler for the Nearby Interaction Session
-    /// This needs to be set after the corresponding FlutterMethodChannel has been set in the native swift file
-    nISession.setUp();
-
     /// Checks device iOS-version & UWB compatibility
     /// returns (true) if compatible
     return setupHelperClass.checkPlatformCompatibility();
   }
 
   @override
-  Future<bool?> startHost(String peerID, String serviceType) {
-    return mCSession.startHost(peerID, serviceType);
+  Future<void> startHost(String peerID, String serviceType) {
+    final MCPeerIDWrapper peerId = MCPeerIDWrapper(displayname: peerID);
+
+    final MCNearbyServiceAdvertiserWrapper advertiser =
+        MCNearbyServiceAdvertiserWrapper(
+      peer: peerId,
+      serviceType: serviceType,
+    );
+
+    return advertiser.startAdvertisingPeer();
   }
 
   @override
-  Future<bool?> joinHost(String peerID, String serviceType) {
-    return mCSession.joinHost(peerID, serviceType);
+  Future<void> joinHost(String peerID, String serviceType) {
+    return super.joinHost(peerID, serviceType);
   }
 
-  @override
-  Future<bool?> getLocation(
-      {required Function(Map<dynamic, dynamic>) onLocation}) {
-    return nISession.getLocation(onLocation: onLocation);
-  }
+  // @override
+  // Future<bool?> getLocation(
+  //     {required Function(Map<dynamic, dynamic>) onLocation}) {
+  //   return super.getLocation(onLocation: onLocation);
+  // }
 }

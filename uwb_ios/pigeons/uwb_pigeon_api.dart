@@ -9,12 +9,52 @@ import 'package:pigeon/pigeon.dart';
     prefix: 'BF',
   ),
 ))
-@HostApi()
-abstract class MCNearbyServiceAdvertiserHostApi {
-  bool checkPlatformCompatibility();
+class MCPeerIDWrapper {
+  String? displayname;
+}
+
+enum MCEncryptionPreferenceWrapper {
+  optional,
+  required,
+  none,
+}
+
+class MCSessionWrapper {
+  MCPeerIDWrapper? peerId;
+  MCEncryptionPreferenceWrapper? encryptionPreference;
+}
+
+@FlutterApi()
+abstract class MCNearbyServiceAdvertiserDelegateFlutterApi {
+  void didNotStartAdvertisingPeer();
+
+  MCSessionWrapper? didReceiveInvitationFromPeer(
+    MCPeerIDWrapper peerID,
+    String? context,
+  );
 }
 
 @HostApi()
-abstract class MCSessionHostApi {
-  
+abstract class MCNearbyServiceAdvertiserHostApi {
+  bool checkPlatformCompatibility();
+
+  void create(
+    int instanceId,
+    MCPeerIDWrapper peerId,
+    Map<String, String>? info,
+    String serviceType,
+  );
+
+  void dispose(int instanceId);
+
+  void registerDelegate(int instanceId);
+
+  void removeDelegate(int instanceId);
+
+  void startAdvertisingPeer(int instanceId);
+
+  void stopAdvertisingPeer(int instanceId);
 }
+
+@HostApi()
+abstract class MCSessionHostApi {}
