@@ -36,8 +36,6 @@ abstract class MCNearbyServiceAdvertiserDelegateFlutterApi {
 
 @HostApi()
 abstract class MCNearbyServiceAdvertiserHostApi {
-  bool checkPlatformCompatibility();
-
   void create(
     int instanceId,
     MCPeerIDWrapper peerId,

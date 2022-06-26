@@ -57,8 +57,6 @@ class HostScreenState extends State<HostScreen> {
 
   /// Sets the error message when the device isn't compatible.
   void onSetup(bool? status) {
-    print("Bool for device compatibility: $status");
-
     if (status != null && !status) {
       setState(() {
         _error = 'Device is incompatible with this app.'

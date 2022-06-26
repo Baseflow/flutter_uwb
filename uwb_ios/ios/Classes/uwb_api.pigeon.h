@@ -41,8 +41,6 @@ NSObject<FlutterMessageCodec> *BFMCNearbyServiceAdvertiserDelegateFlutterApiGetC
 NSObject<FlutterMessageCodec> *BFMCNearbyServiceAdvertiserHostApiGetCodec(void);
 
 @protocol BFMCNearbyServiceAdvertiserHostApi
-/// @return `nil` only when `error != nil`.
-- (nullable NSNumber *)checkPlatformCompatibilityWithError:(FlutterError *_Nullable *_Nonnull)error;
 - (void)createInstanceId:(NSNumber *)instanceId peerId:(BFMCPeerIDWrapper *)peerId info:(nullable NSDictionary<NSString *, NSString *> *)info serviceType:(NSString *)serviceType error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)disposeInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)registerDelegateInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;

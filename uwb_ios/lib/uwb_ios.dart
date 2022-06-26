@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:uwb_ios/setup_helper_class.dart';
 import 'package:uwb_platform_interface/uwb_platform_interface.dart';
 
 import 'multipeer_connectivity_wrapper.dart';
@@ -10,16 +9,6 @@ class UwbIos extends UwbPlatform {
   /// Sets the UbwPlatform instance
   static void registerWith() {
     UwbPlatform.instance = UwbIos();
-  }
-
-  /// Initialises the setupHelperClass
-  SetupHelperClass setupHelperClass = SetupHelperClass();
-
-  @override
-  Future<bool> checkPlatformCompatibility() {
-    /// Checks device iOS-version & UWB compatibility
-    /// returns (true) if compatible
-    return setupHelperClass.checkPlatformCompatibility();
   }
 
   @override
@@ -34,15 +23,4 @@ class UwbIos extends UwbPlatform {
 
     return advertiser.startAdvertisingPeer();
   }
-
-  @override
-  Future<void> joinHost(String peerID, String serviceType) {
-    return super.joinHost(peerID, serviceType);
-  }
-
-  // @override
-  // Future<bool?> getLocation(
-  //     {required Function(Map<dynamic, dynamic>) onLocation}) {
-  //   return super.getLocation(onLocation: onLocation);
-  // }
 }

@@ -236,24 +236,6 @@ void BFMCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> binaryMe
   {
     FlutterBasicMessageChannel *channel =
       [[FlutterBasicMessageChannel alloc]
-        initWithName:@"dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.checkPlatformCompatibility"
-        binaryMessenger:binaryMessenger
-        codec:BFMCNearbyServiceAdvertiserHostApiGetCodec()        ];
-    if (api) {
-      NSCAssert([api respondsToSelector:@selector(checkPlatformCompatibilityWithError:)], @"BFMCNearbyServiceAdvertiserHostApi api (%@) doesn't respond to @selector(checkPlatformCompatibilityWithError:)", api);
-      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
-        FlutterError *error;
-        NSNumber *output = [api checkPlatformCompatibilityWithError:&error];
-        callback(wrapResult(output, error));
-      }];
-    }
-    else {
-      [channel setMessageHandler:nil];
-    }
-  }
-  {
-    FlutterBasicMessageChannel *channel =
-      [[FlutterBasicMessageChannel alloc]
         initWithName:@"dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.create"
         binaryMessenger:binaryMessenger
         codec:BFMCNearbyServiceAdvertiserHostApiGetCodec()        ];
