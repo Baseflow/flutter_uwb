@@ -10,6 +10,13 @@ import MultipeerConnectivity
 import NearbyInteraction
 
 internal class BFMCNearbyServiceAdvertiserHostApiImpl : NSObject, BFMCNearbyServiceAdvertiserHostApi {
+    
+    let flutterMessenger: FlutterBinaryMessenger
+      
+    init(flutterMessenger: FlutterBinaryMessenger) {
+      self.flutterMessenger = flutterMessenger
+    }
+    
     func registerDelegateInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
         
     }
@@ -39,12 +46,6 @@ internal class BFMCNearbyServiceAdvertiserHostApiImpl : NSObject, BFMCNearbyServ
         let advertiser: MCNearbyServiceAdvertiser = BFInstanceManager.current.getInstance(instanceId: instanceId) as! MCNearbyServiceAdvertiser
            advertiser.startAdvertisingPeer()
     }
-    
-  let flutterMessenger: FlutterBinaryMessenger
-    
-  init(flutterMessenger: FlutterBinaryMessenger) {
-    self.flutterMessenger = flutterMessenger
-  }
   
   public func checkPlatformCompatibilityWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) -> NSNumber? {
       if #available(iOS 14.0, *) {

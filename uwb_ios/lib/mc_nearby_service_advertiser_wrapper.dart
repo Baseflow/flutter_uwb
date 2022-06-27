@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import 'uwb_api.pigeon.dart';
-import 'multipeer_connectivity_wrapper_api_impl.dart';
+import 'mc_nearby_service_advertiser_wrapper_api_impl.dart';
 
 export 'uwb_api.pigeon.dart'
     show MCEncryptionPreferenceWrapper, MCPeerIDWrapper, MCSessionWrapper;

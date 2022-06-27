@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:uwb_ios/instance_manager.dart';
 import 'package:uwb_ios/uwb_api.pigeon.dart';
 
-import 'multipeer_connectivity_wrapper.dart';
+import 'mc_nearby_service_advertiser_wrapper.dart';
 
 /// Implementation of the [MCNearbyServiceAdvertiserHostApi] interface. The
 /// implementation is responsible for communicating with the native platform.
