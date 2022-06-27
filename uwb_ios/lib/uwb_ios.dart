@@ -27,7 +27,6 @@ class UwbIos extends UwbPlatform {
 
   @override
   Future<void> joinHost(String peerID, String serviceType) {
-    print("uwb_ios.dart - joinJost");
     final MCPeerIDWrapper peerId = MCPeerIDWrapper(displayname: peerID);
     final MCSessionWrapper mcSession = MCSessionWrapper(peerId: peerId);
 

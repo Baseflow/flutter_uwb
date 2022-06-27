@@ -20,7 +20,6 @@ class MCBrowserViewControllerHostApiImpl
   /// Helper method to convert instance identifiers to objects.
   Future<void> createFromInstance(MCBrowserViewControllerWrapper instance,
       MCSessionWrapper mcSession, String serviceType) async {
-    print("MCBrowserViewControllerHostApiImpl - createFromInstance");
     final int? instanceId = instanceManager.tryAddInstance(instance);
     if (instanceId != null) {
       return create(instanceId, mcSession, serviceType);
@@ -39,8 +38,6 @@ class MCBrowserViewControllerHostApiImpl
   ///
   Future<void> presentTheBrowserToViewControllerFromInstance(
       MCBrowserViewControllerWrapper instance) async {
-    print(
-        "MCBrowserViewControllerHostApiImpl - presentTheBrowserToViewControllerFromInstance");
     final int? instanceId = instanceManager.removeInstance(instance);
     if (instanceId != null) {
       return presentTheBrowserToViewController(instanceId);
