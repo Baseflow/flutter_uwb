@@ -64,7 +64,24 @@ internal class NearbyServiceAdvertiserDelegate : NSObject, MCNearbyServiceAdvert
     }
     
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        print("RECEIVED INVITATION")
+        let peerIdWrapper: BFMCPeerIDWrapper = BFMCPeerIDWrapper.make(withDisplayName: peerID.displayName)
+        
+        var encodedContext: String?
+        if context != nil {
+            encodedContext = context?.base64EncodedString()
+        }
+        
+        flutterApi.didReceiveInvitation(fromPeerPeerID: peerIdWrapper, context: encodedContext, completion: {(sessionWrapper: BFMCSessionWrapper?, error: Error?) in
+            if sessionWrapper == nil || error != nil {
+                invitationHandler(false, nil)
+                return
+            }
+            
+            let session: MCSession = BFObjectTranslator.toMCSession(sessionWrapper: sessionWrapper!)
+            invitationHandler(true, session)
+        })
     }
 }
+
+
 

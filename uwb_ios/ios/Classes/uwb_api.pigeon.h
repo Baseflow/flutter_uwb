@@ -51,17 +51,4 @@ NSObject<FlutterMessageCodec> *BFMCNearbyServiceAdvertiserHostApiGetCodec(void);
 
 extern void BFMCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BFMCNearbyServiceAdvertiserHostApi> *_Nullable api);
 
-/// The codec used by BFMCBrowserViewControllerHostApi.
-NSObject<FlutterMessageCodec> *BFMCBrowserViewControllerHostApiGetCodec(void);
-
-@protocol BFMCBrowserViewControllerHostApi
-- (void)createInstanceId:(NSNumber *)instanceId peerId:(BFMCSessionWrapper *)peerId serviceType:(NSString *)serviceType error:(FlutterError *_Nullable *_Nonnull)error;
-- (void)disposeInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
-- (void)registerDelegateInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
-- (void)removeDelegateInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
-- (void)presentTheBrowserToViewControllerInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
-@end
-
-extern void BFMCBrowserViewControllerHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BFMCBrowserViewControllerHostApi> *_Nullable api);
-
 NS_ASSUME_NONNULL_END
