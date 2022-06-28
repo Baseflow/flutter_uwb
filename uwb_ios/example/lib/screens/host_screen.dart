@@ -36,7 +36,7 @@ class HostScreenState extends State<HostScreen> {
 
   @override
   void initState() {
-    initPlatformState();
+    // initPlatformState();
     startHosting();
     super.initState();
   }
@@ -46,7 +46,7 @@ class HostScreenState extends State<HostScreen> {
     await _plugin.startHost(deviceName, serviceType);
 
     /// When there is a connection with a peer we can use the getLocation method form the plugin to get the location data.
-    _plugin.getLocation(onLocation: onLocation);
+    // _plugin.getLocation(onLocation: onLocation);
     _waitingForPeer = false;
   }
 

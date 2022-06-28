@@ -10,7 +10,7 @@ import MultipeerConnectivity
 
 class BFObjectTranslator {
     static func toMCPeerID(peerIDWrapper: BFMCPeerIDWrapper) -> MCPeerID {
-        return MCPeerID(displayName: peerIDWrapper.displayname ?? UIDevice.current.name)
+        return MCPeerID(displayName: peerIDWrapper.displayName ?? UIDevice.current.name)
     }
     
     static func toMCSession(sessionWrapper: BFMCSessionWrapper) -> MCSession {

@@ -7,33 +7,36 @@
 
 import Foundation
 import MultipeerConnectivity
-import NearbyInteraction
 
 internal class BFMCNearbyServiceAdvertiserHostApiImpl : NSObject, BFMCNearbyServiceAdvertiserHostApi {
     
     let flutterMessenger: FlutterBinaryMessenger
-      
+    
     init(flutterMessenger: FlutterBinaryMessenger) {
-      self.flutterMessenger = flutterMessenger
+        self.flutterMessenger = flutterMessenger
     }
     
     func registerDelegateInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        print("registering delegate")
+        let flutterApi: BFMCNearbyServiceAdvertiserDelegateFlutterApi = BFMCNearbyServiceAdvertiserDelegateFlutterApi(binaryMessenger: flutterMessenger)
+        let delegate: NearbyServiceAdvertiserDelegate = NearbyServiceAdvertiserDelegate(
+            flutterApi: flutterApi)
         
+        let advertiser: MCNearbyServiceAdvertiser = BFInstanceManager.current.getInstance(instanceId: instanceId) as! MCNearbyServiceAdvertiser
+        advertiser.delegate = delegate
     }
     
     func removeDelegateInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
-        
-    }
-    
-    func stopAdvertisingPeerInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
-        
+        let advertiser: MCNearbyServiceAdvertiser = BFInstanceManager.current.getInstance(instanceId: instanceId) as! MCNearbyServiceAdvertiser
+        advertiser.delegate = nil
     }
     
     func createInstanceId(_ instanceId: NSNumber, peerId: BFMCPeerIDWrapper, info: [String : String]?, serviceType: String, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        print("creating instance")
         let advertiser: MCNearbyServiceAdvertiser = MCNearbyServiceAdvertiser(
-          peer: BFObjectTranslator.toMCPeerID(peerIDWrapper: peerId),
-          discoveryInfo: info,
-          serviceType: serviceType)
+            peer: BFObjectTranslator.toMCPeerID(peerIDWrapper: peerId),
+            discoveryInfo: info,
+            serviceType: serviceType)
         
         BFInstanceManager.current.addInstance(instanceId: instanceId, instance: advertiser)
     }
@@ -43,16 +46,28 @@ internal class BFMCNearbyServiceAdvertiserHostApiImpl : NSObject, BFMCNearbyServ
     }
     
     func startAdvertisingPeerInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        print("started advertising")
         let advertiser: MCNearbyServiceAdvertiser = BFInstanceManager.current.getInstance(instanceId: instanceId) as! MCNearbyServiceAdvertiser
-           advertiser.startAdvertisingPeer()
+        advertiser.startAdvertisingPeer()
     }
-  
-  public func checkPlatformCompatibilityWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) -> NSNumber? {
-      if #available(iOS 14.0, *) {
-          if NISession.isSupported {
-              return true
-          }
-      }
-    return false
-  }
+    
+    func stopAdvertisingPeerInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        let advertiser: MCNearbyServiceAdvertiser = BFInstanceManager.current.getInstance(instanceId: instanceId) as! MCNearbyServiceAdvertiser
+        advertiser.stopAdvertisingPeer()
+    }
 }
+
+
+internal class NearbyServiceAdvertiserDelegate : NSObject, MCNearbyServiceAdvertiserDelegate {
+    
+    let flutterApi: BFMCNearbyServiceAdvertiserDelegateFlutterApi
+    
+    init(flutterApi: BFMCNearbyServiceAdvertiserDelegateFlutterApi) {
+        self.flutterApi = flutterApi
+    }
+    
+    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        print("RECEIVED INVITATION")
+    }
+}
+

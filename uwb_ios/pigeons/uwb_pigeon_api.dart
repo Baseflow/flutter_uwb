@@ -10,7 +10,7 @@ import 'package:pigeon/pigeon.dart';
   ),
 ))
 class MCPeerIDWrapper {
-  String? displayname;
+  String? displayName;
 }
 
 enum MCEncryptionPreferenceWrapper {
