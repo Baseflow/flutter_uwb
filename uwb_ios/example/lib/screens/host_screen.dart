@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uwb_ios/uwb_ios.dart';
 
 /// The [HostScreen] class.
 ///
@@ -14,24 +13,9 @@ class HostScreen extends StatefulWidget {
 
 /// The [HostScreenState] class.
 class HostScreenState extends State<HostScreen> {
-  final UwbIos _plugin = UwbIos();
-
-  /// The [deviceName] that is shown to peers when advertising.
-  String deviceName = 'test-device';
-
-  /// The [serviceType] describes the service to advertise. This should be a short text string that describes the app's networking protocol.
-  String serviceType = 'uwb-test';
-
   @override
   void initState() {
-    // initPlatformState();
-    startHosting();
     super.initState();
-  }
-
-  /// Starts the host function from the uwb plugin to start the advertise function to let peers know they can connect to this phone.
-  Future<void> startHosting() async {
-    await _plugin.startHost(deviceName, serviceType);
   }
 
   @override
