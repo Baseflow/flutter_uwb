@@ -62,7 +62,6 @@ class _NearbyServiceAdvertiserDelegate
   @override
   MCSessionWrapper? didReceiveInvitationFromPeer(
       MCPeerIDWrapper peerID, String? context) {
-    print("received invitation from peer");
     //peerId van de advertiser
     final MCPeerIDWrapper peerId =
         MCPeerIDWrapper(displayName: peerID.displayName);
