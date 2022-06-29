@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:uwb_ios/multipeer_connectivity.dart';
-import 'package:uwb_ios/nearby_interaction.dart';
-import 'package:uwb_ios/setup_helper_class.dart';
 import 'package:uwb_platform_interface/uwb_platform_interface.dart';
+import 'mc_nearby_service_advertiser_wrapper.dart';
 
 /// Extends UwbPlatform. Directs method calls to the corresponding wrapper and helper classes
 class UwbIos extends UwbPlatform {
@@ -12,39 +10,51 @@ class UwbIos extends UwbPlatform {
     UwbPlatform.instance = UwbIos();
   }
 
-  /// Initialises MCSessionWrapper
-  MCSessionWrapper mCSession = MCSessionWrapper();
+  /// Callback that is called when starting the advertiser failed.
+  void Function()? onAdvertisingFailure;
 
-  /// Initialises NISessionWrapper
-  NISessionWrapper nISession = NISessionWrapper();
-
-  /// Initialises the setupHelperClass
-  SetupHelperClass setupHelperClass = SetupHelperClass();
+  /// Callback that is called when an invitation is received from a connecting
+  /// peer.
+  void Function(String peerName, String? context)? onReceiveInvitation;
 
   @override
-  Future<bool> checkPlatformCompatibility() {
-    /// Sets the method callHandler for the Nearby Interaction Session
-    /// This needs to be set after the corresponding FlutterMethodChannel has been set in the native swift file
-    nISession.setUp();
+  Future<void> startHost(String peerID, String serviceType) {
+    final MCPeerIDWrapper peerId = MCPeerIDWrapper(displayName: peerID);
 
-    /// Checks device iOS-version & UWB compatibility
-    /// returns (true) if compatible
-    return setupHelperClass.checkPlatformCompatibility();
+    final MCNearbyServiceAdvertiserWrapper advertiser =
+        MCNearbyServiceAdvertiserWrapper(
+      peer: peerId,
+      serviceType: serviceType,
+    );
+
+    advertiser.setDelegate(_NearbyServiceAdvertiserDelegate(this));
+
+    return advertiser.startAdvertisingPeer();
+  }
+}
+
+class _NearbyServiceAdvertiserDelegate
+    extends MCNearbyServiceAdvertiserDelegateWrapper {
+  _NearbyServiceAdvertiserDelegate(this._platform);
+
+  final UwbIos _platform;
+
+  @override
+  void didNotStartAdvertisingPeer() {
+    if (_platform.onAdvertisingFailure != null) {
+      _platform.onAdvertisingFailure!();
+    }
   }
 
   @override
-  Future<bool?> startHost(String peerID, String serviceType) {
-    return mCSession.startHost(peerID, serviceType);
-  }
+  MCSessionWrapper? didReceiveInvitationFromPeer(
+      MCPeerIDWrapper peerID, String? context) {
+    //peerId van de advertiser
+    final MCPeerIDWrapper peerId =
+        MCPeerIDWrapper(displayName: peerID.displayName);
+    final MCSessionWrapper mcSession = MCSessionWrapper(peerId: peerId);
 
-  @override
-  Future<bool?> joinHost(String peerID, String serviceType) {
-    return mCSession.joinHost(peerID, serviceType);
-  }
-
-  @override
-  Future<bool?> getLocation(
-      {required Function(Map<dynamic, dynamic>) onLocation}) {
-    return nISession.getLocation(onLocation: onLocation);
+    // _platform.onReceiveInvitation!(peerID.displayName!, context);
+    return mcSession;
   }
 }

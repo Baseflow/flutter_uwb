@@ -9,12 +9,53 @@ import 'package:pigeon/pigeon.dart';
     prefix: 'BF',
   ),
 ))
-@HostApi()
-abstract class MCNearbyServiceAdvertiserHostApi {
-  bool checkPlatformCompatibility();
+class MCPeerIDWrapper {
+  String? displayName;
+}
+
+enum MCEncryptionPreferenceWrapper {
+  optional,
+  required,
+  none,
+}
+
+class MCSessionWrapper {
+  MCPeerIDWrapper? peerId;
+  MCEncryptionPreferenceWrapper? encryptionPreference;
+}
+
+@FlutterApi()
+abstract class MCNearbyServiceAdvertiserDelegateFlutterApi {
+  void didNotStartAdvertisingPeer();
+
+  MCSessionWrapper? didReceiveInvitationFromPeer(
+    MCPeerIDWrapper peerID,
+    String? context,
+  );
 }
 
 @HostApi()
-abstract class MCSessionHostApi {
-  
+abstract class MCNearbyServiceAdvertiserHostApi {
+  /// Initializes an advertiser object.
+  void create(
+    int instanceId,
+    MCPeerIDWrapper peerId,
+    Map<String, String>? info,
+    String serviceType,
+  );
+
+  /// Discards the instance of the browser view controller.
+  void dispose(int instanceId);
+
+  /// Registers the delegate object that handles advertising-assistant-related events.
+  void registerDelegate(int instanceId);
+
+  /// Removes the delegate object that handles advertising-assistant-related events.
+  void removeDelegate(int instanceId);
+
+  /// Begins advertising the service provided by a local peer and starts the assistant.
+  void startAdvertisingPeer(int instanceId);
+
+  /// Stops advertising the service provided by a local peer and stops the assistant.
+  void stopAdvertisingPeer(int instanceId);
 }
