@@ -399,39 +399,11 @@ void BFMCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> binaryMe
 @interface BFMCBrowserViewControllerHostApiCodecReader : FlutterStandardReader
 @end
 @implementation BFMCBrowserViewControllerHostApiCodecReader
-- (nullable id)readValueOfType:(UInt8)type 
-{
-  switch (type) {
-    case 128:     
-      return [BFMCPeerIDWrapper fromMap:[self readValue]];
-    
-    case 129:     
-      return [BFMCSessionWrapper fromMap:[self readValue]];
-    
-    default:    
-      return [super readValueOfType:type];
-    
-  }
-}
 @end
 
 @interface BFMCBrowserViewControllerHostApiCodecWriter : FlutterStandardWriter
 @end
 @implementation BFMCBrowserViewControllerHostApiCodecWriter
-- (void)writeValue:(id)value 
-{
-  if ([value isKindOfClass:[BFMCPeerIDWrapper class]]) {
-    [self writeByte:128];
-    [self writeValue:[value toMap]];
-  } else 
-  if ([value isKindOfClass:[BFMCSessionWrapper class]]) {
-    [self writeByte:129];
-    [self writeValue:[value toMap]];
-  } else 
-{
-    [super writeValue:value];
-  }
-}
 @end
 
 @interface BFMCBrowserViewControllerHostApiCodecReaderWriter : FlutterStandardReaderWriter
@@ -464,14 +436,14 @@ void BFMCBrowserViewControllerHostApiSetup(id<FlutterBinaryMessenger> binaryMess
         binaryMessenger:binaryMessenger
         codec:BFMCBrowserViewControllerHostApiGetCodec()        ];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(createInstanceId:peerId:serviceType:error:)], @"BFMCBrowserViewControllerHostApi api (%@) doesn't respond to @selector(createInstanceId:peerId:serviceType:error:)", api);
+      NSCAssert([api respondsToSelector:@selector(createInstanceId:mCSessionInstanceID:serviceType:error:)], @"BFMCBrowserViewControllerHostApi api (%@) doesn't respond to @selector(createInstanceId:mCSessionInstanceID:serviceType:error:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray *args = message;
         NSNumber *arg_instanceId = GetNullableObjectAtIndex(args, 0);
-        BFMCSessionWrapper *arg_peerId = GetNullableObjectAtIndex(args, 1);
+        NSNumber *arg_mCSessionInstanceID = GetNullableObjectAtIndex(args, 1);
         NSString *arg_serviceType = GetNullableObjectAtIndex(args, 2);
         FlutterError *error;
-        [api createInstanceId:arg_instanceId peerId:arg_peerId serviceType:arg_serviceType error:&error];
+        [api createInstanceId:arg_instanceId mCSessionInstanceID:arg_mCSessionInstanceID serviceType:arg_serviceType error:&error];
         callback(wrapResult(nil, error));
       }];
     }

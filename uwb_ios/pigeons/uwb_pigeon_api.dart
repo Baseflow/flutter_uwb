@@ -81,7 +81,7 @@ abstract class MCBrowserViewControllerHostApi {
   /// Initializes a browser view controller using the provided service type and session.
   void create(
     int instanceId,
-    MCSessionWrapper peerId,
+    int mCSessionInstanceID,
     String serviceType,
   );
 

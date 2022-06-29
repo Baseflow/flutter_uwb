@@ -60,7 +60,7 @@ extern void BFMCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> b
 NSObject<FlutterMessageCodec> *BFMCBrowserViewControllerHostApiGetCodec(void);
 
 @protocol BFMCBrowserViewControllerHostApi
-- (void)createInstanceId:(NSNumber *)instanceId peerId:(BFMCSessionWrapper *)peerId serviceType:(NSString *)serviceType error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)createInstanceId:(NSNumber *)instanceId mCSessionInstanceID:(NSNumber *)mCSessionInstanceID serviceType:(NSString *)serviceType error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)disposeInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)registerDelegateInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)removeDelegateInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
