@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:uwb_ios/mc_peer_id_wrapper_api_impl.dart';
 import 'package:uwb_platform_interface/uwb_platform_interface.dart';
 import 'mc_nearby_service_advertiser_wrapper.dart';
 
@@ -19,11 +20,12 @@ class UwbIos extends UwbPlatform {
 
   @override
   Future<void> startHost(String peerID, String serviceType) {
-    final MCPeerIDWrapper peerId = MCPeerIDWrapper(displayName: peerID);
+    MCPeerIDWrapperImpl mcPeerIDInstance = MCPeerIDWrapperImpl();
+    mcPeerIDInstance.createfromInstance(peerID);
 
     final MCNearbyServiceAdvertiserWrapper advertiser =
         MCNearbyServiceAdvertiserWrapper(
-      peer: peerId,
+      mcPeerIDInstance: mcPeerIDInstance,
       serviceType: serviceType,
     );
 
@@ -44,17 +46,5 @@ class _NearbyServiceAdvertiserDelegate
     if (_platform.onAdvertisingFailure != null) {
       _platform.onAdvertisingFailure!();
     }
-  }
-
-  @override
-  MCSessionWrapper? didReceiveInvitationFromPeer(
-      MCPeerIDWrapper peerID, String? context) {
-    //peerId van de advertiser
-    final MCPeerIDWrapper peerId =
-        MCPeerIDWrapper(displayName: peerID.displayName);
-    final MCSessionWrapper mcSession = MCSessionWrapper(peerId: peerId);
-
-    // _platform.onReceiveInvitation!(peerID.displayName!, context);
-    return mcSession;
   }
 }

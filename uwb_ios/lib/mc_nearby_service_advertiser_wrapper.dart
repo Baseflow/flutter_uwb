@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:uwb_ios/mc_peer_id_wrapper_api_impl.dart';
 
 import 'uwb_api.pigeon.dart';
 import 'mc_nearby_service_advertiser_wrapper_api_impl.dart';
 
-export 'uwb_api.pigeon.dart'
-    show MCEncryptionPreferenceWrapper, MCPeerIDWrapper, MCSessionWrapper;
+export 'uwb_api.pigeon.dart' show MCEncryptionPreferenceWrapper;
 
 /// The [MCNearbyServiceAdvertiserDelegateWrapper] interface specifies events
 /// that can be triggered by the [MCNearbyServiceAdvertiserWrapper] instance.
@@ -24,13 +24,13 @@ abstract class MCNearbyServiceAdvertiserDelegateWrapper
 class MCNearbyServiceAdvertiserWrapper {
   /// Creates a new [MCNearbyServiceAdvertiserWrapper].
   MCNearbyServiceAdvertiserWrapper({
-    required MCPeerIDWrapper peer,
+    required MCPeerIDWrapperImpl mcPeerIDInstance,
     Map<String, String>? info,
     required String serviceType,
-  })  : _peer = peer,
+  })  : _mcPeerIDInstance = mcPeerIDInstance,
         _info = info,
         _serviceType = serviceType {
-    api.createFromInstance(this, _peer, _info, _serviceType);
+    api.createFromInstance(this, _mcPeerIDInstance, _info, _serviceType);
   }
 
   /// Pigeon Host Api implementation for [MCNearbyServiceAdvertiserWrapper].
@@ -38,7 +38,7 @@ class MCNearbyServiceAdvertiserWrapper {
   static MCNearbyServiceAdvertiserHostApiImpl api =
       MCNearbyServiceAdvertiserHostApiImpl();
 
-  final MCPeerIDWrapper _peer;
+  final MCPeerIDWrapperImpl _mcPeerIDInstance;
   final Map<String, String>? _info;
   final String _serviceType;
 
