@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:uwb_ios/mc_peer_id_wrapper_api_impl.dart';
 import 'package:uwb_ios/mc_peer_id_wrapper.dart';
 
 import 'uwb_api.pigeon.dart';
