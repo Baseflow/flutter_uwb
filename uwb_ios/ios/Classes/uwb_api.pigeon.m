@@ -31,95 +31,15 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 }
 
 
-@interface BFMCPeerIDWrapper ()
-+ (BFMCPeerIDWrapper *)fromMap:(NSDictionary *)dict;
-+ (nullable BFMCPeerIDWrapper *)nullableFromMap:(NSDictionary *)dict;
-- (NSDictionary *)toMap;
-@end
-@interface BFMCSessionWrapper ()
-+ (BFMCSessionWrapper *)fromMap:(NSDictionary *)dict;
-+ (nullable BFMCSessionWrapper *)nullableFromMap:(NSDictionary *)dict;
-- (NSDictionary *)toMap;
-@end
-
-@implementation BFMCPeerIDWrapper
-+ (instancetype)makeWithDisplayName:(nullable NSString *)displayName {
-  BFMCPeerIDWrapper* pigeonResult = [[BFMCPeerIDWrapper alloc] init];
-  pigeonResult.displayName = displayName;
-  return pigeonResult;
-}
-+ (BFMCPeerIDWrapper *)fromMap:(NSDictionary *)dict {
-  BFMCPeerIDWrapper *pigeonResult = [[BFMCPeerIDWrapper alloc] init];
-  pigeonResult.displayName = GetNullableObject(dict, @"displayName");
-  return pigeonResult;
-}
-+ (nullable BFMCPeerIDWrapper *)nullableFromMap:(NSDictionary *)dict { return (dict) ? [BFMCPeerIDWrapper fromMap:dict] : nil; }
-- (NSDictionary *)toMap {
-  return @{
-    @"displayName" : (self.displayName ?: [NSNull null]),
-  };
-}
-@end
-
-@implementation BFMCSessionWrapper
-+ (instancetype)makeWithPeerId:(nullable BFMCPeerIDWrapper *)peerId
-    encryptionPreference:(BFMCEncryptionPreferenceWrapper)encryptionPreference {
-  BFMCSessionWrapper* pigeonResult = [[BFMCSessionWrapper alloc] init];
-  pigeonResult.peerId = peerId;
-  pigeonResult.encryptionPreference = encryptionPreference;
-  return pigeonResult;
-}
-+ (BFMCSessionWrapper *)fromMap:(NSDictionary *)dict {
-  BFMCSessionWrapper *pigeonResult = [[BFMCSessionWrapper alloc] init];
-  pigeonResult.peerId = [BFMCPeerIDWrapper nullableFromMap:GetNullableObject(dict, @"peerId")];
-  pigeonResult.encryptionPreference = [GetNullableObject(dict, @"encryptionPreference") integerValue];
-  return pigeonResult;
-}
-+ (nullable BFMCSessionWrapper *)nullableFromMap:(NSDictionary *)dict { return (dict) ? [BFMCSessionWrapper fromMap:dict] : nil; }
-- (NSDictionary *)toMap {
-  return @{
-    @"peerId" : (self.peerId ? [self.peerId toMap] : [NSNull null]),
-    @"encryptionPreference" : @(self.encryptionPreference),
-  };
-}
-@end
 
 @interface BFMCNearbyServiceAdvertiserDelegateFlutterApiCodecReader : FlutterStandardReader
 @end
 @implementation BFMCNearbyServiceAdvertiserDelegateFlutterApiCodecReader
-- (nullable id)readValueOfType:(UInt8)type 
-{
-  switch (type) {
-    case 128:     
-      return [BFMCPeerIDWrapper fromMap:[self readValue]];
-    
-    case 129:     
-      return [BFMCSessionWrapper fromMap:[self readValue]];
-    
-    default:    
-      return [super readValueOfType:type];
-    
-  }
-}
 @end
 
 @interface BFMCNearbyServiceAdvertiserDelegateFlutterApiCodecWriter : FlutterStandardWriter
 @end
 @implementation BFMCNearbyServiceAdvertiserDelegateFlutterApiCodecWriter
-- (void)writeValue:(id)value 
-{
-  if ([value isKindOfClass:[BFMCPeerIDWrapper class]]) {
-    [self writeByte:128];
-    [self writeValue:[value toMap]];
-  } else 
-  if ([value isKindOfClass:[BFMCSessionWrapper class]]) {
-    [self writeByte:129];
-    [self writeValue:[value toMap]];
-  } else 
-{
-    [super writeValue:value];
-  }
-}
 @end
 
 @interface BFMCNearbyServiceAdvertiserDelegateFlutterApiCodecReaderWriter : FlutterStandardReaderWriter
@@ -167,47 +87,166 @@ NSObject<FlutterMessageCodec> *BFMCNearbyServiceAdvertiserDelegateFlutterApiGetC
     completion(nil);
   }];
 }
-- (void)didReceiveInvitationFromPeerPeerID:(BFMCPeerIDWrapper *)arg_peerID context:(nullable NSString *)arg_context completion:(void(^)(BFMCSessionWrapper *_Nullable, NSError *_Nullable))completion {
-  FlutterBasicMessageChannel *channel =
-    [FlutterBasicMessageChannel
-      messageChannelWithName:@"dev.flutter.pigeon.MCNearbyServiceAdvertiserDelegateFlutterApi.didReceiveInvitationFromPeer"
-      binaryMessenger:self.binaryMessenger
-      codec:BFMCNearbyServiceAdvertiserDelegateFlutterApiGetCodec()];
-  [channel sendMessage:@[arg_peerID ?: [NSNull null], arg_context ?: [NSNull null]] reply:^(id reply) {
-    BFMCSessionWrapper *output = reply;
-    completion(output, nil);
-  }];
+@end
+@interface BFMCPeerIDHostApiCodecReader : FlutterStandardReader
+@end
+@implementation BFMCPeerIDHostApiCodecReader
+@end
+
+@interface BFMCPeerIDHostApiCodecWriter : FlutterStandardWriter
+@end
+@implementation BFMCPeerIDHostApiCodecWriter
+@end
+
+@interface BFMCPeerIDHostApiCodecReaderWriter : FlutterStandardReaderWriter
+@end
+@implementation BFMCPeerIDHostApiCodecReaderWriter
+- (FlutterStandardWriter *)writerWithData:(NSMutableData *)data {
+  return [[BFMCPeerIDHostApiCodecWriter alloc] initWithData:data];
+}
+- (FlutterStandardReader *)readerWithData:(NSData *)data {
+  return [[BFMCPeerIDHostApiCodecReader alloc] initWithData:data];
 }
 @end
+
+NSObject<FlutterMessageCodec> *BFMCPeerIDHostApiGetCodec() {
+  static dispatch_once_t sPred = 0;
+  static FlutterStandardMessageCodec *sSharedObject = nil;
+  dispatch_once(&sPred, ^{
+    BFMCPeerIDHostApiCodecReaderWriter *readerWriter = [[BFMCPeerIDHostApiCodecReaderWriter alloc] init];
+    sSharedObject = [FlutterStandardMessageCodec codecWithReaderWriter:readerWriter];
+  });
+  return sSharedObject;
+}
+
+
+void BFMCPeerIDHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BFMCPeerIDHostApi> *api) {
+  {
+    FlutterBasicMessageChannel *channel =
+      [[FlutterBasicMessageChannel alloc]
+        initWithName:@"dev.flutter.pigeon.MCPeerIDHostApi.create"
+        binaryMessenger:binaryMessenger
+        codec:BFMCPeerIDHostApiGetCodec()        ];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(createInstanceId:displayName:error:)], @"BFMCPeerIDHostApi api (%@) doesn't respond to @selector(createInstanceId:displayName:error:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        NSArray *args = message;
+        NSNumber *arg_instanceId = GetNullableObjectAtIndex(args, 0);
+        NSString *arg_displayName = GetNullableObjectAtIndex(args, 1);
+        FlutterError *error;
+        [api createInstanceId:arg_instanceId displayName:arg_displayName error:&error];
+        callback(wrapResult(nil, error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [[FlutterBasicMessageChannel alloc]
+        initWithName:@"dev.flutter.pigeon.MCPeerIDHostApi.dispose"
+        binaryMessenger:binaryMessenger
+        codec:BFMCPeerIDHostApiGetCodec()        ];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(disposeInstanceId:error:)], @"BFMCPeerIDHostApi api (%@) doesn't respond to @selector(disposeInstanceId:error:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        NSArray *args = message;
+        NSNumber *arg_instanceId = GetNullableObjectAtIndex(args, 0);
+        FlutterError *error;
+        [api disposeInstanceId:arg_instanceId error:&error];
+        callback(wrapResult(nil, error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+}
+@interface BFMCSessionHostApiCodecReader : FlutterStandardReader
+@end
+@implementation BFMCSessionHostApiCodecReader
+@end
+
+@interface BFMCSessionHostApiCodecWriter : FlutterStandardWriter
+@end
+@implementation BFMCSessionHostApiCodecWriter
+@end
+
+@interface BFMCSessionHostApiCodecReaderWriter : FlutterStandardReaderWriter
+@end
+@implementation BFMCSessionHostApiCodecReaderWriter
+- (FlutterStandardWriter *)writerWithData:(NSMutableData *)data {
+  return [[BFMCSessionHostApiCodecWriter alloc] initWithData:data];
+}
+- (FlutterStandardReader *)readerWithData:(NSData *)data {
+  return [[BFMCSessionHostApiCodecReader alloc] initWithData:data];
+}
+@end
+
+NSObject<FlutterMessageCodec> *BFMCSessionHostApiGetCodec() {
+  static dispatch_once_t sPred = 0;
+  static FlutterStandardMessageCodec *sSharedObject = nil;
+  dispatch_once(&sPred, ^{
+    BFMCSessionHostApiCodecReaderWriter *readerWriter = [[BFMCSessionHostApiCodecReaderWriter alloc] init];
+    sSharedObject = [FlutterStandardMessageCodec codecWithReaderWriter:readerWriter];
+  });
+  return sSharedObject;
+}
+
+
+void BFMCSessionHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BFMCSessionHostApi> *api) {
+  {
+    FlutterBasicMessageChannel *channel =
+      [[FlutterBasicMessageChannel alloc]
+        initWithName:@"dev.flutter.pigeon.MCSessionHostApi.create"
+        binaryMessenger:binaryMessenger
+        codec:BFMCSessionHostApiGetCodec()        ];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(createInstanceId:mcPeerIDInstanceId:encryptionPreference:error:)], @"BFMCSessionHostApi api (%@) doesn't respond to @selector(createInstanceId:mcPeerIDInstanceId:encryptionPreference:error:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        NSArray *args = message;
+        NSNumber *arg_instanceId = GetNullableObjectAtIndex(args, 0);
+        NSNumber *arg_mcPeerIDInstanceId = GetNullableObjectAtIndex(args, 1);
+        BFMCEncryptionPreferenceWrapper arg_encryptionPreference = [GetNullableObjectAtIndex(args, 2) integerValue];
+        FlutterError *error;
+        [api createInstanceId:arg_instanceId mcPeerIDInstanceId:arg_mcPeerIDInstanceId encryptionPreference:arg_encryptionPreference error:&error];
+        callback(wrapResult(nil, error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [[FlutterBasicMessageChannel alloc]
+        initWithName:@"dev.flutter.pigeon.MCSessionHostApi.dispose"
+        binaryMessenger:binaryMessenger
+        codec:BFMCSessionHostApiGetCodec()        ];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(disposeInstanceId:error:)], @"BFMCSessionHostApi api (%@) doesn't respond to @selector(disposeInstanceId:error:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        NSArray *args = message;
+        NSNumber *arg_instanceId = GetNullableObjectAtIndex(args, 0);
+        FlutterError *error;
+        [api disposeInstanceId:arg_instanceId error:&error];
+        callback(wrapResult(nil, error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+}
 @interface BFMCNearbyServiceAdvertiserHostApiCodecReader : FlutterStandardReader
 @end
 @implementation BFMCNearbyServiceAdvertiserHostApiCodecReader
-- (nullable id)readValueOfType:(UInt8)type 
-{
-  switch (type) {
-    case 128:     
-      return [BFMCPeerIDWrapper fromMap:[self readValue]];
-    
-    default:    
-      return [super readValueOfType:type];
-    
-  }
-}
 @end
 
 @interface BFMCNearbyServiceAdvertiserHostApiCodecWriter : FlutterStandardWriter
 @end
 @implementation BFMCNearbyServiceAdvertiserHostApiCodecWriter
-- (void)writeValue:(id)value 
-{
-  if ([value isKindOfClass:[BFMCPeerIDWrapper class]]) {
-    [self writeByte:128];
-    [self writeValue:[value toMap]];
-  } else 
-{
-    [super writeValue:value];
-  }
-}
 @end
 
 @interface BFMCNearbyServiceAdvertiserHostApiCodecReaderWriter : FlutterStandardReaderWriter
@@ -240,15 +279,15 @@ void BFMCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> binaryMe
         binaryMessenger:binaryMessenger
         codec:BFMCNearbyServiceAdvertiserHostApiGetCodec()        ];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(createInstanceId:peerId:info:serviceType:error:)], @"BFMCNearbyServiceAdvertiserHostApi api (%@) doesn't respond to @selector(createInstanceId:peerId:info:serviceType:error:)", api);
+      NSCAssert([api respondsToSelector:@selector(createInstanceId:mcPeerIDInstanceId:info:serviceType:error:)], @"BFMCNearbyServiceAdvertiserHostApi api (%@) doesn't respond to @selector(createInstanceId:mcPeerIDInstanceId:info:serviceType:error:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray *args = message;
         NSNumber *arg_instanceId = GetNullableObjectAtIndex(args, 0);
-        BFMCPeerIDWrapper *arg_peerId = GetNullableObjectAtIndex(args, 1);
+        NSNumber *arg_mcPeerIDInstanceId = GetNullableObjectAtIndex(args, 1);
         NSDictionary<NSString *, NSString *> *arg_info = GetNullableObjectAtIndex(args, 2);
         NSString *arg_serviceType = GetNullableObjectAtIndex(args, 3);
         FlutterError *error;
-        [api createInstanceId:arg_instanceId peerId:arg_peerId info:arg_info serviceType:arg_serviceType error:&error];
+        [api createInstanceId:arg_instanceId mcPeerIDInstanceId:arg_mcPeerIDInstanceId info:arg_info serviceType:arg_serviceType error:&error];
         callback(wrapResult(nil, error));
       }];
     }

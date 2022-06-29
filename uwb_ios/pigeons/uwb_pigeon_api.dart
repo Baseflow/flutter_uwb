@@ -9,29 +9,45 @@ import 'package:pigeon/pigeon.dart';
     prefix: 'BF',
   ),
 ))
-class MCPeerIDWrapper {
-  String? displayName;
-}
-
 enum MCEncryptionPreferenceWrapper {
   optional,
   required,
   none,
 }
 
-class MCSessionWrapper {
-  MCPeerIDWrapper? peerId;
-  MCEncryptionPreferenceWrapper? encryptionPreference;
-}
-
 @FlutterApi()
 abstract class MCNearbyServiceAdvertiserDelegateFlutterApi {
   void didNotStartAdvertisingPeer();
 
-  MCSessionWrapper? didReceiveInvitationFromPeer(
-    MCPeerIDWrapper peerID,
-    String? context,
+  // MCSessionWrapper? didReceiveInvitationFromPeer(
+  //   MCPeerIDWrapper peerID,
+  //   String? context,
+  // );
+}
+
+@HostApi()
+abstract class MCPeerIDHostApi {
+  /// Initializes a MCPeerID object.
+  void create(
+    int instanceId,
+    String displayName,
   );
+
+  /// Discards the instance of the MCPeerID.
+  void dispose(int instanceId);
+}
+
+@HostApi()
+abstract class MCSessionHostApi {
+  /// Initializes a MCSession object.
+  void create(
+    int instanceId,
+    int mcPeerIDInstanceId,
+    MCEncryptionPreferenceWrapper? encryptionPreference,
+  );
+
+  /// Discards the instance of the MCSession.
+  void dispose(int instanceId);
 }
 
 @HostApi()
@@ -39,7 +55,7 @@ abstract class MCNearbyServiceAdvertiserHostApi {
   /// Initializes an advertiser object.
   void create(
     int instanceId,
-    MCPeerIDWrapper peerId,
+    int mcPeerIDInstanceId,
     Map<String, String>? info,
     String serviceType,
   );
