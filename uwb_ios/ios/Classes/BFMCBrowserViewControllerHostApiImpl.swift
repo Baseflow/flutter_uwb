@@ -21,9 +21,8 @@ internal class BFMCBrowserViewControllerHostApiImpl : NSObject, BFMCBrowserViewC
         
         let browser: MCBrowserViewController = MCBrowserViewController(serviceType: serviceType, session: BFInstanceManager.current.getInstance(instanceId: mCSessionInstanceID) as! MCSession
         )
-        
+
         BFInstanceManager.current.addInstance(instanceId: instanceId, instance: browser)
-        
     }
     
     func disposeInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
@@ -40,7 +39,7 @@ internal class BFMCBrowserViewControllerHostApiImpl : NSObject, BFMCBrowserViewC
     
     func presentTheBrowser(toViewControllerInstanceId instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
         let browser: MCBrowserViewController = BFInstanceManager.current.getInstance(instanceId: instanceId) as! MCBrowserViewController
-                
+
         let scenes = UIApplication.shared.connectedScenes
         let windowScene = scenes.first as? UIWindowScene
         let window = windowScene?.windows.first

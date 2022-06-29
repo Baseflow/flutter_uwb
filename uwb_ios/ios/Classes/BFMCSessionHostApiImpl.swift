@@ -16,10 +16,14 @@ internal class BFMCSessionHostApiImpl : NSObject, BFMCSessionHostApi{
         self.flutterMessenger = flutterMessenger
     }
     
+    
+    
     func createInstanceId(_ instanceId: NSNumber, mcPeerIDInstanceId: NSNumber, encryptionPreference: BFMCEncryptionPreferenceWrapper, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
-        
+
+        print("PRINT: MCSESSION ADDED")
+
         let mcSession = MCSession(peer: BFInstanceManager.current.getInstance(instanceId: mcPeerIDInstanceId) as! MCPeerID, securityIdentity: nil, encryptionPreference:    BFObjectTranslator.toMCEncryptionPreference(encryptionPreferenceWrapper: encryptionPreference))
-        
+
         BFInstanceManager.current.addInstance(instanceId: instanceId, instance: mcSession)
     }
     

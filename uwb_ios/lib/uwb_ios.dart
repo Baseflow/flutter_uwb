@@ -25,8 +25,9 @@ class UwbIos extends UwbPlatform {
   Future<void> startHost(String peerID, String serviceType) {
     MCPeerIDWrapper mcPeerIDInstance = MCPeerIDWrapper(displayName: peerID);
     // ignore: unused_local_variable
-    MCSessionWrapper mcSessionInstance =
-        MCSessionWrapper(mcPeerIDInstance: mcPeerIDInstance);
+    MCSessionWrapper mcSessionInstance = MCSessionWrapper(
+        mcPeerIDInstance: mcPeerIDInstance,
+        encryptionPreference: MCEncryptionPreferenceWrapper.required);
 
     final MCNearbyServiceAdvertiserWrapper advertiser =
         MCNearbyServiceAdvertiserWrapper(
@@ -43,8 +44,9 @@ class UwbIos extends UwbPlatform {
   Future<void> joinHost(String peerID, String serviceType) {
     final MCPeerIDWrapper mcPeerIDInstance =
         MCPeerIDWrapper(displayName: peerID);
-    final MCSessionWrapper mcSessionInstance =
-        MCSessionWrapper(mcPeerIDInstance: mcPeerIDInstance);
+    final MCSessionWrapper mcSessionInstance = MCSessionWrapper(
+        mcPeerIDInstance: mcPeerIDInstance,
+        encryptionPreference: MCEncryptionPreferenceWrapper.required);
 
     final MCBrowserViewControllerWrapper browser =
         MCBrowserViewControllerWrapper(
