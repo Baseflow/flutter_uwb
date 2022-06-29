@@ -54,6 +54,7 @@ build/
 captures/
 flutter_*.png
 linked_*.ds
+pubspec.lock
 unlinked.ds
 unlinked_spec.ds
 flutter_export_environment.sh
