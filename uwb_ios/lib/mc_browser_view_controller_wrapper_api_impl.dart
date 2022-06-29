@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:uwb_ios/instance_manager.dart';
+import 'package:uwb_ios/mc_session_wrapper.dart';
 import 'package:uwb_ios/uwb_api.pigeon.dart';
 
 import 'mc_browser_view_controller_wrapper.dart';
@@ -19,10 +20,11 @@ class MCBrowserViewControllerHostApiImpl
 
   /// Helper method to convert instance identifiers to objects.
   Future<void> createFromInstance(MCBrowserViewControllerWrapper instance,
-      MCSessionWrapper mcSession, String serviceType) async {
+      MCSessionWrapper mcSessionInstance, String serviceType) async {
     final int? instanceId = instanceManager.tryAddInstance(instance);
     if (instanceId != null) {
-      return create(instanceId, mcSession, serviceType);
+      return create(instanceId,
+          instanceManager.getInstanceId(mcSessionInstance)!, serviceType);
     }
   }
 
