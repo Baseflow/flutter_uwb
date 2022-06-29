@@ -17,12 +17,13 @@ internal class BFMCBrowserViewControllerHostApiImpl : NSObject, BFMCBrowserViewC
       self.flutterMessenger = flutterMessenger
     }
     
-    func createInstanceId(_ instanceId: NSNumber, peerId: BFMCSessionWrapper, serviceType: String, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+    func createInstanceId(_ instanceId: NSNumber, mCSessionInstanceID: NSNumber, serviceType: String, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
         
-        let browser: MCBrowserViewController = MCBrowserViewController(serviceType: serviceType, session: BFObjectTranslator.toMCSession(sessionWrapper: peerId)
+        let browser: MCBrowserViewController = MCBrowserViewController(serviceType: serviceType, session: BFInstanceManager.current.getInstance(instanceId: mCSessionInstanceID) as! MCSession
         )
         
         BFInstanceManager.current.addInstance(instanceId: instanceId, instance: browser)
+        
     }
     
     func disposeInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
