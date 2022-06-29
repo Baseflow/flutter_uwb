@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:uwb_ios/mc_peer_id_wrapper.dart';
+import 'package:uwb_ios/mc_session_wrapper.dart';
 import 'package:uwb_platform_interface/uwb_platform_interface.dart';
 
 import 'mc_nearby_service_advertiser_wrapper.dart';
@@ -21,11 +23,14 @@ class UwbIos extends UwbPlatform {
 
   @override
   Future<void> startHost(String peerID, String serviceType) {
-    final MCPeerIDWrapper peerId = MCPeerIDWrapper(displayName: peerID);
+    MCPeerIDWrapper mcPeerIDInstance = MCPeerIDWrapper(displayName: peerID);
+    // ignore: unused_local_variable
+    MCSessionWrapper mcSessionInstance =
+        MCSessionWrapper(mcPeerIDInstance: mcPeerIDInstance);
 
     final MCNearbyServiceAdvertiserWrapper advertiser =
         MCNearbyServiceAdvertiserWrapper(
-      peer: peerId,
+      mcPeerIDInstance: mcPeerIDInstance,
       serviceType: serviceType,
     );
 
@@ -36,12 +41,14 @@ class UwbIos extends UwbPlatform {
 
   @override
   Future<void> joinHost(String peerID, String serviceType) {
-    final MCPeerIDWrapper peerId = MCPeerIDWrapper(displayName: peerID);
-    final MCSessionWrapper mcSession = MCSessionWrapper(peerId: peerId);
+    final MCPeerIDWrapper mcPeerIDInstance =
+        MCPeerIDWrapper(displayName: peerID);
+    final MCSessionWrapper mcSessionInstance =
+        MCSessionWrapper(mcPeerIDInstance: mcPeerIDInstance);
 
     final MCBrowserViewControllerWrapper browser =
         MCBrowserViewControllerWrapper(
-            mcSession: mcSession, serviceType: serviceType);
+            mcSessionInstance: mcSessionInstance, serviceType: serviceType);
     return browser.presentTheBrowserToViewController();
   }
 }
@@ -57,16 +64,5 @@ class _NearbyServiceAdvertiserDelegate
     if (_platform.onAdvertisingFailure != null) {
       _platform.onAdvertisingFailure!();
     }
-  }
-
-  @override
-  MCSessionWrapper? didReceiveInvitationFromPeer(
-      MCPeerIDWrapper peerID, String? context) {
-    //peerId van de advertiser
-    final MCPeerIDWrapper peerId =
-        MCPeerIDWrapper(displayName: peerID.displayName);
-    final MCSessionWrapper mcSession = MCSessionWrapper(peerId: peerId);
-    // _platform.onReceiveInvitation!(peerID.displayName!, context);
-    return mcSession;
   }
 }

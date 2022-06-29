@@ -14,102 +14,17 @@ enum MCEncryptionPreferenceWrapper {
   none,
 }
 
-class MCPeerIDWrapper {
-  MCPeerIDWrapper({
-    this.displayName,
-  });
-
-  String? displayName;
-
-  Object encode() {
-    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
-    pigeonMap['displayName'] = displayName;
-    return pigeonMap;
-  }
-
-  static MCPeerIDWrapper decode(Object message) {
-    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
-    return MCPeerIDWrapper(
-      displayName: pigeonMap['displayName'] as String?,
-    );
-  }
-}
-
-class MCSessionWrapper {
-  MCSessionWrapper({
-    this.peerId,
-    this.encryptionPreference,
-  });
-
-  MCPeerIDWrapper? peerId;
-  MCEncryptionPreferenceWrapper? encryptionPreference;
-
-  Object encode() {
-    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
-    pigeonMap['peerId'] = peerId?.encode();
-    pigeonMap['encryptionPreference'] = encryptionPreference?.index;
-    return pigeonMap;
-  }
-
-  static MCSessionWrapper decode(Object message) {
-    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
-    return MCSessionWrapper(
-      peerId: pigeonMap['peerId'] != null
-          ? MCPeerIDWrapper.decode(pigeonMap['peerId']!)
-          : null,
-      encryptionPreference: pigeonMap['encryptionPreference'] != null
-          ? MCEncryptionPreferenceWrapper
-              .values[pigeonMap['encryptionPreference']! as int]
-          : null,
-    );
-  }
-}
-
-class _MCNearbyServiceAdvertiserDelegateFlutterApiCodec
-    extends StandardMessageCodec {
+class _MCNearbyServiceAdvertiserDelegateFlutterApiCodec extends StandardMessageCodec {
   const _MCNearbyServiceAdvertiserDelegateFlutterApiCodec();
-  @override
-  void writeValue(WriteBuffer buffer, Object? value) {
-    if (value is MCPeerIDWrapper) {
-      buffer.putUint8(128);
-      writeValue(buffer, value.encode());
-    } else if (value is MCSessionWrapper) {
-      buffer.putUint8(129);
-      writeValue(buffer, value.encode());
-    } else {
-      super.writeValue(buffer, value);
-    }
-  }
-
-  @override
-  Object? readValueOfType(int type, ReadBuffer buffer) {
-    switch (type) {
-      case 128:
-        return MCPeerIDWrapper.decode(readValue(buffer)!);
-
-      case 129:
-        return MCSessionWrapper.decode(readValue(buffer)!);
-
-      default:
-        return super.readValueOfType(type, buffer);
-    }
-  }
 }
-
 abstract class MCNearbyServiceAdvertiserDelegateFlutterApi {
-  static const MessageCodec<Object?> codec =
-      _MCNearbyServiceAdvertiserDelegateFlutterApiCodec();
+  static const MessageCodec<Object?> codec = _MCNearbyServiceAdvertiserDelegateFlutterApiCodec();
 
   void didNotStartAdvertisingPeer();
-  MCSessionWrapper? didReceiveInvitationFromPeer(
-      MCPeerIDWrapper peerID, String? context);
-  static void setup(MCNearbyServiceAdvertiserDelegateFlutterApi? api,
-      {BinaryMessenger? binaryMessenger}) {
+  static void setup(MCNearbyServiceAdvertiserDelegateFlutterApi? api, {BinaryMessenger? binaryMessenger}) {
     {
       final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.MCNearbyServiceAdvertiserDelegateFlutterApi.didNotStartAdvertisingPeer',
-          codec,
-          binaryMessenger: binaryMessenger);
+          'dev.flutter.pigeon.MCNearbyServiceAdvertiserDelegateFlutterApi.didNotStartAdvertisingPeer', codec, binaryMessenger: binaryMessenger);
       if (api == null) {
         channel.setMessageHandler(null);
       } else {
@@ -120,83 +35,35 @@ abstract class MCNearbyServiceAdvertiserDelegateFlutterApi {
         });
       }
     }
-    {
-      final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.MCNearbyServiceAdvertiserDelegateFlutterApi.didReceiveInvitationFromPeer',
-          codec,
-          binaryMessenger: binaryMessenger);
-      if (api == null) {
-        channel.setMessageHandler(null);
-      } else {
-        channel.setMessageHandler((Object? message) async {
-          assert(message != null,
-              'Argument for dev.flutter.pigeon.MCNearbyServiceAdvertiserDelegateFlutterApi.didReceiveInvitationFromPeer was null.');
-          final List<Object?> args = (message as List<Object?>?)!;
-          final MCPeerIDWrapper? arg_peerID = (args[0] as MCPeerIDWrapper?);
-          assert(arg_peerID != null,
-              'Argument for dev.flutter.pigeon.MCNearbyServiceAdvertiserDelegateFlutterApi.didReceiveInvitationFromPeer was null, expected non-null MCPeerIDWrapper.');
-          final String? arg_context = (args[1] as String?);
-          final MCSessionWrapper? output =
-              api.didReceiveInvitationFromPeer(arg_peerID!, arg_context);
-          return output;
-        });
-      }
-    }
   }
 }
 
-class _MCNearbyServiceAdvertiserHostApiCodec extends StandardMessageCodec {
-  const _MCNearbyServiceAdvertiserHostApiCodec();
-  @override
-  void writeValue(WriteBuffer buffer, Object? value) {
-    if (value is MCPeerIDWrapper) {
-      buffer.putUint8(128);
-      writeValue(buffer, value.encode());
-    } else {
-      super.writeValue(buffer, value);
-    }
-  }
-
-  @override
-  Object? readValueOfType(int type, ReadBuffer buffer) {
-    switch (type) {
-      case 128:
-        return MCPeerIDWrapper.decode(readValue(buffer)!);
-
-      default:
-        return super.readValueOfType(type, buffer);
-    }
-  }
+class _MCPeerIDHostApiCodec extends StandardMessageCodec {
+  const _MCPeerIDHostApiCodec();
 }
 
-class MCNearbyServiceAdvertiserHostApi {
-  /// Constructor for [MCNearbyServiceAdvertiserHostApi].  The [binaryMessenger] named argument is
+class MCPeerIDHostApi {
+  /// Constructor for [MCPeerIDHostApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  MCNearbyServiceAdvertiserHostApi({BinaryMessenger? binaryMessenger})
-      : _binaryMessenger = binaryMessenger;
+  MCPeerIDHostApi({BinaryMessenger? binaryMessenger}) : _binaryMessenger = binaryMessenger;
 
   final BinaryMessenger? _binaryMessenger;
 
-  static const MessageCodec<Object?> codec =
-      _MCNearbyServiceAdvertiserHostApiCodec();
+  static const MessageCodec<Object?> codec = _MCPeerIDHostApiCodec();
 
-  Future<void> create(int arg_instanceId, MCPeerIDWrapper arg_peerId,
-      Map<String?, String?>? arg_info, String arg_serviceType) async {
+  Future<void> create(int arg_instanceId, String arg_displayName) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.create', codec,
-        binaryMessenger: _binaryMessenger);
-    final Map<Object?, Object?>? replyMap = await channel.send(
-            <Object?>[arg_instanceId, arg_peerId, arg_info, arg_serviceType])
-        as Map<Object?, Object?>?;
+        'dev.flutter.pigeon.MCPeerIDHostApi.create', codec, binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(<Object?>[arg_instanceId, arg_displayName]) as Map<Object?, Object?>?;
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -209,8 +76,7 @@ class MCNearbyServiceAdvertiserHostApi {
 
   Future<void> dispose(int arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.dispose', codec,
-        binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.MCPeerIDHostApi.dispose', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -219,8 +85,125 @@ class MCNearbyServiceAdvertiserHostApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      throw PlatformException(
+        code: (error['code'] as String?)!,
+        message: error['message'] as String?,
+        details: error['details'],
+      );
+    } else {
+      return;
+    }
+  }
+}
+
+class _MCSessionHostApiCodec extends StandardMessageCodec {
+  const _MCSessionHostApiCodec();
+}
+
+class MCSessionHostApi {
+  /// Constructor for [MCSessionHostApi].  The [binaryMessenger] named argument is
+  /// available for dependency injection.  If it is left null, the default
+  /// BinaryMessenger will be used which routes to the host platform.
+  MCSessionHostApi({BinaryMessenger? binaryMessenger}) : _binaryMessenger = binaryMessenger;
+
+  final BinaryMessenger? _binaryMessenger;
+
+  static const MessageCodec<Object?> codec = _MCSessionHostApiCodec();
+
+  Future<void> create(int arg_instanceId, int arg_mcPeerIDInstanceId, MCEncryptionPreferenceWrapper? arg_encryptionPreference) async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.MCSessionHostApi.create', codec, binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(<Object?>[arg_instanceId, arg_mcPeerIDInstanceId, arg_encryptionPreference?.index]) as Map<Object?, Object?>?;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      throw PlatformException(
+        code: (error['code'] as String?)!,
+        message: error['message'] as String?,
+        details: error['details'],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<void> dispose(int arg_instanceId) async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.MCSessionHostApi.dispose', codec, binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      throw PlatformException(
+        code: (error['code'] as String?)!,
+        message: error['message'] as String?,
+        details: error['details'],
+      );
+    } else {
+      return;
+    }
+  }
+}
+
+class _MCNearbyServiceAdvertiserHostApiCodec extends StandardMessageCodec {
+  const _MCNearbyServiceAdvertiserHostApiCodec();
+}
+
+class MCNearbyServiceAdvertiserHostApi {
+  /// Constructor for [MCNearbyServiceAdvertiserHostApi].  The [binaryMessenger] named argument is
+  /// available for dependency injection.  If it is left null, the default
+  /// BinaryMessenger will be used which routes to the host platform.
+  MCNearbyServiceAdvertiserHostApi({BinaryMessenger? binaryMessenger}) : _binaryMessenger = binaryMessenger;
+
+  final BinaryMessenger? _binaryMessenger;
+
+  static const MessageCodec<Object?> codec = _MCNearbyServiceAdvertiserHostApiCodec();
+
+  Future<void> create(int arg_instanceId, int arg_mcPeerIDInstanceId, Map<String?, String?>? arg_info, String arg_serviceType) async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.create', codec, binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(<Object?>[arg_instanceId, arg_mcPeerIDInstanceId, arg_info, arg_serviceType]) as Map<Object?, Object?>?;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      throw PlatformException(
+        code: (error['code'] as String?)!,
+        message: error['message'] as String?,
+        details: error['details'],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<void> dispose(int arg_instanceId) async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.dispose', codec, binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -233,9 +216,7 @@ class MCNearbyServiceAdvertiserHostApi {
 
   Future<void> registerDelegate(int arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.registerDelegate',
-        codec,
-        binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.registerDelegate', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -244,8 +225,7 @@ class MCNearbyServiceAdvertiserHostApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -258,9 +238,7 @@ class MCNearbyServiceAdvertiserHostApi {
 
   Future<void> removeDelegate(int arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.removeDelegate',
-        codec,
-        binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.removeDelegate', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -269,8 +247,7 @@ class MCNearbyServiceAdvertiserHostApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -283,9 +260,7 @@ class MCNearbyServiceAdvertiserHostApi {
 
   Future<void> startAdvertisingPeer(int arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.startAdvertisingPeer',
-        codec,
-        binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.startAdvertisingPeer', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -294,8 +269,7 @@ class MCNearbyServiceAdvertiserHostApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -308,9 +282,7 @@ class MCNearbyServiceAdvertiserHostApi {
 
   Future<void> stopAdvertisingPeer(int arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.stopAdvertisingPeer',
-        codec,
-        binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.MCNearbyServiceAdvertiserHostApi.stopAdvertisingPeer', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -319,8 +291,7 @@ class MCNearbyServiceAdvertiserHostApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -334,62 +305,30 @@ class MCNearbyServiceAdvertiserHostApi {
 
 class _MCBrowserViewControllerHostApiCodec extends StandardMessageCodec {
   const _MCBrowserViewControllerHostApiCodec();
-  @override
-  void writeValue(WriteBuffer buffer, Object? value) {
-    if (value is MCPeerIDWrapper) {
-      buffer.putUint8(128);
-      writeValue(buffer, value.encode());
-    } else if (value is MCSessionWrapper) {
-      buffer.putUint8(129);
-      writeValue(buffer, value.encode());
-    } else {
-      super.writeValue(buffer, value);
-    }
-  }
-
-  @override
-  Object? readValueOfType(int type, ReadBuffer buffer) {
-    switch (type) {
-      case 128:
-        return MCPeerIDWrapper.decode(readValue(buffer)!);
-
-      case 129:
-        return MCSessionWrapper.decode(readValue(buffer)!);
-
-      default:
-        return super.readValueOfType(type, buffer);
-    }
-  }
 }
 
 class MCBrowserViewControllerHostApi {
   /// Constructor for [MCBrowserViewControllerHostApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  MCBrowserViewControllerHostApi({BinaryMessenger? binaryMessenger})
-      : _binaryMessenger = binaryMessenger;
+  MCBrowserViewControllerHostApi({BinaryMessenger? binaryMessenger}) : _binaryMessenger = binaryMessenger;
 
   final BinaryMessenger? _binaryMessenger;
 
-  static const MessageCodec<Object?> codec =
-      _MCBrowserViewControllerHostApiCodec();
+  static const MessageCodec<Object?> codec = _MCBrowserViewControllerHostApiCodec();
 
-  Future<void> create(int arg_instanceId, MCSessionWrapper arg_peerId,
-      String arg_serviceType) async {
+  Future<void> create(int arg_instanceId, int arg_mCSessionInstanceID, String arg_serviceType) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.create', codec,
-        binaryMessenger: _binaryMessenger);
-    final Map<Object?, Object?>? replyMap = await channel
-            .send(<Object?>[arg_instanceId, arg_peerId, arg_serviceType])
-        as Map<Object?, Object?>?;
+        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.create', codec, binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(<Object?>[arg_instanceId, arg_mCSessionInstanceID, arg_serviceType]) as Map<Object?, Object?>?;
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -402,8 +341,7 @@ class MCBrowserViewControllerHostApi {
 
   Future<void> dispose(int arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.dispose', codec,
-        binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.dispose', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -412,8 +350,7 @@ class MCBrowserViewControllerHostApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -426,9 +363,7 @@ class MCBrowserViewControllerHostApi {
 
   Future<void> registerDelegate(int arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.registerDelegate',
-        codec,
-        binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.registerDelegate', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -437,8 +372,7 @@ class MCBrowserViewControllerHostApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -451,9 +385,7 @@ class MCBrowserViewControllerHostApi {
 
   Future<void> removeDelegate(int arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.removeDelegate',
-        codec,
-        binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.removeDelegate', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -462,8 +394,7 @@ class MCBrowserViewControllerHostApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -476,9 +407,7 @@ class MCBrowserViewControllerHostApi {
 
   Future<void> presentTheBrowserToViewController(int arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.presentTheBrowserToViewController',
-        codec,
-        binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.MCBrowserViewControllerHostApi.presentTheBrowserToViewController', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -487,8 +416,7 @@ class MCBrowserViewControllerHostApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error =
-          (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,

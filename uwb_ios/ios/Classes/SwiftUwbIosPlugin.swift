@@ -9,6 +9,7 @@ public class SwiftUwbIosPlugin: NSObject, FlutterPlugin {
         let _: SwiftUwbIosPlugin = SwiftUwbIosPlugin()
             .setUpAdvertiser(messenger: registrar.messenger())
             .setUpBrowser(messenger: registrar.messenger())
+            .setUpPeerIDInstance(messenger: registrar.messenger())
     }
     
     private func setUpAdvertiser(messenger: FlutterBinaryMessenger) -> SwiftUwbIosPlugin {
@@ -21,6 +22,13 @@ public class SwiftUwbIosPlugin: NSObject, FlutterPlugin {
     private func setUpBrowser(messenger: FlutterBinaryMessenger) -> SwiftUwbIosPlugin {
         let browserApi: BFMCBrowserViewControllerHostApiImpl = BFMCBrowserViewControllerHostApiImpl(flutterMessenger: messenger)
         BFMCBrowserViewControllerHostApiSetup(messenger, browserApi)
+        
+        return self
+    }
+
+    private func setUpPeerIDInstance(messenger: FlutterBinaryMessenger) -> SwiftUwbIosPlugin {
+        let peerIDApi: BFMCPeerIDHostApiImpl = BFMCPeerIDHostApiImpl(flutterMessenger: messenger)
+        BFMCPeerIDHostApiSetup(messenger, peerIDApi)
         
         return self
     }

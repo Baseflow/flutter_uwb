@@ -1,16 +1,15 @@
-import 'uwb_api.pigeon.dart';
+import 'package:uwb_ios/mc_session_wrapper.dart';
 import 'mc_browser_view_controller_wrapper_api_impl.dart';
 
-export 'uwb_api.pigeon.dart'
-    show MCEncryptionPreferenceWrapper, MCPeerIDWrapper, MCSessionWrapper;
+export 'uwb_api.pigeon.dart' show MCEncryptionPreferenceWrapper;
 
 ///
 class MCBrowserViewControllerWrapper {
   ///
   MCBrowserViewControllerWrapper({
-    required MCSessionWrapper mcSession,
+    required MCSessionWrapper mcSessionInstance,
     required String serviceType,
-  })  : _mcSession = mcSession,
+  })  : _mcSession = mcSessionInstance,
         _serviceType = serviceType {
     api.createFromInstance(this, _mcSession, _serviceType);
   }

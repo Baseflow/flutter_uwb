@@ -14,20 +14,6 @@ typedef NS_ENUM(NSUInteger, BFMCEncryptionPreferenceWrapper) {
   BFMCEncryptionPreferenceWrapperNone = 2,
 };
 
-@class BFMCPeerIDWrapper;
-@class BFMCSessionWrapper;
-
-@interface BFMCPeerIDWrapper : NSObject
-+ (instancetype)makeWithDisplayName:(nullable NSString *)displayName;
-@property(nonatomic, copy, nullable) NSString * displayName;
-@end
-
-@interface BFMCSessionWrapper : NSObject
-+ (instancetype)makeWithPeerId:(nullable BFMCPeerIDWrapper *)peerId
-    encryptionPreference:(BFMCEncryptionPreferenceWrapper)encryptionPreference;
-@property(nonatomic, strong, nullable) BFMCPeerIDWrapper * peerId;
-@property(nonatomic, assign) BFMCEncryptionPreferenceWrapper encryptionPreference;
-@end
 
 /// The codec used by BFMCNearbyServiceAdvertiserDelegateFlutterApi.
 NSObject<FlutterMessageCodec> *BFMCNearbyServiceAdvertiserDelegateFlutterApiGetCodec(void);
@@ -35,13 +21,32 @@ NSObject<FlutterMessageCodec> *BFMCNearbyServiceAdvertiserDelegateFlutterApiGetC
 @interface BFMCNearbyServiceAdvertiserDelegateFlutterApi : NSObject
 - (instancetype)initWithBinaryMessenger:(id<FlutterBinaryMessenger>)binaryMessenger;
 - (void)didNotStartAdvertisingPeerWithCompletion:(void(^)(NSError *_Nullable))completion;
-- (void)didReceiveInvitationFromPeerPeerID:(BFMCPeerIDWrapper *)peerID context:(nullable NSString *)context completion:(void(^)(BFMCSessionWrapper *_Nullable, NSError *_Nullable))completion;
 @end
+/// The codec used by BFMCPeerIDHostApi.
+NSObject<FlutterMessageCodec> *BFMCPeerIDHostApiGetCodec(void);
+
+@protocol BFMCPeerIDHostApi
+- (void)createInstanceId:(NSNumber *)instanceId displayName:(NSString *)displayName error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)disposeInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
+@end
+
+extern void BFMCPeerIDHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BFMCPeerIDHostApi> *_Nullable api);
+
+/// The codec used by BFMCSessionHostApi.
+NSObject<FlutterMessageCodec> *BFMCSessionHostApiGetCodec(void);
+
+@protocol BFMCSessionHostApi
+- (void)createInstanceId:(NSNumber *)instanceId mcPeerIDInstanceId:(NSNumber *)mcPeerIDInstanceId encryptionPreference:(BFMCEncryptionPreferenceWrapper)encryptionPreference error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)disposeInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
+@end
+
+extern void BFMCSessionHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BFMCSessionHostApi> *_Nullable api);
+
 /// The codec used by BFMCNearbyServiceAdvertiserHostApi.
 NSObject<FlutterMessageCodec> *BFMCNearbyServiceAdvertiserHostApiGetCodec(void);
 
 @protocol BFMCNearbyServiceAdvertiserHostApi
-- (void)createInstanceId:(NSNumber *)instanceId peerId:(BFMCPeerIDWrapper *)peerId info:(nullable NSDictionary<NSString *, NSString *> *)info serviceType:(NSString *)serviceType error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)createInstanceId:(NSNumber *)instanceId mcPeerIDInstanceId:(NSNumber *)mcPeerIDInstanceId info:(nullable NSDictionary<NSString *, NSString *> *)info serviceType:(NSString *)serviceType error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)disposeInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)registerDelegateInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)removeDelegateInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
@@ -55,7 +60,7 @@ extern void BFMCNearbyServiceAdvertiserHostApiSetup(id<FlutterBinaryMessenger> b
 NSObject<FlutterMessageCodec> *BFMCBrowserViewControllerHostApiGetCodec(void);
 
 @protocol BFMCBrowserViewControllerHostApi
-- (void)createInstanceId:(NSNumber *)instanceId peerId:(BFMCSessionWrapper *)peerId serviceType:(NSString *)serviceType error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)createInstanceId:(NSNumber *)instanceId mCSessionInstanceID:(NSNumber *)mCSessionInstanceID serviceType:(NSString *)serviceType error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)disposeInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)registerDelegateInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)removeDelegateInstanceId:(NSNumber *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
