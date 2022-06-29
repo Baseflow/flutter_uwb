@@ -18,6 +18,7 @@ dependencies:
   # TODO(just-leroy): Update to pub dependency as soon as the 
   #                   uwb_platform_interface package has been
   #                   published to pub.dev.
+  pigeon: ^3.1.6
   uwb_platform_interface:
     path: ../uwb_platform_interface
 
