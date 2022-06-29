@@ -9,9 +9,9 @@ class MCSessionWrapper {
   /// Constructor of the [MCSessionWrapper] interface.
   MCSessionWrapper({
     required MCPeerIDWrapper mcPeerIDInstance,
-    MCEncryptionPreferenceWrapper? encryptionPreference,
+    required MCEncryptionPreferenceWrapper encryptionPreference,
   }) {
-    api.createFromInstance(this, mcPeerIDInstance, encryptionPreference!);
+    api.createFromInstance(this, mcPeerIDInstance, encryptionPreference);
   }
 
   /// Pigeon Host Api implementation for [MCSessionWrapper].
