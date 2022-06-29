@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:uwb_ios/mc_peer_id_wrapper.dart';
+import 'package:uwb_ios/mc_session_wrapper.dart';
 import 'package:uwb_platform_interface/uwb_platform_interface.dart';
 import 'mc_nearby_service_advertiser_wrapper.dart';
 
@@ -21,6 +22,9 @@ class UwbIos extends UwbPlatform {
   @override
   Future<void> startHost(String peerID, String serviceType) {
     MCPeerIDWrapper mcPeerIDInstance = MCPeerIDWrapper(displayName: peerID);
+    // ignore: unused_local_variable
+    MCSessionWrapper mcSessionWrapper =
+        MCSessionWrapper(mcPeerIDInstance: mcPeerIDInstance);
 
     final MCNearbyServiceAdvertiserWrapper advertiser =
         MCNearbyServiceAdvertiserWrapper(
