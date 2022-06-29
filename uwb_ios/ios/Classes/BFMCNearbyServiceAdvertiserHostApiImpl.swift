@@ -53,7 +53,6 @@ internal class BFMCNearbyServiceAdvertiserHostApiImpl : NSObject, BFMCNearbyServ
     }
 }
 
-
 internal class NearbyServiceAdvertiserDelegate : NSObject, MCNearbyServiceAdvertiserDelegate {
     
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
