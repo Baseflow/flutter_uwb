@@ -85,5 +85,3 @@ internal class NearbyServiceAdvertiserDelegate : NSObject, MCNearbyServiceAdvert
 //    }
 }
 
-
-
