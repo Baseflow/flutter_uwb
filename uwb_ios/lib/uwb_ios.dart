@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:uwb_ios/mc_peer_id_wrapper.dart';
-import 'package:uwb_ios/mc_peer_id_wrapper_api_impl.dart';
 import 'package:uwb_platform_interface/uwb_platform_interface.dart';
 import 'mc_nearby_service_advertiser_wrapper.dart';
 
