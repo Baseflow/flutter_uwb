@@ -17,7 +17,6 @@ internal class BFMCPeerIDHostApiImpl : NSObject, BFMCPeerIDHostApi{
     }
     
     func createInstanceId(_ instanceId: NSNumber, displayName: String, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
-        print("PRINT: CREATED PEERID INSTANCE")
         let peerId = MCPeerID(displayName: displayName)
         
         BFInstanceManager.current.addInstance(instanceId: instanceId, instance: peerId)

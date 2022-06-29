@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>NSNearbyInteractionUsageDescription</key>
-    <string>UWB-localisation-permission</string>
+    <string>Permission is needed to use localisation with UWB</string>
     <key>NSBonjourServices</key>
     <array>
         <string>_uwb-test._tcp</string>
