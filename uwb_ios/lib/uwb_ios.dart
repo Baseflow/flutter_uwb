@@ -20,7 +20,7 @@ class UwbIos extends UwbPlatform {
 
   @override
   Future<void> startHost(String peerID, String serviceType) {
-    MCPeerIDWrapperImpl mcPeerIDInstance = MCPeerIDWrapperImpl();
+    MCPeerIDHostApiImpl mcPeerIDInstance = MCPeerIDHostApiImpl();
     mcPeerIDInstance.createfromInstance(peerID);
 
     final MCNearbyServiceAdvertiserWrapper advertiser =

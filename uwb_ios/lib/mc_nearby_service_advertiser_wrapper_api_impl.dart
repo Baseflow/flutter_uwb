@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:uwb_ios/instance_manager.dart';
-import 'package:uwb_ios/mc_peer_id_wrapper_api_impl.dart';
+import 'package:uwb_ios/mc_peer_id_wrapper.dart';
 import 'package:uwb_ios/uwb_api.pigeon.dart';
 
 import 'mc_nearby_service_advertiser_wrapper.dart';
@@ -22,7 +22,7 @@ class MCNearbyServiceAdvertiserHostApiImpl
   /// Helper method to convert instance identifiers to objects.
   Future<void> createFromInstance(
       MCNearbyServiceAdvertiserWrapper instance,
-      MCPeerIDWrapperImpl mcPeerIDInstance,
+      MCPeerIDWrapper mcPeerIDInstance,
       Map<String?, String?>? info,
       String serviceType) async {
     final int mcPeerIDInstanceId =

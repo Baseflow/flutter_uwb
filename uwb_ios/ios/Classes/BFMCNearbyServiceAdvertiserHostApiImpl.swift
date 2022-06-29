@@ -9,7 +9,7 @@ import Foundation
 import MultipeerConnectivity
 
 internal class BFMCNearbyServiceAdvertiserHostApiImpl : NSObject, BFMCNearbyServiceAdvertiserHostApi {
-    
+  
     let flutterMessenger: FlutterBinaryMessenger
     
     init(flutterMessenger: FlutterBinaryMessenger) {
@@ -17,12 +17,11 @@ internal class BFMCNearbyServiceAdvertiserHostApiImpl : NSObject, BFMCNearbyServ
     }
     
     func registerDelegateInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
-        let flutterApi: BFMCNearbyServiceAdvertiserDelegateFlutterApi = BFMCNearbyServiceAdvertiserDelegateFlutterApi(binaryMessenger: flutterMessenger)
-        let delegate: NearbyServiceAdvertiserDelegate = NearbyServiceAdvertiserDelegate(
-            flutterApi: flutterApi)
+//        let flutterApi: BFMCNearbyServiceAdvertiserDelegateFlutterApi = BFMCNearbyServiceAdvertiserDelegateFlutterApi(binaryMessenger: flutterMessenger)
+        let delegate: NearbyServiceAdvertiserDelegate = NearbyServiceAdvertiserDelegate()
         
         let advertiser: MCNearbyServiceAdvertiser = BFInstanceManager.current.getInstance(instanceId: instanceId) as! MCNearbyServiceAdvertiser
-        advertiser.delegate = delegate
+        advertiser.delegate = delegate as MCNearbyServiceAdvertiserDelegate
     }
     
     func removeDelegateInstanceId(_ instanceId: NSNumber, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
@@ -30,12 +29,12 @@ internal class BFMCNearbyServiceAdvertiserHostApiImpl : NSObject, BFMCNearbyServ
         advertiser.delegate = nil
     }
     
-    func createInstanceId(_ instanceId: NSNumber, peerId: BFMCPeerIDWrapper, info: [String : String]?, serviceType: String, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+    func createInstanceId(_ instanceId: NSNumber, mcPeerIDInstanceId: NSNumber, info: [String : String]?, serviceType: String, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
         let advertiser: MCNearbyServiceAdvertiser = MCNearbyServiceAdvertiser(
-            peer: BFObjectTranslator.toMCPeerID(peerIDWrapper: peerId),
+            peer: BFInstanceManager.current.getInstance(instanceId: mcPeerIDInstanceId) as! MCPeerID,
             discoveryInfo: info,
             serviceType: serviceType)
-        
+
         BFInstanceManager.current.addInstance(instanceId: instanceId, instance: advertiser)
     }
     
@@ -57,30 +56,34 @@ internal class BFMCNearbyServiceAdvertiserHostApiImpl : NSObject, BFMCNearbyServ
 
 internal class NearbyServiceAdvertiserDelegate : NSObject, MCNearbyServiceAdvertiserDelegate {
     
-    let flutterApi: BFMCNearbyServiceAdvertiserDelegateFlutterApi
-    
-    init(flutterApi: BFMCNearbyServiceAdvertiserDelegateFlutterApi) {
-        self.flutterApi = flutterApi
-    }
-    
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        let peerIdWrapper: BFMCPeerIDWrapper = BFMCPeerIDWrapper.make(withDisplayName: peerID.displayName)
-        
-        var encodedContext: String?
-        if context != nil {
-            encodedContext = context?.base64EncodedString()
-        }
-        
-        flutterApi.didReceiveInvitation(fromPeerPeerID: peerIdWrapper, context: encodedContext, completion: {(sessionWrapper: BFMCSessionWrapper?, error: Error?) in
-            if sessionWrapper == nil || error != nil {
-                invitationHandler(false, nil)
-                return
-            }
-            
-            let session: MCSession = BFObjectTranslator.toMCSession(sessionWrapper: sessionWrapper!)
-            invitationHandler(true, session)
-        })
+        print("PRINT: I WORK!")
     }
+    
+//    let flutterApi: BFMCNearbyServiceAdvertiserDelegateFlutterApi
+//
+//    init(flutterApi: BFMCNearbyServiceAdvertiserDelegateFlutterApi) {
+//        self.flutterApi = flutterApi
+//    }
+//
+//    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+//        let peerIdWrapper: BFMCPeerIDWrapper = BFMCPeerIDWrapper.make(withDisplayName: peerID.displayName)
+//
+//        var encodedContext: String?
+//        if context != nil {
+//            encodedContext = context?.base64EncodedString()
+//        }
+//
+//        flutterApi.didReceiveInvitation(fromPeerPeerID: peerIdWrapper, context: encodedContext, completion: {(sessionWrapper: BFMCSessionWrapper?, error: Error?) in
+//            if sessionWrapper == nil || error != nil {
+//                invitationHandler(false, nil)
+//                return
+//            }
+//
+//            let session: MCSession = BFObjectTranslator.toMCSession(sessionWrapper: sessionWrapper!)
+//            invitationHandler(true, session)
+//        })
+//    }
 }
 
 

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:uwb_ios/mc_peer_id_wrapper_api_impl.dart';
+import 'package:uwb_ios/mc_peer_id_wrapper.dart';
 
 import 'uwb_api.pigeon.dart';
 import 'mc_nearby_service_advertiser_wrapper_api_impl.dart';
@@ -24,7 +25,7 @@ abstract class MCNearbyServiceAdvertiserDelegateWrapper
 class MCNearbyServiceAdvertiserWrapper {
   /// Creates a new [MCNearbyServiceAdvertiserWrapper].
   MCNearbyServiceAdvertiserWrapper({
-    required MCPeerIDWrapperImpl mcPeerIDInstance,
+    required MCPeerIDWrapper mcPeerIDInstance,
     Map<String, String>? info,
     required String serviceType,
   })  : _mcPeerIDInstance = mcPeerIDInstance,
@@ -38,7 +39,7 @@ class MCNearbyServiceAdvertiserWrapper {
   static MCNearbyServiceAdvertiserHostApiImpl api =
       MCNearbyServiceAdvertiserHostApiImpl();
 
-  final MCPeerIDWrapperImpl _mcPeerIDInstance;
+  final MCPeerIDWrapper _mcPeerIDInstance;
   final Map<String, String>? _info;
   final String _serviceType;
 
